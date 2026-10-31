@@ -30,12 +30,15 @@ function capture(child: ChildProcess): () => string {
   return () => out;
 }
 
-/** Resolves with the child's exit code, or "timeout" if it is still running after `ms`. */
+/**
+ * Resolves with the child's exit code, or "timeout" if it is still running after `ms`. Waits for "close"
+ * rather than "exit" so all captured output has drained before the caller reads it.
+ */
 function exitWithin(child: ChildProcess, ms: number): Promise<number | null | "timeout"> {
   if (child.exitCode !== null || child.signalCode !== null) return Promise.resolve(child.exitCode);
   return new Promise((resolve) => {
     const timer = setTimeout(() => resolve("timeout"), ms);
-    child.once("exit", (code) => {
+    child.once("close", (code) => {
       clearTimeout(timer);
       resolve(code);
     });
