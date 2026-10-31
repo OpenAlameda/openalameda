@@ -12,3 +12,23 @@
 body {
   @apply bg-paper text-ink;
 }
+
+@layer base {
+  a {
+    @apply text-teal underline underline-offset-2;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-heading text-navy;
+  }
+}
+
+/* Typography's own palette is grey; point it at the site's tokens. */
+.prose {
+  --tw-prose-body: var(--color-ink);
+  --tw-prose-headings: var(--color-navy);
+  --tw-prose-links: var(--color-teal);
+  --tw-prose-bold: var(--color-ink);
+}
