@@ -17,6 +17,8 @@ type CandidateMoneyProps = {
   bothSidesEmpty?: boolean;
   /** Heading element for the name; the page decides what fits its outline. */
   as?: "h2" | "h3" | "h4";
+  /** "race" draws the full-size heatmap and leaves the outside-groups line to the caller. */
+  variant?: "card" | "race";
 };
 
 export function CandidateMoney({
@@ -26,6 +28,7 @@ export function CandidateMoney({
   shortFormFiled,
   bothSidesEmpty = false,
   as: Heading = "h3",
+  variant = "card",
 }: CandidateMoneyProps) {
   const title = (
     <Heading className="text-lg font-semibold break-words">
@@ -66,18 +69,22 @@ export function CandidateMoney({
       {title}
       {summary.paper && <p className="text-sm italic">from paper filing</p>}
       <RaisedSpent raisedCents={summary.raisedCents} spentCents={summary.spentCents} />
-      {(summary.ownCents > 0 || summary.loansFromCandidateCents > 0 || summary.carriedCents > 0) && (
+      {(summary.ownCents > 0 ||
+        summary.loansFromCandidateCents > 0 ||
+        summary.otherLoansCents > 0 ||
+        summary.carriedCents > 0) && (
         <ul className="text-sm">
           {summary.ownCents > 0 && <li>{formatUsd(summary.ownCents)} from the candidate</li>}
           {summary.loansFromCandidateCents > 0 && (
             <li>{formatUsd(summary.loansFromCandidateCents)} loaned by the candidate</li>
           )}
+          {summary.otherLoansCents > 0 && <li>{formatUsd(summary.otherLoansCents)} in loans from others</li>}
           {summary.carriedCents > 0 && (
             <li>{formatUsd(summary.carriedCents)} carried over from an earlier campaign</li>
           )}
         </ul>
       )}
-      {(supportCents > 0 || opposeCents > 0) && (
+      {variant === "card" && (supportCents > 0 || opposeCents > 0) && (
         <p className="text-sm">
           Outside groups: {formatUsd(supportCents)} supporting · {formatUsd(opposeCents)} opposing
         </p>
@@ -87,7 +94,7 @@ export function CandidateMoney({
           <p className="text-sm">
             {split.individuals} from individuals · {split.alameda} from Alameda
           </p>
-          <Heatmap summary={summary} compact label={name} />
+          <Heatmap summary={summary} compact={variant === "card"} label={name} />
           {top.length > 0 && <p className="text-sm">{top.map((c) => `${c.pct} ${c.label}`).join(" · ")}</p>}
         </>
       ) : (

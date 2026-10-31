@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { pngSize } from "@/lib/png-size";
-import { checkSite, findMeta, parseBaseUrl } from "./check-site";
+import { ROUTES, checkSite, findMeta, parseBaseUrl } from "./check-site";
 
 const html = `<!DOCTYPE html><html><head>
 <title>Elections · OpenAlameda</title>
@@ -175,7 +175,7 @@ describe("checkSite", () => {
   test("reports a non-200 status alone", async () => {
     vi.stubGlobal("fetch", async () => new Response("", { status: 404 }));
     const results = await checkSite(base);
-    expect(results.map((r) => r.problems)).toEqual(Array(4).fill(["status 404"]));
+    expect(results.map((r) => r.problems)).toEqual(Array(ROUTES.length).fill(["status 404"]));
   });
 
   test("fetches each og:image exactly as emitted, hash query included", async () => {
@@ -257,6 +257,6 @@ describe("checkSite", () => {
     const stub = serve(base, "/", { tags: { "og:image": null } });
     const results = await checkSite(base, { checkImages: false });
     expect(results.flatMap((r) => r.problems)).toEqual([]);
-    expect(stub).toHaveBeenCalledTimes(4);
+    expect(stub).toHaveBeenCalledTimes(ROUTES.length);
   });
 });
