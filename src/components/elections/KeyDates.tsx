@@ -13,7 +13,7 @@ export function KeyDates({ dates, today }: { dates: KeyDate[]; today: string }) 
             key={`${d.date}-${d.label}`}
             className={
               state === "past"
-                ? "text-ink/50"
+                ? "text-ink/70"
                 : state === "next"
                   ? "rounded-md bg-teal/10 px-2 py-1 font-semibold text-navy ring-1 ring-teal/30"
                   : "px-2 py-1"

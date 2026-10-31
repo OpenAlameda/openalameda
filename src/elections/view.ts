@@ -126,9 +126,9 @@ export function sliceBands(s: MoneySummary, slice: Slice): BandCents {
   return out;
 }
 
-/** Whole dollars: 1362049 -> "$13,620". */
+/** Whole dollars, rounded half up: 1362049 -> "$13,620", 99999 -> "$1,000". */
 export function formatUsd(cents: number): string {
-  return `$${Math.trunc(cents / 100).toLocaleString("en-US")}`;
+  return `$${Math.floor((cents + 50) / 100).toLocaleString("en-US")}`;
 }
 
 /** "2026-10-17" -> "October 17, 2026", without a timezone shift. */
@@ -141,15 +141,14 @@ export function formatDate(iso: string): string {
   });
 }
 
-/** Dates before `today` are past; the first on or after it is next; the rest are future. `today` is YYYY-MM-DD. */
+/**
+ * Dates before `today` are past; the earliest on or after it is next; the rest are future. `today` is
+ * YYYY-MM-DD. States line up with the input order, which need not be sorted.
+ */
 export function keyDateStates(dates: KeyDate[], today: string): ("past" | "next" | "future")[] {
-  let nextSeen = false;
-  return dates.map((d) => {
-    if (d.date < today) return "past";
-    if (nextSeen) return "future";
-    nextSeen = true;
-    return "next";
-  });
+  const upcoming = dates.map((d) => d.date).filter((d) => d >= today);
+  const next = upcoming.length ? upcoming.reduce((a, b) => (b < a ? b : a)) : undefined;
+  return dates.map((d) => (d.date < today ? "past" : d.date === next ? "next" : "future"));
 }
 
 /** Heatmap fill opacity for a cell's share of dollars from others; empty cells get none. */

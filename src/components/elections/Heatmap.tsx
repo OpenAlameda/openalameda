@@ -1,3 +1,4 @@
+import { useId } from "react";
 import Link from "next/link";
 import { DONOR_TYPES, LOCALITIES, type DonorType, type Locality, type MoneySummary } from "@/elections/types";
 import { cellLabel, heatOpacity, othersCents, pct, sliceLabel, type Slice } from "@/elections/view";
@@ -31,6 +32,8 @@ type HeatmapProps = {
   selected?: Slice;
   /** Smaller cells and no percentages, for race cards. */
   compact?: boolean;
+  /** Names the grid for screen readers, e.g. the candidate's display name. */
+  label?: string;
 };
 
 function same(a: Slice, b: Slice): boolean {
@@ -41,7 +44,8 @@ function same(a: Slice, b: Slice): boolean {
  * The 3×3 locality × donor type grid, each cell shaded by its share of itemized dollars from others on
  * one absolute scale, so grids compare across candidates. Tapping the active slice clears it.
  */
-export function Heatmap({ summary, hrefFor, selected = {}, compact = false }: HeatmapProps) {
+export function Heatmap({ summary, hrefFor, selected = {}, compact = false, label }: HeatmapProps) {
+  const titleId = useId();
   const whole = othersCents(summary);
   const cw = compact ? 40 : 72;
   const ch = compact ? 28 : 48;
@@ -71,16 +75,18 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false }: He
       ? "Share of itemized contributions from others, by where donors live and what kind of donor they are."
       : "No itemized contributions from others.";
 
+  const fullText = label ? `${label}: ${summaryText}` : summaryText;
+
   return (
     <div>
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="group"
-        aria-labelledby="heatmap-title"
+        aria-labelledby={titleId}
         className="block w-full"
         style={{ maxWidth: width * (compact ? 1.4 : 1.8) }}
       >
-        <title id="heatmap-title">{summaryText}</title>
+        <title id={titleId}>{fullText}</title>
         {DONOR_TYPES.map((type, c) => {
           const x = rowHead + c * (cw + gap);
           const active = same({ type }, selected);
@@ -164,7 +170,7 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false }: He
                         textAnchor="middle"
                         fontSize={12}
                         fontWeight={600}
-                        fill={opacity > 0.5 ? "white" : NAVY}
+                        fill={opacity > 0.7 ? "white" : NAVY}
                       >
                         {pct(cents, whole)}
                       </text>
@@ -178,7 +184,7 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false }: He
         })}
       </svg>
       <table className="sr-only">
-        <caption>{summaryText}</caption>
+        <caption>{fullText}</caption>
         <thead>
           <tr>
             <th scope="col">Where from</th>

@@ -187,6 +187,11 @@ describe("formatting", () => {
     expect(formatUsd(1362049)).toBe("$13,620");
     expect(formatUsd(0)).toBe("$0");
   });
+  it("rounds to the nearest dollar, half up", () => {
+    expect(formatUsd(99999)).toBe("$1,000");
+    expect(formatUsd(149)).toBe("$1");
+    expect(formatUsd(150)).toBe("$2");
+  });
   it("formats dates without a timezone shift", () => {
     expect(formatDate("2026-10-17")).toBe("October 17, 2026");
     expect(formatDate("2026-11-03")).toBe("November 3, 2026");
@@ -204,6 +209,10 @@ describe("keyDateStates", () => {
   });
   it("makes the day after a date past", () => {
     expect(keyDateStates(dates, "2026-10-18")).toEqual(["past", "past", "next"]);
+  });
+  it("does not depend on input order", () => {
+    const shuffled = [dates[2], dates[0], dates[1]];
+    expect(keyDateStates(shuffled, "2026-10-17")).toEqual(["future", "past", "next"]);
   });
   it("marks everything past once the last date has gone by", () => {
     expect(keyDateStates(dates, "2026-11-04")).toEqual(["past", "past", "past"]);
