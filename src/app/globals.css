@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-navy: #05204e;
+  --color-teal: #0b6e6e;
+  --color-paper: #faf7f2;
+  --color-ink: #1f2937;
+  --font-heading: var(--font-poppins);
+}
+
+body {
+  @apply bg-paper text-ink;
+}
