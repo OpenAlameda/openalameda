@@ -23,6 +23,7 @@ Node 24 and pnpm are pinned (`.nvmrc`, `engines`, `packageManager`); run pnpm th
 - `src/app`: routes, layout, global styles.
 - `content/`: MDX prose for pages.
 - `docs/specs`, `docs/plans`: specs and implementation plans.
+- `docs/adr/`, `GLOSSARY.md`: decisions and domain terms. Vendored skills (see `.claude/skills/VENDORED.md`) read and write them.
 
 ## Conventions
 
@@ -61,3 +62,13 @@ Page copy lives in `content/*.mdx`. Edit copy there, not in components.
 ## No runtime AI
 
 Do not add AI SDKs or AI calls to the app. Every figure comes from a deterministic query over public data.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `OpenAlameda/openalameda`, through `gh`. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single context: `GLOSSARY.md` at the root, ADRs in `docs/adr/`. See `docs/agents/domain.md`.
