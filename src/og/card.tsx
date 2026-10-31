@@ -8,9 +8,25 @@ const LONG_TITLE = 28;
 export const CARD_SIZE = { width: 1200, height: 630 };
 
 // The tokens from src/app/globals.css; satori cannot read CSS variables.
-const NAVY = "#05204E";
-const TEAL = "#0B6E6E";
-const PAPER = "#FAF7F2";
+export const NAVY = "#05204E";
+export const TEAL = "#0B6E6E";
+export const PAPER = "#FAF7F2";
+
+/**
+ * The largest of `sizes` (descending) at which `text` fits in `lines` lines of `maxWidth` pixels, by an
+ * average-glyph-width estimate that leaves room for word-wrap waste. Falls back to the smallest size;
+ * `lineClamp` on the element then cuts what still overflows.
+ */
+export function fitFontSize(text: string, maxWidth: number, sizes: number[], lines = 2): number {
+  const AVG_GLYPH = 0.65; // em, Poppins SemiBold with margin for wrapping
+  const longestWord = Math.max(...text.split(/\s+/).map((w) => w.length));
+  // A word cannot wrap, so it must fit on one line by itself.
+  const fit = sizes.find((size) => {
+    const perLine = Math.floor(maxWidth / (size * AVG_GLYPH));
+    return longestWord <= perLine && text.length <= perLine * lines;
+  });
+  return fit ?? sizes[sizes.length - 1];
+}
 
 let poppins: Promise<Buffer> | undefined;
 
@@ -18,7 +34,7 @@ let poppins: Promise<Buffer> | undefined;
  * Loads the bundled Poppins SemiBold once per process. The `new URL(...,
  * import.meta.url)` form lets Next's file tracing ship the font with the route.
  */
-function loadPoppins(): Promise<Buffer> {
+export function loadPoppins(): Promise<Buffer> {
   poppins ??= readFile(new URL("./fonts/Poppins-SemiBold.ttf", import.meta.url)).catch((error) => {
     poppins = undefined;
     throw error;
