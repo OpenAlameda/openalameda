@@ -1,6 +1,9 @@
 import { readFile } from "node:fs/promises";
 import { ImageResponse } from "next/og";
 
+/** Titles longer than this get a smaller font so two lines hold them. */
+const LONG_TITLE = 28;
+
 /** Share-preview size every card renders at. */
 export const CARD_SIZE = { width: 1200, height: 630 };
 
@@ -48,9 +51,11 @@ export async function defaultCard(title: string): Promise<ImageResponse> {
         }}
       >
         <div style={{ fontSize: 44, color: "white" }}>OpenAlameda</div>
+        {/* Satori ignores lineClamp on flex containers, so the title must be a block. */}
         <div
           style={{
-            fontSize: 104,
+            display: "block",
+            fontSize: title.length > LONG_TITLE ? 72 : 104,
             lineHeight: 1.1,
             color: PAPER,
             maxWidth: CARD_SIZE.width - 160,

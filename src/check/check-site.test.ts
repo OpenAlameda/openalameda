@@ -216,6 +216,17 @@ describe("checkSite", () => {
     ]);
   });
 
+  test("accepts an image/png content-type with parameters", async () => {
+    serve(base, "/elections", {
+      image: () =>
+        new Response(pngHeader(1200, 630), {
+          status: 200,
+          headers: { "content-type": "image/png; charset=binary" },
+        }),
+    });
+    expect(await problemsFor(base, "/elections")).toEqual([]);
+  });
+
   test("reports an og:image that responds with a non-200 status", async () => {
     serve(base, "/elections", { image: () => new Response("", { status: 500 }) });
     expect(await problemsFor(base, "/elections")).toEqual([
