@@ -50,6 +50,9 @@ This repo is public. Everything committed is read by strangers.
   - personal details beyond the public contact `info@openalameda.org`;
   - secrets and tokens;
   - absolute local paths (`/Users/...`), agent scratch or session paths, and session links.
+- Write repo paths relative to the repo root (`--source .`, `docs/plans/...`), never as your local checkout.
+  Before committing, run `git diff --cached -U0 -- . ':!AGENTS.md' | grep -E '^\+.*(/Users/|/home/|~/)'`;
+  it must print nothing.
 - If you find one of these already committed, remove it in your PR and tell the maintainer; rewriting
   published history is the maintainer's call.
 - Docs are point-in-time; the code is the source of truth. When work diverges from a spec or plan, update the
