@@ -19,6 +19,14 @@ test("defaultCard renders a 1200x630 PNG", async () => {
   expect(errors).not.toHaveBeenCalled();
 });
 
+test("a long title renders without falling back", async () => {
+  const errors = spyOnErrors();
+  const title = "Campaign contributions to every candidate for City Council, November 2026";
+  const res = await withFallback(() => defaultCard(title), title);
+  expect(pngSize(new Uint8Array(await res.arrayBuffer()))).toEqual(CARD_SIZE);
+  expect(errors).not.toHaveBeenCalled();
+});
+
 test("a throwing render falls back to the default card", async () => {
   const errors = spyOnErrors();
   const res = await withFallback(() => {

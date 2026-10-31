@@ -106,9 +106,13 @@ async function imageProblems(html: string, base: URL): Promise<string[]> {
   } catch (error) {
     return [`og:image ${image} fetch failed: ${failureReason(error)}`];
   }
-  if (res.status !== 200) return [`og:image ${image} status ${res.status}`];
+  if (res.status !== 200) {
+    await res.body?.cancel();
+    return [`og:image ${image} status ${res.status}`];
+  }
   const type = res.headers.get("content-type");
-  if (type !== "image/png") {
+  if (type?.split(";")[0].trim().toLowerCase() !== "image/png") {
+    await res.body?.cancel();
     return [`og:image ${image} content-type is ${type ?? "missing"}, expected image/png`];
   }
   const size = pngSize(new Uint8Array(await res.arrayBuffer()));
