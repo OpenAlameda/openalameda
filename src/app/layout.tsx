@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -9,7 +10,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "OpenAlameda",
+  metadataBase: siteUrl(),
+  title: { template: "%s · OpenAlameda", default: "OpenAlameda" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
