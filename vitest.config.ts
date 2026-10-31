@@ -12,7 +12,11 @@ export default defineConfig({
       },
       {
         resolve: { alias },
-        test: { name: "e2e", include: ["test/e2e/**/*.test.ts"] },
+        test: {
+          name: "e2e",
+          include: ["test/e2e/**/*.test.ts"],
+          globalSetup: ["test/e2e/global-setup.ts"],
+        },
       },
     ],
   },
