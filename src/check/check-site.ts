@@ -109,9 +109,22 @@ async function checkRoute(base: URL, route: string, opts: CheckOptions): Promise
   return problemsIn(await res.text(), url, opts);
 }
 
+/**
+ * Parses `baseUrl`, which must be a bare origin: routes resolve from the site
+ * root, so a path would be silently dropped.
+ */
+export function parseBaseUrl(baseUrl: string): URL {
+  if (!URL.canParse(baseUrl)) throw new Error(`Base URL ${baseUrl} is not an absolute URL.`);
+  const base = new URL(baseUrl);
+  if (base.pathname !== "/" || base.search || base.hash) {
+    throw new Error(`Base URL ${baseUrl} must be an origin, such as ${base.origin}, with no path.`);
+  }
+  return base;
+}
+
 /** Checks every route's raw HTML for the full share-preview metadata set. */
 export async function checkSite(baseUrl: string, opts: CheckOptions = {}): Promise<RouteResult[]> {
-  const base = new URL(baseUrl);
+  const base = parseBaseUrl(baseUrl);
   const options = { checkImages: false, ...opts };
   return Promise.all(
     ROUTES.map(async (route) => ({ route, problems: await checkRoute(base, route, options) })),

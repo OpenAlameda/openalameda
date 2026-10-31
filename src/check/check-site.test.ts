@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { checkSite, findMeta } from "./check-site";
+import { checkSite, findMeta, parseBaseUrl } from "./check-site";
 
 const html = `<!DOCTYPE html><html><head>
 <title>Elections · OpenAlameda</title>
@@ -78,6 +78,33 @@ describe("checkSite", () => {
     serve(base, "/about", { canonical: "/about" });
     const about = (await checkSite(base)).find((r) => r.route === "/about");
     expect(about?.problems).toEqual(["canonical is /about, expected https://example.org/about"]);
+  });
+
+  test("reports every missing tag on a page with an empty head", async () => {
+    vi.stubGlobal("fetch", async () => new Response("<html><head></head></html>", { status: 200 }));
+    const home = (await checkSite(base)).find((r) => r.route === "/");
+    expect(home?.problems).toEqual([
+      "missing <title>",
+      "missing description",
+      "missing og:title",
+      "missing og:description",
+      "twitter:card is missing, expected summary_large_image",
+      "canonical is missing, expected https://example.org/",
+    ]);
+  });
+
+  test.each(["https://example.org/app", "https://example.org/?x=1", "not a url"])(
+    "rejects a base URL that is not a bare origin: %s",
+    async (badBase) => {
+      vi.stubGlobal("fetch", vi.fn());
+      await expect(checkSite(badBase)).rejects.toThrow(/Base URL/);
+      expect(fetch).not.toHaveBeenCalled();
+    },
+  );
+
+  test("accepts an origin with or without its trailing slash", () => {
+    expect(parseBaseUrl("https://example.org").href).toBe("https://example.org/");
+    expect(parseBaseUrl("https://example.org/").href).toBe("https://example.org/");
   });
 
   test("reports a non-200 status alone", async () => {
