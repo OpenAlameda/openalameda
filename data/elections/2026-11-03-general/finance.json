@@ -1542,7 +1542,7 @@
       },
       "unknownLocalityCents": 0,
       "outside": {
-        "supportCents": 0,
+        "supportCents": 337500,
         "opposeCents": 0
       },
       "reportedDiffs": []
@@ -1959,7 +1959,7 @@
       },
       "unknownLocalityCents": 0,
       "outside": {
-        "supportCents": 0,
+        "supportCents": 337500,
         "opposeCents": 0
       },
       "reportedDiffs": []
@@ -3079,6 +3079,22 @@
   },
   "outsideGroups": [
     {
+      "key": "1326421",
+      "name": "Alameda Education Association Political Action Committee",
+      "totals": [
+        {
+          "target": "school-board/carrie-hahnel",
+          "side": "support",
+          "cents": 337500
+        },
+        {
+          "target": "school-board/gary-lym",
+          "side": "support",
+          "cents": 337500
+        }
+      ]
+    },
+    {
       "key": "890076",
       "name": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
       "totals": [
@@ -3324,6 +3340,26 @@
       },
       "source": "paper",
       "file": "pdf/climate-belivers-460-10222026.pdf"
+    },
+    {
+      "filerKey": "1326421",
+      "filer": "Alameda Education Association Political Action Committee",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-20",
+      "period": null,
+      "source": "efile",
+      "file": "aea-pac-496-a0-10202026-2.xls"
+    },
+    {
+      "filerKey": "1326421",
+      "filer": "Alameda Education Association Political Action Committee",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-20",
+      "period": null,
+      "source": "efile",
+      "file": "aea-pac-496-a0-10202026.xls"
     },
     {
       "filerKey": "name:Alameda Firefighters Association IAFF Local 689",

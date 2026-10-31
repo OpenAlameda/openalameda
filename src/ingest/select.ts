@@ -25,6 +25,8 @@ export type Selection = {
 const PERIOD_FAMILIES = new Set(["460", "450", "460-T"]);
 const LATE_FAMILIES = new Set(["497", "496"]);
 const LATE_FORMS = new Set(["F497P1", "F496"]);
+/** Period report families that carry Schedule D (460 and its amendments and termination form). */
+const SCHEDULE_D_FAMILIES = new Set(["460", "460-T"]);
 
 /** True when `a` is a later version than `b`: higher amendment, then later filed date. */
 function newer(a: ManifestEntry, b: ManifestEntry): boolean {
@@ -74,11 +76,17 @@ export function selectFilings(filings: LoadedFiling[], log: string[]): Selection
   for (const f of superseded) log.push(`superseded: ${f.entry.path}`);
 
   const latestThru = new Map<string, string>();
+  // R18: the 496 cutoff counts only reports with a Schedule D (460 family). A 450 reports independent
+  // expenditures as F450P5, which is not outside spending, so a 450-only spender's 496s always count.
+  const latestScheduleDThru = new Map<string, string>();
   for (const f of period) {
     const thru = f.entry.period?.thru;
     if (!thru) continue;
     const prev = latestThru.get(f.filerKey);
     if (!prev || thru > prev) latestThru.set(f.filerKey, thru);
+    if (!SCHEDULE_D_FAMILIES.has(f.entry.family)) continue;
+    const prevD = latestScheduleDThru.get(f.filerKey);
+    if (!prevD || thru > prevD) latestScheduleDThru.set(f.filerKey, thru);
   }
 
   // Dedupe late rows by (filer key, Tran_ID), keeping the latest-filed copy, then apply the date rule.
@@ -107,7 +115,7 @@ export function selectFilings(filings: LoadedFiling[], log: string[]): Selection
   const late: CalRow[] = [];
   for (const [key, { row, entry }] of copies) {
     const filer = key.slice(0, key.indexOf("\t"));
-    const thru = latestThru.get(filer);
+    const thru = (row.formType === "F496" ? latestScheduleDThru : latestThru).get(filer);
     if (thru === undefined) {
       late.push(row);
     } else if (row.tranDate === null) {

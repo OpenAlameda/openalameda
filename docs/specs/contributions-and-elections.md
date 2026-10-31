@@ -119,7 +119,7 @@ Raw files live in `data/raw/<election-slug>/` and are **not committed** (gitigno
 Rules, in order:
 
 1. **Latest amendment wins.** For period reports (460, 450, 460-T and their `-A` amendments) keep only the latest-filed version per (filer, form family, period). A 460-A replaces the whole report, not just the changed rows.
-2. **Late reports fill the gap.** A 497 contribution counts only if its date is after the `Thru_Date` of that committee's latest period report; earlier 497s are already on a 460. Same rule for 496 independent expenditures against the spender's Schedule D.
+2. **Late reports fill the gap.** A 497 contribution counts only if its date is after the `Thru_Date` of that committee's latest period report; earlier 497s are already on a 460. Same rule for 496 independent expenditures against the spender's Schedule D. 2026-10-31: for `F496` rows the cutoff uses only the spender's 460-family period reports, and a spender with no 460-family period report has its 496s counted regardless of date (its 450 reports independent expenditures as F450P5, which isn't counted).
 3. **Memo rows don't count** (`Memo_Code` set): they itemize a parent row already counted.
 4. **Whole campaign.** Sum every report of the committee for this campaign, 2025 and 2026.
 5. **Raised** = monetary contributions (Schedule A) + nonmonetary (C) + contributions on counted 497s. Loans (B1, and loans reported on a 497) are reported separately, not in raised. **Spent** = payments (E), excluding memo rows; accrued unpaid bills (F) are not spent.

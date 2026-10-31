@@ -110,10 +110,9 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
   for (const f of input.filings) {
     for (const r of f.rows) {
       if (r.formType !== "F496" || counted.has(r)) continue;
-      const thru = selection.latestThru.get(r.filerKey);
       const why = r.memo
         ? "memo row"
-        : `dated ${r.tranDate ?? "never"}, on or before the filer's latest thru ${thru} (or a duplicate)`;
+        : `dated ${r.tranDate ?? "never"}, on or before the thru of the filer's latest 460 (or a duplicate)`;
       log.push(
         `outside F496 ${r.filerKey}:${r.tranId} $${(r.cents / 100).toFixed(2)} "${r.description}" not counted: ${why}`,
       );

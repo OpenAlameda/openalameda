@@ -156,6 +156,42 @@ describe("selectFilings: late reports (rule 2, D5)", () => {
     expect(tranIds(selectFilings([sept, f496, f497], []).late)).toEqual(["IE"]);
   });
 
+  describe("496 cutoff uses only 460-family reports (R18)", () => {
+    const spender = { filerKey: "2000002", filerId: "2000002", filerName: "Teachers PAC" };
+    const oct450 = loaded(
+      { path: "pac-450.xls", form: "450", family: "450", period: OCT, filed: "2026-10-21" },
+      [row({ ...spender, formType: "F450P5", tranId: "P5" })],
+    );
+    const sept460 = loaded({ path: "pac-460.xls", period: SEPT, filed: "2026-09-24" }, [
+      row({ ...spender, formType: "D", tranId: "D0" }),
+    ]);
+    const f496 = (tranDate: string) =>
+      loaded({ path: "pac-496.xls", form: "496", family: "496", filed: "2026-10-20", period: null }, [
+        row({ ...spender, formType: "F496", tranId: "IE", tranDate }),
+      ]);
+    const f497 = (tranDate: string) =>
+      loaded({ path: "pac-497.xls", form: "497", family: "497", filed: "2026-10-20", period: null }, [
+        row({ ...spender, formType: "F497P1", tranId: "LC", tranDate }),
+      ]);
+
+    test("a spender with only a 450 has its 496 rows counted even when dated before the 450's thru", () => {
+      expect(tranIds(selectFilings([oct450, f496("2026-08-24")], []).late)).toEqual(["IE"]);
+    });
+
+    test("a 450's thru still cuts off that filer's 497 rows", () => {
+      expect(tranIds(selectFilings([oct450, f497("2026-08-24")], []).late)).toEqual([]);
+    });
+
+    test("a spender with a 460 has 496 rows on or before the 460's thru dropped, after it counted", () => {
+      expect(tranIds(selectFilings([sept460, f496("2026-09-19")], []).late)).toEqual([]);
+      expect(tranIds(selectFilings([sept460, f496("2026-09-20")], []).late)).toEqual(["IE"]);
+    });
+
+    test("with both, the 496 cutoff is the 460's thru, not the later 450's", () => {
+      expect(tranIds(selectFilings([sept460, oct450, f496("2026-10-01")], []).late)).toEqual(["IE"]);
+    });
+  });
+
   test("an amended period report sets the late-report boundary like the original", () => {
     const a0 = loaded({ path: "oct-a0.xls", period: OCT, filed: "2026-10-22" });
     const a1 = loaded({ path: "oct-a1.xls", form: "460-A", amendment: 1, period: OCT, filed: "2026-10-25" });
