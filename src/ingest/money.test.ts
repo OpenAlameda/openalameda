@@ -104,6 +104,61 @@ describe("namesMatch", () => {
   });
 });
 
+describe("namesMatch: middle names", () => {
+  test("only the first token of the first name is compared", () => {
+    expect(namesMatch("Doe, Jane", "Doe", "Jane Q.")).toBe(true);
+    expect(namesMatch("Doe, Jane", "Doe", "JANE  q")).toBe(true);
+    expect(namesMatch("Doe, Jane Q.", "Doe", "Jane")).toBe(true);
+    expect(namesMatch("Doe, Jane", "Doe", "Janet Q.")).toBe(false);
+    expect(namesMatch("Doe, Jane", "Doe", "Q. Jane")).toBe(false);
+    expect(namesMatch("Doe, Jane", "Roe", "Jane Q.")).toBe(false);
+  });
+
+  test("a contribution with a middle initial is own money", () => {
+    const { s } = one([row({ entityLast: "Daysog", entityFirst: "Tony Q.", cents: 20000 })]);
+    expect(s.ownCents).toBe(20000);
+  });
+
+  test("B1 and late loans with a middle initial are the candidate's, a different first name is not", () => {
+    const b1 = (o: Partial<CalRow>) => row({ recType: "LOAN", formType: "B1", ...o });
+    const { s, log } = one(
+      [
+        b1({
+          tranId: "L1",
+          entityLast: "Daysog",
+          entityFirst: "Tony Q.",
+          cents: 2500000,
+          amtCloseCents: 2500000,
+        }),
+        b1({ tranId: "L2", entityLast: "Daysog", entityFirst: "Anne", cents: 100000, amtCloseCents: 100000 }),
+      ],
+      {
+        late: [
+          row({
+            formType: "F497P1",
+            tranId: "LN9",
+            entityLast: "Daysog",
+            entityFirst: "Tony Q.",
+            cents: 5000,
+          }),
+        ],
+      },
+    );
+    expect(s.loansFromCandidateCents).toBe(2505000);
+    expect(s.otherLoansCents).toBe(100000);
+    expect(log.filter((l) => l.includes("near miss")).length).toBe(1);
+  });
+
+  test("a late loan near miss is logged", () => {
+    const { log } = one([], {
+      late: [
+        row({ formType: "F497P1", tranId: "LN9", entityLast: "Daysog", entityFirst: "Anne", cents: 5000 }),
+      ],
+    });
+    expect(log.some((l) => l.includes("near miss"))).toBe(true);
+  });
+});
+
 describe("summarize: counted rows (rules 3, 5; D4)", () => {
   test("memo, G and F rows are left out; E and F450P5 are spent; C and A are raised", () => {
     const { s } = one([

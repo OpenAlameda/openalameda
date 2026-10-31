@@ -56,14 +56,19 @@ const nameKey = (s: string) =>
     .replace(/ +/g, " ")
     .trim();
 
-/** `legalName` is "Last, First"; each part must equal the contributor's after dropping accents, case and punctuation. */
+const firstToken = (s: string) => nameKey(s).split(" ")[0] ?? "";
+
+/**
+ * `legalName` is "Last, First"; the last name and the first token of the first name must equal the
+ * contributor's after dropping accents, case and punctuation, so a middle name or initial is ignored.
+ */
 export function namesMatch(legalName: string, last: string, first: string): boolean {
   const comma = legalName.indexOf(",");
   if (comma < 0) return false;
   const wantLast = nameKey(legalName.slice(0, comma));
-  const wantFirst = nameKey(legalName.slice(comma + 1));
+  const wantFirst = firstToken(legalName.slice(comma + 1));
   if (!wantLast || !wantFirst) return false;
-  return nameKey(last) === wantLast && nameKey(first) === wantFirst;
+  return nameKey(last) === wantLast && firstToken(first) === wantFirst;
 }
 
 const squash = (s: string) => s.trim().replace(/\s+/g, " ");
@@ -136,6 +141,15 @@ export function summarize(
   const isCandidate = (r: CalRow) =>
     candidate !== null && namesMatch(candidate.legalName, r.entityLast, r.entityFirst);
 
+  // Same last name as the candidate but not a match: someone should look.
+  const logNearMiss = (r: CalRow, counted: string) => {
+    if (!candidate) return;
+    const comma = candidate.legalName.indexOf(",");
+    if (comma > 0 && nameKey(r.entityLast) === nameKey(candidate.legalName.slice(0, comma))) {
+      log.push(`${who}: near miss on the candidate's name, ${counted} (${r.file} ${r.tranId})`);
+    }
+  };
+
   const contribution = (r: CalRow) => {
     raisedCents += r.cents;
     const label = `${r.file} ${r.tranId}`;
@@ -149,12 +163,7 @@ export function summarize(
       log.push(`${who}: own money ${r.cents} cents (${label})`);
       return;
     }
-    if (candidate) {
-      const comma = candidate.legalName.indexOf(",");
-      if (comma > 0 && nameKey(r.entityLast) === nameKey(candidate.legalName.slice(0, comma))) {
-        log.push(`${who}: near miss on the candidate's name, counted as from others (${label})`);
-      }
-    }
+    logNearMiss(r, "counted as from others");
     const code = r.entityCd.trim().toUpperCase();
     if (!(code in KNOWN_TYPES)) unknownCodes.set(code, (unknownCodes.get(code) ?? 0) + 1);
     const where = locality(r.zip5, countyZips);
@@ -207,13 +216,19 @@ export function summarize(
       if (r.memo || r.formType !== "B1") continue;
       const outstanding = r.amtCloseCents ?? r.cents;
       if (isCandidate(r)) loansFromCandidateCents += outstanding;
-      else otherLoansCents += outstanding;
+      else {
+        otherLoansCents += outstanding;
+        logNearMiss(r, "counted as a loan from others");
+      }
     }
   }
   for (const r of lateLoans) {
     const fromCandidate = isCandidate(r);
     if (fromCandidate) loansFromCandidateCents += r.cents;
-    else otherLoansCents += r.cents;
+    else {
+      otherLoansCents += r.cents;
+      logNearMiss(r, "counted as a loan from others");
+    }
     log.push(
       `${who}: late-report loan of ${r.cents} cents from ${fromCandidate ? "the candidate" : "another lender"}, counted as a loan (${r.file} ${r.tranId})`,
     );

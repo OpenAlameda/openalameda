@@ -998,8 +998,8 @@
       "spentCents": 2455210,
       "ownCents": 0,
       "carriedCents": 0,
-      "loansFromCandidateCents": 0,
-      "otherLoansCents": 2500000,
+      "loansFromCandidateCents": 2500000,
+      "otherLoansCents": 0,
       "contributionCount": 3,
       "matrix": {
         "alameda": {
