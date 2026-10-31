@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { MoneySummary } from "@/elections/types";
-import { formatDate, formatUsd, shares, topCells } from "@/elections/view";
+import { formatDate, formatUsd, shares, topCells, type Slice } from "@/elections/view";
 import { Heatmap } from "./Heatmap";
 import { RaisedSpent } from "./RaisedSpent";
 
@@ -19,6 +19,10 @@ type CandidateMoneyProps = {
   as?: "h2" | "h3" | "h4";
   /** "race" draws the full-size heatmap and leaves the outside-groups line to the caller. */
   variant?: "card" | "race";
+  /** Makes the heatmap's cells and headers links; see Heatmap. */
+  hrefFor?: (slice: Slice) => string;
+  /** The heatmap's active slice. */
+  selected?: Slice;
 };
 
 export function CandidateMoney({
@@ -29,6 +33,8 @@ export function CandidateMoney({
   bothSidesEmpty = false,
   as: Heading = "h3",
   variant = "card",
+  hrefFor,
+  selected,
 }: CandidateMoneyProps) {
   const title = (
     <Heading className="text-lg font-semibold break-words">
@@ -94,7 +100,13 @@ export function CandidateMoney({
           <p className="text-sm">
             {split.individuals} from individuals · {split.alameda} from Alameda
           </p>
-          <Heatmap summary={summary} compact={variant === "card"} label={name} />
+          <Heatmap
+            summary={summary}
+            compact={variant === "card"}
+            label={name}
+            hrefFor={hrefFor}
+            selected={selected}
+          />
           {top.length > 0 && <p className="text-sm">{top.map((c) => `${c.pct} ${c.label}`).join(" · ")}</p>}
         </>
       ) : (

@@ -10,6 +10,8 @@ export const ROUTES = [
   "/elections/2026-11-03-general",
   "/elections/2026-11-03-general/mayor",
   "/elections/2026-11-03-general/measure-l",
+  "/elections/2026-11-03-general/mayor/tony-daysog",
+  "/elections/2026-11-03-general/city-council/marcie-johnson?from=alameda&type=individual",
   "/meetings",
   "/about",
 ] as const;

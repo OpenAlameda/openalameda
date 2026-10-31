@@ -72,14 +72,14 @@ function cardUrl(base: string, path: string): string {
 }
 
 /** A page carrying every tag checkSite requires, with overrides by key. */
-function page(base: string, path: string, override: Record<string, string | null> = {}): string {
+function page(base: string, path: string, override: Record<string, string | null> = {}, search = ""): string {
   const tags: Record<string, string | null> = {
     description: "d",
     "og:title": "t",
     "og:description": "d",
     "twitter:card": "summary_large_image",
     "og:image": cardUrl(base, path),
-    canonical: path === "/" ? base : `${base}${path}`,
+    canonical: path === "/" ? base : `${base}${path}${search}`,
     ...override,
   };
   const head = Object.entries(tags)
@@ -114,7 +114,8 @@ function serve(base: string, route: string, { tags = {}, image = card }: Overrid
       const path = url.pathname.slice(0, -"/opengraph-image".length) || "/";
       return path === route ? image() : card();
     }
-    return new Response(page(base, url.pathname, url.pathname === route ? tags : {}), { status: 200 });
+    const isRoute = url.pathname + url.search === route;
+    return new Response(page(base, url.pathname, isRoute ? tags : {}, url.search), { status: 200 });
   });
   vi.stubGlobal("fetch", stub);
   return stub;
