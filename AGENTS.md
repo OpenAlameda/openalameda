@@ -38,6 +38,22 @@ Node 24 and pnpm are pinned (`.nvmrc`, `engines`, `packageManager`); run pnpm th
 - Keep project facts in the repo; keep expiring status in issues and PRs.
 - Record future work as GitHub issues.
 
+## Work in the open
+
+This repo is public. Everything committed is read by strangers.
+
+- Commit the design (`docs/specs/`) and plan (`docs/plans/`) in the same branch and PR as the code they describe.
+  Record architecture decisions as ADRs in `docs/adr/`.
+- Before committing any doc, plan, commit message or PR text, keep out:
+  - names of clients, employers or other private projects (write "conventions from other projects");
+  - personal details beyond the public contact `info@openalameda.org`;
+  - secrets and tokens;
+  - absolute local paths (`/Users/...`), agent scratch or session paths, and session links.
+- Docs are point-in-time; the code is the source of truth. When work diverges from a spec or plan, update the
+  doc in the same PR, or add a dated note saying what changed.
+- Data-source scraping details are fine to publish. The sources are public records, and a reproducible
+  pipeline is the point.
+
 ## Prose
 
 Page copy lives in `content/*.mdx`. Edit copy there, not in components.
