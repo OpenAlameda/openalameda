@@ -50,6 +50,8 @@ This repo is public. Everything committed is read by strangers.
   - personal details beyond the public contact `info@openalameda.org`;
   - secrets and tokens;
   - absolute local paths (`/Users/...`), agent scratch or session paths, and session links.
+- If you find one of these already committed, remove it in your PR and tell the maintainer; rewriting
+  published history is the maintainer's call.
 - Docs are point-in-time; the code is the source of truth. When work diverges from a spec or plan, update the
   doc in the same PR, or add a dated note saying what changed.
 - Data-source scraping details are fine to publish. The sources are public records, and a reproducible

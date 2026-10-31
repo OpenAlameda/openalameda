@@ -93,7 +93,7 @@ probably derive from the city's anchor-and-heart mark or flag.
 
 ## Stack and repository
 
-- **Repo:** `OpenAlameda/openalameda`, public, cloned at `~/work/openalameda`. The 2018
+- **Repo:** `OpenAlameda/openalameda`, public. The 2018
   `OpenAlameda/openalameda.github.io` site stays untouched until the domain cutover.
 - **Framework:** Next.js (App Router) with TypeScript.
 - **Pins:** Node 24 and pnpm, pinned in `.nvmrc`, `engines` and `packageManager` (via Corepack).
@@ -120,7 +120,6 @@ A Vercel project linked to the GitHub repo:
 - Every pull request gets a preview deployment.
 - Merging to `main` deploys production at a `*.vercel.app` URL.
 - The work starts on branches with pull requests into `main`.
-- The user runs `vercel login` once; the CLI could not confirm a session during exploration.
 
 ## Testing
 
