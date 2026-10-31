@@ -1,4 +1,5 @@
 import electionsJson from "../../data/elections.json";
+import finance20261103General from "../../data/elections/2026-11-03-general/finance.json";
 import races20261103General from "../../data/elections/2026-11-03-general/races.json";
 import type { Election, FinanceFile, Race, RacesFile } from "./types";
 
@@ -7,8 +8,10 @@ const RACES: Record<string, RacesFile> = {
   "2026-11-03-general": races20261103General as RacesFile,
 };
 
-// finance.json arrives with the ingest pipeline; until then every election has none.
-const FINANCE: Record<string, FinanceFile> = {};
+// finance.json comes from `pnpm ingest`; an election without one shows no money figures.
+const FINANCE: Record<string, FinanceFile> = {
+  "2026-11-03-general": finance20261103General as FinanceFile,
+};
 
 /** Newest election day first. */
 export const ELECTIONS: Election[] = [...(electionsJson as Election[])].sort((a, b) =>

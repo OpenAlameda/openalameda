@@ -1,0 +1,13 @@
+{
+  "1275389:DEX2509": {
+    "notLocal": "statewide ballot measure 50, The Election Rigging Response Act"
+  },
+  "1326421:EX2591": {
+    "targets": [{ "target": "school-board/carrie-hahnel", "side": "support" }],
+    "why": "496 description: joint mailer for Yes on 3 and support for Carrie Hahnel for AUSD BOE"
+  },
+  "1326421:EX3699": {
+    "targets": [{ "target": "school-board/gary-lym", "side": "support" }],
+    "why": "496 description: joint mailer for Yes on 3 and support for Gary Lym for AUSD BOE"
+  }
+}
