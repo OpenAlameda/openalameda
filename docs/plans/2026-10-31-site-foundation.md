@@ -60,7 +60,7 @@ These steps are outward-facing. Jim approved them in the spec.
 
 - [ ] Ask Jim to run `! vercel login`, so the login doesn't block Task 5.
 - [ ] Create the GitHub repo and push the spec and plan:
-  `gh repo create OpenAlameda/openalameda --public --source /Users/jim/work/openalameda --remote origin --push`
+  `gh repo create OpenAlameda/openalameda --public --source . --remote origin --push`
 - [ ] Create a worktree for branch `site-foundation`, cut from `origin/main`. Tasks 1–4 commit there.
 
 ---
