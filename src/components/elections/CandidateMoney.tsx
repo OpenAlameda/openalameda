@@ -87,7 +87,7 @@ export function CandidateMoney({
           <p className="text-sm">
             {split.individuals} from individuals · {split.alameda} from Alameda
           </p>
-          <Heatmap summary={summary} compact />
+          <Heatmap summary={summary} compact label={name} />
           {top.length > 0 && <p className="text-sm">{top.map((c) => `${c.pct} ${c.label}`).join(" · ")}</p>}
         </>
       ) : (

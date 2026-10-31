@@ -185,7 +185,7 @@ describe("checkSite", () => {
     expect(fetched).toEqual(
       expect.arrayContaining([
         "https://example.org/opengraph-image?abc123",
-        "https://example.org/elections/opengraph-image?abc123",
+        "https://example.org/elections/2026-11-03-general/opengraph-image?abc123",
         "https://example.org/meetings/opengraph-image?abc123",
         "https://example.org/about/opengraph-image?abc123",
       ]),
@@ -208,29 +208,29 @@ describe("checkSite", () => {
   });
 
   test("reports an og:image that responds with a non-PNG content-type", async () => {
-    serve(base, "/elections", {
+    serve(base, "/elections/2026-11-03-general", {
       image: () => new Response("<html></html>", { status: 200, headers: { "content-type": "text/html" } }),
     });
-    expect(await problemsFor(base, "/elections")).toEqual([
-      "og:image https://example.org/elections/opengraph-image?abc123 content-type is text/html, expected image/png",
+    expect(await problemsFor(base, "/elections/2026-11-03-general")).toEqual([
+      "og:image https://example.org/elections/2026-11-03-general/opengraph-image?abc123 content-type is text/html, expected image/png",
     ]);
   });
 
   test("accepts an image/png content-type with parameters", async () => {
-    serve(base, "/elections", {
+    serve(base, "/elections/2026-11-03-general", {
       image: () =>
         new Response(pngHeader(1200, 630), {
           status: 200,
           headers: { "content-type": "image/png; charset=binary" },
         }),
     });
-    expect(await problemsFor(base, "/elections")).toEqual([]);
+    expect(await problemsFor(base, "/elections/2026-11-03-general")).toEqual([]);
   });
 
   test("reports an og:image that responds with a non-200 status", async () => {
-    serve(base, "/elections", { image: () => new Response("", { status: 500 }) });
-    expect(await problemsFor(base, "/elections")).toEqual([
-      "og:image https://example.org/elections/opengraph-image?abc123 status 500",
+    serve(base, "/elections/2026-11-03-general", { image: () => new Response("", { status: 500 }) });
+    expect(await problemsFor(base, "/elections/2026-11-03-general")).toEqual([
+      "og:image https://example.org/elections/2026-11-03-general/opengraph-image?abc123 status 500",
     ]);
   });
 

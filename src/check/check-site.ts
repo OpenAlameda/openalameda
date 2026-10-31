@@ -5,7 +5,7 @@
 
 import { pngSize } from "../lib/png-size.ts";
 
-export const ROUTES = ["/", "/elections", "/meetings", "/about"] as const;
+export const ROUTES = ["/", "/elections/2026-11-03-general", "/meetings", "/about"] as const;
 
 export type RouteResult = { route: string; problems: string[] };
 
