@@ -26,3 +26,6 @@ npm-debug.log*
 
 # Agent working files (task logs, briefs, reviews); only specs and plans are committed
 .superpowers/
+
+# Raw campaign-finance exports (symlinks to local folders; never committed)
+data/raw/

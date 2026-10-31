@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "2026-11-03-general",
+    "name": "November 3, 2026 General Election",
+    "papersAvailable": "2026-07-13",
+    "electionDay": "2026-11-03",
+    "resultsFinal": null,
+    "keyDates": [
+      {
+        "date": "2026-07-13",
+        "label": "Nomination period opens"
+      },
+      {
+        "date": "2026-08-05",
+        "label": "24-hour reporting window begins (late contributions and independent expenditures)"
+      },
+      {
+        "date": "2026-08-07",
+        "label": "Nomination period closes"
+      },
+      {
+        "date": "2026-08-12",
+        "label": "Nomination period closes for races where an incumbent did not file (extension)"
+      },
+      {
+        "date": "2026-09-24",
+        "label": "First pre-election campaign statement (Form 460) due"
+      },
+      {
+        "date": "2026-10-19",
+        "label": "Voter registration deadline"
+      },
+      {
+        "date": "2026-10-22",
+        "label": "Second pre-election campaign statement (Form 460) due"
+      },
+      {
+        "date": "2026-11-03",
+        "label": "Election Day"
+      },
+      {
+        "date": "2026-12-03",
+        "label": "County certification (expected)"
+      }
+    ],
+    "links": {
+      "ballotpedia": "https://ballotpedia.org/Municipal_elections_in_Alameda_County,_California_(2026)"
+    }
+  }
+]

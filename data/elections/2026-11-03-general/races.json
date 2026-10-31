@@ -1,0 +1,293 @@
+{
+  "election": "2026-11-03-general",
+  "races": [
+    {
+      "kind": "office",
+      "slug": "mayor",
+      "name": "Mayor",
+      "seats": 1,
+      "links": {},
+      "candidates": [
+        {
+          "slug": "tracy-jensen",
+          "ballotName": "Tracy Jensen",
+          "legalName": "Jensen, Tracy",
+          "designation": "Alameda City Councilmember",
+          "committees": [
+            {
+              "id": "1485047",
+              "name": "Tracy Jensen for Alameda Mayor 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "malia-vella",
+          "ballotName": "Malia Vella",
+          "legalName": "Vella, Malia",
+          "designation": "Former Alameda Vice Mayor, Educator",
+          "committees": [
+            {
+              "id": "1486162",
+              "name": "Malia Vella for Alameda Mayor 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "tony-daysog",
+          "ballotName": "Tony Daysog",
+          "legalName": "Daysog, Tony",
+          "designation": "Alameda City Councilmember/Urban Planner",
+          "committees": [
+            {
+              "id": "1492067",
+              "name": "Daysog for Mayor 2026"
+            }
+          ],
+          "priorCommittees": [
+            {
+              "id": "1404765",
+              "name": "Daysog for Council 2018"
+            },
+            {
+              "id": "1452578",
+              "name": "Daysog for Council 2022"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "office",
+      "slug": "city-council",
+      "name": "City Council",
+      "seats": 2,
+      "links": {},
+      "candidates": [
+        {
+          "slug": "marcie-johnson",
+          "ballotName": "Marcie Johnson",
+          "legalName": "Johnson, Marcie",
+          "designation": "Social Worker",
+          "committees": [
+            {
+              "id": "1488958",
+              "name": "Marcie Johnson for Alameda City Council 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "thushan-amarasiriwardena",
+          "ballotName": "Thushan Amarasiriwardena",
+          "legalName": "Amarasiriwardena, Thushan",
+          "designation": "Software Product Manager",
+          "committees": [
+            {
+              "id": null,
+              "name": "Thushan Amarasiriwardena for Alameda City Council 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "tyler-savage",
+          "ballotName": "Tyler Savage",
+          "legalName": "Savage, Tyler",
+          "designation": "Technology Partner Manager",
+          "committees": [
+            {
+              "id": "1492617",
+              "name": "Savage for Alameda City Council 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "amos-white",
+          "ballotName": "Amos White",
+          "legalName": "White, Amos",
+          "designation": "Founder & CEO 100K Trees for Humanity",
+          "committees": [
+            {
+              "id": "1495492",
+              "name": "Amos White for Alameda City Council 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "maria-l-bondonno",
+          "ballotName": "Maria L. Bondonno",
+          "legalName": "Bondonno, Maria",
+          "designation": "Public Service Attorney",
+          "committees": [
+            {
+              "id": "1495863",
+              "name": "Maria Bondonno for City Council 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "donald-scott-means",
+          "ballotName": "Donald Scott Means",
+          "legalName": "Means, Donald Scott",
+          "committees": [
+            {
+              "id": "1491015",
+              "name": "Donald Scott Means for Alameda City Council 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "steve-slauson",
+          "ballotName": "Steve Slauson",
+          "legalName": "Slauson, Steve",
+          "designation": "Small Business Owner",
+          "committees": [],
+          "priorCommittees": [],
+          "shortForm": {
+            "form": "470-C",
+            "filed": "2026-09-14"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "office",
+      "slug": "school-board",
+      "name": "School Board",
+      "seats": 2,
+      "links": {},
+      "candidates": [
+        {
+          "slug": "carrie-hahnel",
+          "ballotName": "Carrie Hahnel",
+          "legalName": "Hahnel, Carrie",
+          "designation": "Appointed Alameda Unified Trustee",
+          "committees": [
+            {
+              "id": "1491388",
+              "name": "Carrie Hahnel for AUSD Board of Education 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "joyce-boyd",
+          "ballotName": "Joyce Boyd",
+          "legalName": "Boyd, Joyce",
+          "designation": "Certified Public Accountant",
+          "committees": [
+            {
+              "id": "1487626",
+              "name": "Joyce Boyd for Alameda Unified School District Board 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "ryan-lalonde",
+          "ballotName": "Ryan LaLonde",
+          "legalName": "LaLonde, Ryan",
+          "committees": [
+            {
+              "id": "1493199",
+              "name": "Re-Elect Ryan LaLonde for Alameda Unified School Board 2026"
+            }
+          ],
+          "priorCommittees": []
+        },
+        {
+          "slug": "gary-lym",
+          "ballotName": "Gary Lym",
+          "legalName": "Lym, Gary",
+          "designation": "Trustee, Alameda Unified School District",
+          "committees": [],
+          "priorCommittees": []
+        },
+        {
+          "slug": "sarah-putnam",
+          "ballotName": "Sarah Putnam",
+          "legalName": "Putnam, Sarah",
+          "designation": "Parent/Community Organizer",
+          "committees": [],
+          "priorCommittees": []
+        },
+        {
+          "slug": "mike-mcmahon",
+          "ballotName": "Mike McMahon",
+          "legalName": "McMahon, Mike",
+          "designation": "Independent Contractor",
+          "committees": [],
+          "priorCommittees": []
+        }
+      ]
+    },
+    {
+      "kind": "measure",
+      "slug": "measure-l",
+      "name": "Measure L",
+      "title": "Emergency Preparedness and Infrastructure Bond Measure",
+      "links": {
+        "ballotpedia": "https://ballotpedia.org/Alameda,_California,_Measure_L,_Emergency_Preparedness_and_Infrastructure_Bond_Measure_(November_2026)"
+      },
+      "sides": {
+        "yes": {
+          "committees": [
+            {
+              "id": "1494405",
+              "name": "Safer Alameda-Yes on Bond Measure L 2026",
+              "aliases": ["SAFER Alameda Yes on L"]
+            }
+          ]
+        },
+        "no": {
+          "committees": [
+            {
+              "id": "1496826",
+              "name": "Alameda Climate Change Belivers Opposing Measure L 2026"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "kind": "measure",
+      "slug": "measure-m",
+      "name": "Measure M",
+      "title": "Amend and Repeal Outdated City Charter Provisions",
+      "links": {
+        "ballotpedia": "https://ballotpedia.org/Alameda,_California,_Measure_M,_Amend_and_Repeal_Outdated_City_Charter_Provisions_(November_2026)"
+      },
+      "sides": {
+        "yes": {
+          "committees": []
+        },
+        "no": {
+          "committees": []
+        }
+      }
+    },
+    {
+      "kind": "measure",
+      "slug": "measure-n",
+      "name": "Measure N",
+      "title": "City Property Sales and Leases Charter Amendment",
+      "links": {
+        "ballotpedia": "https://ballotpedia.org/Alameda,_California,_Measure_N,_City_Property_Sales_and_Leases_Charter_Amendment_(November_2026)"
+      },
+      "sides": {
+        "yes": {
+          "committees": []
+        },
+        "no": {
+          "committees": []
+        }
+      }
+    }
+  ]
+}
