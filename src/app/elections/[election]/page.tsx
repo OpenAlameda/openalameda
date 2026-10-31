@@ -6,8 +6,9 @@ import { KeyDates } from "@/components/elections/KeyDates";
 import { SourceLine } from "@/components/elections/SourceLine";
 import { todayInLA } from "@/elections/focus";
 import { ELECTIONS, getElection, getFinance, getRaces, summaryKey } from "@/elections/registry";
-import type { FinanceFile, OutsideGroup, Race } from "@/elections/types";
-import { displayName, formatDate, formatUsd } from "@/elections/view";
+import type { FinanceFile, Race } from "@/elections/types";
+import { outsideLines } from "@/elections/outside";
+import { displayName, formatDate } from "@/elections/view";
 import { pageMetadata } from "@/lib/metadata";
 
 type Props = { params: Promise<{ election: string }> };
@@ -31,38 +32,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-/** The races and sides an outside group's totals can be tied to; anything else is left out of the page. */
-function localTargets(group: OutsideGroup, races: Race[]) {
-  const known = new Set(
-    races.flatMap((r) =>
-      r.kind === "office"
-        ? r.candidates.map((c) => summaryKey(r.slug, c.slug))
-        : [summaryKey(r.slug, "yes"), summaryKey(r.slug, "no")],
-    ),
-  );
-  return group.totals.filter((t) => known.has(t.target));
-}
-
 function OutsideGroups({ finance, races }: { finance: FinanceFile; races: Race[] }) {
-  const lines = finance.outsideGroups
-    .map((g) => ({ group: g, targets: localTargets(g, races) }))
-    .filter((l) => l.targets.length > 0)
-    .map(({ group, targets }) => ({
-      key: group.key,
-      name: group.name,
-      total: targets.reduce((sum, t) => sum + t.cents, 0),
-      parts: targets.map((t) => {
-        const [raceSlug, who] = t.target.split("/");
-        const race = races.find((r) => r.slug === raceSlug)!;
-        return `${t.side === "support" ? "for" : "against"} ${displayName(race, who)}`;
-      }),
-    }));
+  const lines = outsideLines(finance.outsideGroups, races);
   if (lines.length === 0) return <p>No outside groups have reported spending on these races.</p>;
   return (
     <ul className="space-y-2">
       {lines.map((l) => (
         <li key={l.key} className="break-words">
-          <span className="font-semibold">{l.name}</span>: {formatUsd(l.total)} {l.parts.join(", ")}
+          <span className="font-semibold">{l.name}</span>: {l.parts.join(" · ")}
         </li>
       ))}
     </ul>
@@ -141,16 +118,14 @@ export default async function ElectionPage({ params }: Props) {
         ))}
       </section>
 
-      <section aria-labelledby="outside-groups" className="space-y-3">
-        <h2 id="outside-groups" className="text-2xl font-semibold">
-          Outside groups
-        </h2>
-        {finance ? (
+      {finance && (
+        <section aria-labelledby="outside-groups" className="space-y-3">
+          <h2 id="outside-groups" className="text-2xl font-semibold">
+            Outside groups
+          </h2>
           <OutsideGroups finance={finance} races={races} />
-        ) : (
-          <p>No outside groups have reported spending on these races.</p>
-        )}
-      </section>
+        </section>
+      )}
 
       {finance && (
         <SourceLine

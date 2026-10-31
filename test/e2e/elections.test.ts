@@ -3,6 +3,14 @@ import { ELECTIONS, getRaces } from "@/elections/registry";
 import { electionInFocus } from "@/elections/focus";
 import { BASE_URL } from "./global-setup";
 
+const escapeHtml = (t: string) =>
+  t
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+
 const SLUG = "2026-11-03-general";
 
 test("/elections redirects to the election in focus, or lists every election", async () => {
@@ -22,7 +30,7 @@ test("the election page names every race, outside groups and the data date", asy
   const res = await fetch(`${BASE_URL}/elections/${SLUG}`);
   expect(res.status).toBe(200);
   const html = await res.text();
-  for (const race of getRaces(SLUG)!.races) expect(html).toContain(race.name);
+  for (const race of getRaces(SLUG)!.races) expect(html).toContain(escapeHtml(race.name));
   expect(html).toContain("Outside groups");
   expect(html).toContain("data through");
 });
