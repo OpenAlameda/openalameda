@@ -62,7 +62,8 @@ This repo is public. Everything committed is read by strangers.
 
 ## Prose
 
-Page copy lives in `content/*.mdx`. Edit copy there, not in components.
+Prose pages (`/`, `/about`) live in `content/*.mdx`; edit that copy there, not in components. Short
+placeholder text on other pages may sit in the page component.
 
 ## No runtime AI
 
