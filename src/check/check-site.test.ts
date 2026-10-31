@@ -146,6 +146,15 @@ describe("checkSite", () => {
     ]);
   });
 
+  test("expects a route's query string in its canonical", async () => {
+    const route = "/elections/2026-11-03-general/city-council/marcie-johnson?from=alameda&type=individual";
+    serve(base, route);
+    expect(await problemsFor(base, route)).toEqual([]);
+    const bare = `${base}${route.split("?")[0]}`;
+    serve(base, route, { tags: { canonical: bare } });
+    expect(await problemsFor(base, route)).toEqual([`canonical is ${bare}, expected ${base}${route}`]);
+  });
+
   test("reports every missing tag on a page with an empty head", async () => {
     vi.stubGlobal("fetch", async () => new Response("<html><head></head></html>", { status: 200 }));
     expect(await problemsFor(base, "/")).toEqual([

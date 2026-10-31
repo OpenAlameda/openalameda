@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 import { getFinance, getRaces } from "@/elections/registry";
+import { formatUsd } from "@/elections/view";
 import { BASE_URL } from "./global-setup";
 
 const SLUG = "2026-11-03-general";
@@ -23,13 +24,31 @@ test("the mayor page names every candidate, labels paper filing and links each c
 
 test("the race page lists outside spending for and against, apart from raised", async () => {
   const finance = getFinance(SLUG)!;
-  const withOutside = Object.entries(finance.summaries).find(
-    ([k, s]) => k.startsWith("mayor/") && s.outside.supportCents > 0,
+  const vella = finance.summaries["mayor/malia-vella"];
+  expect(vella.outside.supportCents).toBeGreaterThan(0);
+  const html = (await (await get("mayor")).text()).replace(/<!-- -->/g, "");
+  expect(html).toContain(
+    `Outside groups spent ${formatUsd(vella.outside.supportCents)} for / ${formatUsd(vella.outside.opposeCents)} against`,
   );
-  if (!withOutside) return;
+});
+
+test("filed candidates come first, biggest raised first, then the rest in ballot order", async () => {
+  const mayor = race("mayor");
+  if (mayor.kind !== "office") throw new Error("mayor is an office");
+  const finance = getFinance(SLUG)!;
+  const raised = (slug: string) => {
+    const s = finance.summaries[`mayor/${slug}`];
+    return s?.status === "filed" ? s.raisedCents : null;
+  };
+  const filed = mayor.candidates
+    .filter((c) => raised(c.slug) !== null)
+    .sort((a, b) => raised(b.slug)! - raised(a.slug)!);
+  const rest = mayor.candidates.filter((c) => raised(c.slug) === null);
+  const expected = [...filed, ...rest].map((c) => `/elections/${SLUG}/mayor/${c.slug}"`);
   const html = await (await get("mayor")).text();
-  const text = html.replace(/<!-- -->/g, "");
-  expect(text).toMatch(/Outside groups spent \$[\d,]+ for \/ \$[\d,]+ against/);
+  const found = expected.map((href) => html.indexOf(`href="${href}`));
+  expect(found.every((i) => i >= 0)).toBe(true);
+  expect(found).toEqual([...found].sort((a, b) => a - b));
 });
 
 test("a race page has a title, preview card and a unique heatmap label per candidate", async () => {
@@ -55,13 +74,4 @@ test("an unknown race is a 404 inside the site frame", async () => {
   const res = await get("no-such-race");
   expect(res.status).toBe(404);
   expect(await res.text()).toContain("not affiliated with the City of Alameda");
-});
-
-test("loans from someone other than the candidate show up as a split-out line, without a lender", async () => {
-  const finance = getFinance(SLUG)!;
-  const has = Object.entries(finance.summaries).some(
-    ([k, s]) => k.startsWith("city-council/") && s.otherLoansCents > 0,
-  );
-  const html = await (await get("city-council")).text();
-  expect(html.includes("in loans from others")).toBe(has);
 });

@@ -22,6 +22,21 @@ test("a paper filer's page shows the loan line and the paper label", async () =>
   expect(html).toContain("not all of the small gifts");
 });
 
+test("the candidate's name is the page's visible h1", async () => {
+  const html = await text("mayor/tony-daysog");
+  expect(html.match(/<h1[^>]*>/g)).toHaveLength(1);
+  expect(html).toMatch(/<h1[^>]*>(?:<a[^>]*>)?Tony Daysog/);
+});
+
+test("unknown-ZIP money is disclosed where the other locality is named", async () => {
+  const note = "has no usable ZIP code and is counted as outside Alameda County.";
+  const html = await text("mayor/tony-daysog");
+  expect(html).toContain(note);
+  const sliced = await text("mayor/tony-daysog?from=other");
+  expect(title(sliced)).toContain("from outside Alameda County or with no usable ZIP");
+  expect(await text("mayor/tracy-jensen")).not.toContain(note);
+});
+
 test("a candidate with no filings says so", async () => {
   expect(await text("school-board/gary-lym")).toContain(
     "No campaign finance filings on record with the City.",

@@ -40,7 +40,27 @@ export function shares(s: MoneySummary): { individuals: string; alameda: string 
   return { individuals: pct(individuals, whole), alameda: pct(alameda, whole) };
 }
 
+/**
+ * Money with a missing or malformed ZIP is counted in the "other" locality (spec rule 7), so wherever
+ * that locality is named in words and the summary has such money, the wording says so. These are the
+ * only places that wording lives.
+ */
 const LOCALITY_WORD: Record<Locality, string> = { alameda: "Alameda", county: "county", other: "non-local" };
+const LOCALITY_WORD_UNKNOWN_ZIP = "non-local or no-ZIP";
+const OTHER_FROM_PHRASE = "from outside Alameda County";
+const OTHER_FROM_PHRASE_UNKNOWN_ZIP = "from outside Alameda County or with no usable ZIP";
+
+/** True when some of the summary's money has no usable ZIP and so sits in the "other" locality. */
+export function hasUnknownZip(s: MoneySummary | undefined): boolean {
+  return (s?.unknownLocalityCents ?? 0) > 0;
+}
+
+/** The candidate-page note disclosing unknown-ZIP money; null when there is none. */
+export function unknownZipNote(s: MoneySummary): string | null {
+  return hasUnknownZip(s)
+    ? `${formatUsd(s.unknownLocalityCents)} of this has no usable ZIP code and is counted as outside Alameda County.`
+    : null;
+}
 const TYPE_WORD: Record<DonorType, string> = {
   individual: "individuals",
   organization: "organizations",
@@ -48,8 +68,9 @@ const TYPE_WORD: Record<DonorType, string> = {
 };
 
 /** A cell in words: "Alameda individuals", "county organizations", "non-local political". */
-export function cellLabel(from: Locality, type: DonorType): string {
-  return `${LOCALITY_WORD[from]} ${TYPE_WORD[type]}`;
+export function cellLabel(from: Locality, type: DonorType, unknownZip = false): string {
+  const word = from === "other" && unknownZip ? LOCALITY_WORD_UNKNOWN_ZIP : LOCALITY_WORD[from];
+  return `${word} ${TYPE_WORD[type]}`;
 }
 
 /** The largest nonzero cells by dollars, as shares of dollars from others. */
@@ -66,7 +87,7 @@ export function topCells(
   return cells.slice(0, n).map(({ from, type, cents }) => ({
     from,
     type,
-    label: cellLabel(from, type),
+    label: cellLabel(from, type, hasUnknownZip(s)),
     pct: pct(cents, whole),
   }));
 }
@@ -96,7 +117,7 @@ export function sliceQuery(s: Slice): string {
 const FROM_PHRASE: Record<Locality, string> = {
   alameda: "from Alameda",
   county: "from elsewhere in Alameda County",
-  other: "from outside Alameda County",
+  other: OTHER_FROM_PHRASE,
 };
 const TYPE_PHRASE: Record<DonorType, string> = {
   individual: "individuals",
@@ -105,10 +126,12 @@ const TYPE_PHRASE: Record<DonorType, string> = {
 };
 
 /** The slice in words for titles and chips; null when there is none. */
-export function sliceLabel(s: Slice): string | null {
-  if (s.from && s.type) return `${TYPE_PHRASE[s.type]} ${FROM_PHRASE[s.from]}`;
+export function sliceLabel(s: Slice, unknownZip = false): string | null {
+  const from =
+    s.from === "other" && unknownZip ? OTHER_FROM_PHRASE_UNKNOWN_ZIP : s.from && FROM_PHRASE[s.from];
+  if (s.from && s.type) return `${TYPE_PHRASE[s.type]} ${from}`;
   if (s.type) return TYPE_PHRASE[s.type];
-  if (s.from) return `donors ${FROM_PHRASE[s.from]}`;
+  if (s.from) return `donors ${from}`;
   return null;
 }
 
@@ -124,6 +147,19 @@ export function sliceBands(s: MoneySummary, slice: Slice): BandCents {
     }
   }
   return out;
+}
+
+/** Dollars from others inside the slice, summed over the selected heatmap cells. */
+export function sliceCents(s: MoneySummary, slice: Slice): number {
+  let total = 0;
+  for (const from of LOCALITIES) {
+    if (slice.from && slice.from !== from) continue;
+    for (const type of DONOR_TYPES) {
+      if (slice.type && slice.type !== type) continue;
+      total += s.matrix[from][type].cents;
+    }
+  }
+  return total;
 }
 
 /** Whole dollars, rounded half up: 1362049 -> "$13,620", 99999 -> "$1,000". */

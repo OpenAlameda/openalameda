@@ -5,6 +5,7 @@ import {
   displayName,
   formatDate,
   formatUsd,
+  hasUnknownZip,
   heatOpacity,
   keyDateStates,
   othersCents,
@@ -12,9 +13,11 @@ import {
   pct,
   shares,
   sliceBands,
+  sliceCents,
   sliceLabel,
   sliceQuery,
   topCells,
+  unknownZipNote,
 } from "./view.ts";
 
 const zeroCell = { cents: 0, count: 0 };
@@ -264,5 +267,51 @@ describe("displayName", () => {
   });
   it("falls back to the key for an unknown candidate", () => {
     expect(displayName(office, "ghost")).toBe("ghost");
+  });
+});
+
+describe("unknown-ZIP disclosure", () => {
+  const unknown = summary({ "other/individual": 207500 }, { unknownLocalityCents: 207500 });
+  const known = summary({ "other/individual": 207500 });
+
+  it("hasUnknownZip and unknownZipNote follow unknownLocalityCents", () => {
+    expect(hasUnknownZip(unknown)).toBe(true);
+    expect(hasUnknownZip(known)).toBe(false);
+    expect(hasUnknownZip(undefined)).toBe(false);
+    expect(unknownZipNote(unknown)).toBe(
+      "$2,075 of this has no usable ZIP code and is counted as outside Alameda County.",
+    );
+    expect(unknownZipNote(known)).toBeNull();
+  });
+
+  it("the other locality's wording discloses unknown ZIPs only when asked", () => {
+    expect(sliceLabel({ from: "other" }, true)).toBe(
+      "donors from outside Alameda County or with no usable ZIP",
+    );
+    expect(sliceLabel({ from: "other", type: "individual" }, true)).toBe(
+      "individuals from outside Alameda County or with no usable ZIP",
+    );
+    expect(sliceLabel({ from: "other" }, false)).toBe("donors from outside Alameda County");
+    expect(sliceLabel({ from: "alameda" }, true)).toBe("donors from Alameda");
+    expect(sliceLabel({ type: "political" }, true)).toBe("political committees");
+    expect(cellLabel("other", "individual", true)).toBe("non-local or no-ZIP individuals");
+    expect(cellLabel("other", "individual")).toBe("non-local individuals");
+    expect(cellLabel("county", "individual", true)).toBe("county individuals");
+  });
+
+  it("topCells labels the other cell with the disclosure only when the summary has unknown-ZIP money", () => {
+    expect(topCells(unknown)[0].label).toBe("non-local or no-ZIP individuals");
+    expect(topCells(known)[0].label).toBe("non-local individuals");
+  });
+});
+
+describe("sliceCents", () => {
+  const s = summary({ "alameda/individual": 100, "alameda/political": 20, "other/individual": 3 });
+  it("sums the selected cells", () => {
+    expect(sliceCents(s, {})).toBe(123);
+    expect(sliceCents(s, { from: "alameda" })).toBe(120);
+    expect(sliceCents(s, { type: "individual" })).toBe(103);
+    expect(sliceCents(s, { from: "other", type: "individual" })).toBe(3);
+    expect(sliceCents(s, { from: "county" })).toBe(0);
   });
 });

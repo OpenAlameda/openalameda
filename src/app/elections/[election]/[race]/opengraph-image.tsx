@@ -6,7 +6,7 @@ import { raceCard } from "@/og/election-cards";
 
 export const size = CARD_SIZE;
 export const contentType = "image/png";
-export const alt = "Campaign money in a City of Alameda race · OpenAlameda";
+export const alt = "Campaign money in an Alameda race · OpenAlameda";
 export const revalidate = 3600;
 
 export default async function Image({ params }: { params: Promise<{ election: string; race: string }> }) {

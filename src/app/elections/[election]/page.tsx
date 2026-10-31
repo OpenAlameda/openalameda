@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!election) return {};
   return pageMetadata({
     title: election.name,
-    description: `Who is paying for each City of Alameda race on the ${formatDate(election.electionDay)} ballot: raised, spent and where the money comes from.`,
+    description: `Who is paying for each Alameda race on the ${formatDate(election.electionDay)} ballot: raised, spent and where the money comes from.`,
     path: `/elections/${election.slug}`,
   });
 }

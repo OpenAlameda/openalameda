@@ -16,7 +16,7 @@ type CandidateMoneyProps = {
   /** Measure cards: neither side has filings, so say so for both. */
   bothSidesEmpty?: boolean;
   /** Heading element for the name; the page decides what fits its outline. */
-  as?: "h2" | "h3" | "h4";
+  as?: "h1" | "h2" | "h3" | "h4";
   /** "race" draws the full-size heatmap and leaves the outside-groups line to the caller. */
   variant?: "card" | "race";
   /** Makes the heatmap's cells and headers links; see Heatmap. */
@@ -37,7 +37,7 @@ export function CandidateMoney({
   selected,
 }: CandidateMoneyProps) {
   const title = (
-    <Heading className="text-lg font-semibold break-words">
+    <Heading className={`${Heading === "h1" ? "text-3xl" : "text-lg"} font-semibold break-words`}>
       {href ? <Link href={href}>{name}</Link> : name}
     </Heading>
   );
@@ -90,6 +90,7 @@ export function CandidateMoney({
           )}
         </ul>
       )}
+      {/* Card variant only; the race page draws its own outside line (see [race]/page.tsx), the candidate page a section. */}
       {variant === "card" && (supportCents > 0 || opposeCents > 0) && (
         <p className="text-sm">
           Outside groups: {formatUsd(supportCents)} supporting · {formatUsd(opposeCents)} opposing

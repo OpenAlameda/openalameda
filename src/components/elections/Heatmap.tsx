@@ -1,7 +1,15 @@
 import { useId } from "react";
 import Link from "next/link";
 import { DONOR_TYPES, LOCALITIES, type DonorType, type Locality, type MoneySummary } from "@/elections/types";
-import { cellLabel, heatOpacity, othersCents, pct, sliceLabel, type Slice } from "@/elections/view";
+import {
+  cellLabel,
+  hasUnknownZip,
+  heatOpacity,
+  othersCents,
+  pct,
+  sliceLabel,
+  type Slice,
+} from "@/elections/view";
 
 const ROW_NAMES: Record<Locality, string> = {
   alameda: "City of Alameda",
@@ -47,6 +55,7 @@ function same(a: Slice, b: Slice): boolean {
 export function Heatmap({ summary, hrefFor, selected = {}, compact = false, label }: HeatmapProps) {
   const titleId = useId();
   const whole = othersCents(summary);
+  const unknownZip = hasUnknownZip(summary);
   const cw = compact ? 40 : 72;
   const ch = compact ? 28 : 48;
   const gap = 3;
@@ -94,7 +103,7 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false, labe
             <g key={type}>
               {link(
                 { type },
-                `Show only ${sliceLabel({ type })}`,
+                `Show only ${sliceLabel({ type }, unknownZip)}`,
                 <text
                   x={x + cw / 2}
                   y={colHead - 6}
@@ -117,7 +126,7 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false, labe
             <g key={from}>
               {link(
                 { from },
-                `Show only ${sliceLabel({ from })}`,
+                `Show only ${sliceLabel({ from }, unknownZip)}`,
                 <text
                   x={rowHead - 8}
                   y={y + ch / 2 + fontSize / 3}
@@ -177,7 +186,11 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false, labe
                     )}
                   </g>
                 );
-                return <g key={type}>{link({ from, type }, `Show only ${cellLabel(from, type)}`, cell)}</g>;
+                return (
+                  <g key={type}>
+                    {link({ from, type }, `Show only ${cellLabel(from, type, unknownZip)}`, cell)}
+                  </g>
+                );
               })}
             </g>
           );

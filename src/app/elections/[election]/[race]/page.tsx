@@ -107,6 +107,7 @@ export default async function RacePage({ params }: Props) {
                 shortFormFiled={shortForms?.get(key)}
                 bothSidesEmpty={bothSidesEmpty}
               />
+              {/* Race variant's outside line; CandidateMoney draws the card variant's. Keep the two in step. */}
               {summary && (summary.outside.supportCents > 0 || summary.outside.opposeCents > 0) && (
                 <p className="text-sm">
                   Outside groups spent {formatUsd(summary.outside.supportCents)} for /{" "}

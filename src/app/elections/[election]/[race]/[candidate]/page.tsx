@@ -5,15 +5,19 @@ import { CandidateMoney } from "@/components/elections/CandidateMoney";
 import { SourceLine } from "@/components/elections/SourceLine";
 import { outsideLines } from "@/elections/outside";
 import { ELECTIONS, getElection, getFinance, getRace, getRaces, summaryKey } from "@/elections/registry";
-import { BANDS, DONOR_TYPES, LOCALITIES, type Band, type MoneySummary, type Race } from "@/elections/types";
+import { candidateKeys, nameOf } from "@/elections/slugs";
+import { BANDS, type Band, type MoneySummary } from "@/elections/types";
 import {
-  displayName,
   formatDate,
   formatUsd,
+  hasUnknownZip,
+  othersCents,
   parseSlice,
   sliceBands,
+  sliceCents,
   sliceLabel,
   sliceQuery,
+  unknownZipNote,
   type Slice,
 } from "@/elections/view";
 import { pageMetadata } from "@/lib/metadata";
@@ -29,11 +33,7 @@ export const dynamicParams = false;
 export function generateStaticParams() {
   return ELECTIONS.flatMap((e) =>
     (getRaces(e.slug)?.races ?? []).flatMap((r) =>
-      (r.kind === "office" ? r.candidates.map((c) => c.slug) : ["yes", "no"]).map((candidate) => ({
-        election: e.slug,
-        race: r.slug,
-        candidate,
-      })),
+      candidateKeys(r).map((candidate) => ({ election: e.slug, race: r.slug, candidate })),
     ),
   );
 }
@@ -45,25 +45,6 @@ const BAND_LABELS: Record<Band, string> = {
   "100-249": "$100–249",
   "under-100": "Under $100 (itemized)",
 };
-
-/** The candidate's or side's name for this race, or undefined when the slug is not on the ballot. */
-function nameOf(race: Race, key: string): string | undefined {
-  if (race.kind === "measure") return key === "yes" || key === "no" ? displayName(race, key) : undefined;
-  return race.candidates.find((c) => c.slug === key)?.ballotName;
-}
-
-/** Dollars from others inside the slice, summed over the selected heatmap cells. */
-function sliceCents(s: MoneySummary, slice: Slice): number {
-  let total = 0;
-  for (const from of LOCALITIES) {
-    if (slice.from && slice.from !== from) continue;
-    for (const type of DONOR_TYPES) {
-      if (slice.type && slice.type !== type) continue;
-      total += s.matrix[from][type].cents;
-    }
-  }
-  return total;
-}
 
 /** The slice that applies: only a page with filed money has a heatmap to filter. */
 function effectiveSlice(summary: MoneySummary | undefined, query: Query): Slice {
@@ -79,16 +60,16 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const finance = getFinance(electionSlug);
   const summary = finance?.summaries[summaryKey(race.slug, candidate)];
   const slice = effectiveSlice(summary, await searchParams);
-  const label = sliceLabel(slice);
+  const label = sliceLabel(slice, hasUnknownZip(summary));
   const path = `/elections/${election.slug}/${race.slug}/${candidate}`;
   const query = sliceQuery(slice);
   const who = race.kind === "office" ? `${name} (${race.name})` : name;
 
   let description: string;
   if (summary?.status === "filed") {
-    description = `${who} raised ${formatUsd(summary.raisedCents)} and spent ${formatUsd(summary.spentCents)} in itemized contributions${finance ? ` through ${formatDate(finance.dataThrough)}` : ""}.`;
+    description = `${who} raised ${formatUsd(summary.raisedCents)} and spent ${formatUsd(summary.spentCents)}${finance ? `, through ${formatDate(finance.dataThrough)}` : ""}.`;
     if (label) {
-      description += ` ${label.charAt(0).toUpperCase()}${label.slice(1)}: ${formatUsd(sliceCents(summary, slice))} of it.`;
+      description += ` ${label.charAt(0).toUpperCase()}${label.slice(1)}: ${formatUsd(sliceCents(summary, slice))} of the itemized contributions.`;
     }
   } else if (summary?.status === "short-form") {
     description = `${who} filed a short form: expects to raise and spend under $2,000.`;
@@ -120,7 +101,7 @@ export default async function CandidatePage({ params, searchParams }: Props) {
   const finance = getFinance(election.slug);
   const summary = finance?.summaries[summaryKey(race.slug, candidate)];
   const slice = effectiveSlice(summary, await searchParams);
-  const label = sliceLabel(slice);
+  const label = sliceLabel(slice, hasUnknownZip(summary));
   const path = `/elections/${election.slug}/${race.slug}/${candidate}`;
   const filed = summary?.status === "filed" ? summary : undefined;
 
@@ -149,12 +130,9 @@ export default async function CandidatePage({ params, searchParams }: Props) {
         <Link href={`/elections/${election.slug}/${race.slug}`}>{race.name}</Link>
       </p>
 
-      <section aria-labelledby="who-gave" className="space-y-4">
-        <h1 id="who-gave" className="sr-only">
-          Who gave to {name}
-        </h1>
+      <section className="space-y-4">
         <CandidateMoney
-          as="h2"
+          as="h1"
           variant="race"
           name={name}
           summary={summary}
@@ -164,9 +142,10 @@ export default async function CandidatePage({ params, searchParams }: Props) {
           selected={slice}
         />
         {filed && <p className="text-sm">Tap a square, or a row or column name, to see just that slice.</p>}
+        {filed && unknownZipNote(filed) && <p className="text-sm">{unknownZipNote(filed)}</p>}
       </section>
 
-      {filed && bands && (
+      {filed && bands && othersCents(filed) > 0 && (
         <section aria-labelledby="bands" className="space-y-3">
           <h2 id="bands" className="text-2xl font-semibold">
             Gift sizes
