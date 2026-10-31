@@ -122,7 +122,7 @@ Rules, in order:
 2. **Late reports fill the gap.** A 497 contribution counts only if its date is after the `Thru_Date` of that committee's latest period report; earlier 497s are already on a 460. Same rule for 496 independent expenditures against the spender's Schedule D.
 3. **Memo rows don't count** (`Memo_Code` set): they itemize a parent row already counted.
 4. **Whole campaign.** Sum every report of the committee for this campaign, 2025 and 2026.
-5. **Raised** = monetary contributions (Schedule A) + nonmonetary (C) + counted 497s. Loans (B1) are reported separately, not in raised. **Spent** = payments (E), excluding memo rows; accrued unpaid bills (F) are not spent.
+5. **Raised** = monetary contributions (Schedule A) + nonmonetary (C) + contributions on counted 497s. Loans (B1, and loans reported on a 497) are reported separately, not in raised. **Spent** = payments (E), excluding memo rows; accrued unpaid bills (F) are not spent.
 6. **Itemized only.** Contributions under $100 are reported only as a lump sum on the summary page, which the CAL export lacks. Every figure is "itemized"; paper filers' summary totals may be shown as reported totals where we have them, labeled.
 7. **Locality** from the 5-digit ZIP: `94501`, `94502` → City of Alameda; any other Alameda County ZIP → Alameda County; everything else → Other. Missing or malformed ZIP → Other, and counted in a `unknownLocality` total. The County ZIP list is a committed static file with its source noted.
 8. **Donor type** from `Entity_Cd`: `IND` → Individual; `OTH` → Organization (businesses, unions, nonprofits); `COM`, `PTY`, `SCC` → Political. Anything else → Organization, logged.
@@ -130,7 +130,7 @@ Rules, in order:
 10. **Filer name normalization**: match committees by `Filer_ID`; names only for display.
 11. **Two kinds of money are split out (the user's decision).** Each is included in **raised**, shown as its own line on the card, and left out of the heatmap, both percentages and the amount bands:
     - **Carried over:** transfers from the candidate's own earlier committees. These are listed per candidate in races.json as `priorCommittees`, by filer ID and name. A contribution counts as carried over when its contributor's committee ID or exact name matches one of them.
-    - **Candidate's own money:** contributions from the candidate, plus loans the candidate forgave. These are identified by matching the contributor's name to the candidate's `legalName` in races.json (last + first, case- and punctuation-insensitive). Each match is listed in the ingest log for review.
+    - **Candidate's own money:** contributions from the candidate, including loans the candidate forgave (Form 460 reports a forgiven loan as a Schedule A contribution, so it is counted once, there). These are identified by matching the contributor's name to the candidate's `legalName` in races.json (last + first, case-, accent- and punctuation-insensitive). Each match is listed in the ingest log for review.
 
     The denominator for both percentages and the heatmap is raised minus these two amounts: "itemized contributions from others."
 

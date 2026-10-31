@@ -97,6 +97,11 @@ describe("namesMatch", () => {
     expect(namesMatch("Daysog, Tony", "Daysogg", "Tony")).toBe(false);
     expect(namesMatch("Daysog, Tony", "Daysog", "")).toBe(false);
   });
+
+  test("ignores accents", () => {
+    expect(namesMatch("Peña, José", "Pena", "Jose")).toBe(true);
+    expect(namesMatch("Pena, Jose", "PEÑA", "José")).toBe(true);
+  });
 });
 
 describe("summarize: counted rows (rules 3, 5; D4)", () => {
@@ -234,7 +239,6 @@ describe("summarize: loans (D6)", () => {
         entityFirst: "Tony",
         cents: 0,
         amtCloseCents: 80000,
-        amtForgCents: 50000,
       }),
       b1({ tranId: "L2", entityLast: "Daysog", entityFirst: "Tony", cents: 30000, amtCloseCents: null }),
       b1({
@@ -249,21 +253,107 @@ describe("summarize: loans (D6)", () => {
     const { s } = run([oct, sept]);
     expect(s.loansFromCandidateCents).toBe(110000);
     expect(s.otherLoansCents).toBe(45000);
-    expect(s.ownCents).toBe(50000);
-    expect(s.raisedCents).toBe(50000);
+    expect(s.ownCents).toBe(0);
+    expect(s.raisedCents).toBe(0);
     expect(sumMatrix(s)).toBe(0);
   });
 
-  test("forgiven candidate loans add up over every included report", () => {
-    const sept = loaded({ path: "sept.xls", period: SEPT }, [
-      b1({ entityLast: "Daysog", entityFirst: "Tony", amtCloseCents: 0, amtForgCents: 20000 }),
+  test("a forgiven loan reported again on Schedule A counts once, as own money", () => {
+    const { s, log } = one([
+      row({ tranId: "LP424", formType: "A", entityLast: "Daysog", entityFirst: "Tony", cents: 300000 }),
+      row({ tranId: "LP426", formType: "A", entityLast: "Daysog", entityFirst: "Tony", cents: 87358 }),
+      b1({
+        tranId: "LN64",
+        entityLast: "Daysog",
+        entityFirst: "Tony",
+        cents: 0,
+        amtCloseCents: 0,
+        amtForgCents: 300000,
+      }),
+      b1({
+        tranId: "LN65",
+        entityLast: "Daysog",
+        entityFirst: "Tony",
+        cents: 0,
+        amtCloseCents: 0,
+        amtForgCents: 87358,
+      }),
     ]);
-    const oct = loaded({ path: "oct.xls", period: OCT }, [
-      b1({ entityLast: "Daysog", entityFirst: "Tony", amtCloseCents: 0, amtForgCents: 50000 }),
+    expect(s.ownCents).toBe(387358);
+    expect(s.raisedCents).toBe(387358);
+    expect(s.loansFromCandidateCents).toBe(0);
+    expect(log.some((l) => l.includes("forgiven"))).toBe(false);
+  });
+
+  test("a forgiven loan without a matching Schedule A row is logged and not counted", () => {
+    const { s, log } = one([
+      row({ tranId: "A1", formType: "A", entityLast: "Daysog", entityFirst: "Tony", cents: 20000 }),
+      b1({
+        tranId: "LN1",
+        entityLast: "Daysog",
+        entityFirst: "Tony",
+        cents: 0,
+        amtCloseCents: 0,
+        amtForgCents: 50000,
+      }),
     ]);
-    const { s } = run([sept, oct]);
-    expect(s.ownCents).toBe(70000);
-    expect(s.raisedCents).toBe(70000);
+    expect(s.ownCents).toBe(20000);
+    expect(s.raisedCents).toBe(20000);
+    expect(log.some((l) => l.includes("forgiven") && l.includes("LN1") && l.includes("not counted"))).toBe(
+      true,
+    );
+  });
+
+  test("a late-report loan from the candidate adds to candidate loans, not raised or own money", () => {
+    const period = loaded({ path: "oct.xls", period: OCT }, [
+      b1({
+        tranId: "LN68",
+        entityLast: "Daysog",
+        entityFirst: "Tony",
+        cents: 1000000,
+        amtCloseCents: 1000000,
+      }),
+    ]);
+    const late = [
+      row({
+        tranId: "LN80",
+        formType: "F497P1",
+        entityLast: "Daysog",
+        entityFirst: "Tony",
+        cents: 1000000,
+        tranDate: "2026-10-20",
+      }),
+    ];
+    const { s, log } = run([period], { late });
+    expect(s.loansFromCandidateCents).toBe(2000000);
+    expect(s).toMatchObject({ raisedCents: 0, ownCents: 0, contributionCount: 0, otherLoansCents: 0 });
+    expect(sumMatrix(s)).toBe(0);
+    expect(sumBands(s.bands)).toBe(0);
+    expect(log.some((l) => l.includes("LN80") && l.includes("loan"))).toBe(true);
+  });
+
+  test("a late-report loan from another lender adds to other loans", () => {
+    const late = [
+      row({
+        tranId: "LN78",
+        formType: "F497P1",
+        entityLast: "Testperson",
+        entityFirst: "Pat",
+        cents: 1000000,
+        tranDate: "2026-10-20",
+      }),
+      row({ tranId: "R1", formType: "F497P1", cents: 25000, tranDate: "2026-10-20" }),
+    ];
+    const { s, log } = run([], { late });
+    expect(s).toMatchObject({
+      otherLoansCents: 1000000,
+      loansFromCandidateCents: 0,
+      raisedCents: 25000,
+      contributionCount: 1,
+    });
+    expect(s.bands["1000+"]).toBe(0);
+    expect(s.status).toBe("filed");
+    expect(log.some((l) => l.includes("LN78") && l.includes("loan"))).toBe(true);
   });
 });
 
@@ -281,7 +371,7 @@ describe("summarize: negative contributions (D11)", () => {
 describe("summarize: paper summary check (D12)", () => {
   const summary = [
     { line: 1, label: "Monetary Contributions", colACents: 10000 },
-    { line: 2, label: "Loans Received", colACents: 0 },
+    { line: 2, label: "Loans Received", colACents: 999900 },
     { line: 4, label: "Nonmonetary Contributions", colACents: 200000 },
     { line: 6, label: "Payments Made", colACents: 3109544 },
     { line: 10, label: "Nonmonetary Adjustment", colACents: null },
@@ -297,30 +387,83 @@ describe("summarize: paper summary check (D12)", () => {
       entityFirst: "",
     }),
     row({ recType: "EXPN", formType: "E", cents: 3109400, source: "paper" }),
+    row({ recType: "LOAN", formType: "B1", cents: 500000, source: "paper" }),
   ];
-
-  test("differences of $2.00 or more become reportedDiffs; smaller ones are only logged", () => {
+  const check = (lines: typeof summary, schedule = rows) => {
     const log: string[] = [];
     const s = summarize(
       {
-        filings: [loaded({ path: "paper.tsv", filed: "2026-10-22", period: SEPT }, rows, summary)],
+        filings: [loaded({ path: "paper.tsv", filed: "2026-10-22", period: SEPT }, schedule, lines)],
         late: [],
         candidate: daysog,
         countyZips,
       },
       log,
     );
+    return { s, log };
+  };
+  const balanced = summary.map((l) =>
+    l.line === 6 ? { ...l, colACents: 3109400 } : l.line === 10 ? { ...l, colACents: 200000 } : l,
+  );
+  const withLine = (line: number, colACents: number) =>
+    balanced.map((l) => (l.line === line ? { ...l, colACents } : l));
+
+  test("differences of $2.00 or more become reportedDiffs; smaller ones are only logged", () => {
+    const { s, log } = check(summary);
     expect(s.reportedDiffs).toEqual([
       {
         filed: "2026-10-22",
         line: 10,
-        label: "Nonmonetary Adjustment",
+        label: "Nonmonetary adjustment",
         reportedCents: 0,
         scheduleCents: 200000,
       },
     ]);
     expect(s.paper).toBe(true);
     expect(log.some((l) => l.includes("line 6") && l.includes("rounding"))).toBe(true);
+  });
+
+  test("loans received (line 2) is not checked", () => {
+    const { s, log } = check(balanced);
+    expect(s.reportedDiffs).toEqual([]);
+    expect(log.some((l) => l.includes("line 2"))).toBe(false);
+  });
+
+  test("199 cents off is rounding; 200 cents off is a diff", () => {
+    expect(check(withLine(6, 3109400 + 199)).s.reportedDiffs).toEqual([]);
+    expect(check(withLine(6, 3109400 - 200)).s.reportedDiffs).toEqual([
+      {
+        filed: "2026-10-22",
+        line: 6,
+        label: "Payments made",
+        reportedCents: 3109200,
+        scheduleCents: 3109400,
+      },
+    ]);
+  });
+
+  test("mismatches on line 1 and line 4 are reported", () => {
+    expect(check(withLine(1, 15000)).s.reportedDiffs).toEqual([
+      {
+        filed: "2026-10-22",
+        line: 1,
+        label: "Monetary contributions",
+        reportedCents: 15000,
+        scheduleCents: 10000,
+      },
+    ]);
+    expect(check(withLine(4, 150000)).s.reportedDiffs.map((d) => [d.line, d.label, d.reportedCents])).toEqual(
+      [[4, "Nonmonetary contributions", 150000]],
+    );
+  });
+
+  test("a diff never carries the transcribed label", () => {
+    const noted = withLine(1, 15000).map((l) =>
+      l.line === 1 ? { ...l, label: "Monetary Contributions (transcriber: total smudged, read as 150)" } : l,
+    );
+    const [diff] = check(noted).s.reportedDiffs;
+    expect(diff.label).toBe("Monetary contributions");
+    expect(JSON.stringify(check(noted).s)).not.toContain("transcriber");
   });
 });
 

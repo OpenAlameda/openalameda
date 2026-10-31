@@ -49,12 +49,14 @@ export function band(cents: number): Band {
 
 const nameKey = (s: string) =>
   s
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
     .toLowerCase()
     .replace(/[^a-z ]/g, "")
     .replace(/ +/g, " ")
     .trim();
 
-/** `legalName` is "Last, First"; each part must equal the contributor's after normalizing. */
+/** `legalName` is "Last, First"; each part must equal the contributor's after dropping accents, case and punctuation. */
 export function namesMatch(legalName: string, last: string, first: string): boolean {
   const comma = legalName.indexOf(",");
   if (comma < 0) return false;
@@ -65,6 +67,9 @@ export function namesMatch(legalName: string, last: string, first: string): bool
 }
 
 const squash = (s: string) => s.trim().replace(/\s+/g, " ");
+
+const sameEntity = (a: CalRow, b: CalRow) =>
+  nameKey(a.entityLast) === nameKey(b.entityLast) && nameKey(a.entityFirst) === nameKey(b.entityFirst);
 
 const emptyBands = (): BandCents => Object.fromEntries(BANDS.map((b) => [b, 0])) as BandCents;
 
@@ -78,10 +83,13 @@ const RAISED_FORMS = new Set(["A", "C"]);
 const SPENT_FORMS = new Set(["E", "F450P5"]);
 const ROUNDING_CENTS = 200;
 
-/** Summary lines checked against schedule sums (D12). */
+/**
+ * Summary lines checked against schedule sums (D12). Loans received (line 2) is not checked: B1
+ * `Amount` repeats across reports. Diffs always carry these labels, never the transcribed ones,
+ * which may hold transcriber notes.
+ */
 const SUMMARY_CHECKS: { line: number; label: string; forms: string[] }[] = [
   { line: 1, label: "Monetary contributions", forms: ["A"] },
-  { line: 2, label: "Loans received", forms: ["B1"] },
   { line: 4, label: "Nonmonetary contributions", forms: ["C"] },
   { line: 6, label: "Payments made", forms: ["E"] },
   { line: 10, label: "Nonmonetary adjustment", forms: ["C"] },
@@ -105,7 +113,10 @@ export function summarize(
   log: string[],
 ): MoneySummary {
   const { filings, candidate, countyZips } = input;
-  const late = input.late.filter((r) => r.formType === "F497P1" && !r.memo);
+  const lateRows = input.late.filter((r) => r.formType === "F497P1" && !r.memo);
+  // A late-report row with a loan Tran_ID is a loan received, not a contribution (Loan_TYPE is blank in exports).
+  const lateLoans = lateRows.filter((r) => /^LN/i.test(r.tranId));
+  const late = lateRows.filter((r) => !/^LN/i.test(r.tranId));
   const who = candidate ? candidate.slug : (filings[0]?.filerName ?? "measure side");
 
   const matrix: Matrix = byCell(() => ({ cents: 0, count: 0 }));
@@ -171,14 +182,15 @@ export function summarize(
       if (RAISED_FORMS.has(r.formType)) contribution(r);
       else if (SPENT_FORMS.has(r.formType)) spentCents += r.cents;
       else if (r.formType === "B1" && r.amtForgCents) {
-        if (isCandidate(r)) {
-          ownCents += r.amtForgCents;
-          raisedCents += r.amtForgCents;
+        // Form 460 reports a forgiven loan again as a Schedule A contribution, which is counted above.
+        const forgiven = r.amtForgCents;
+        const onA = f.rows.some(
+          (a) => !a.memo && a.formType === "A" && a.cents === forgiven && sameEntity(a, r),
+        );
+        if (!onA) {
           log.push(
-            `${who}: own money ${r.amtForgCents} cents, forgiven candidate loan (${r.file} ${r.tranId})`,
+            `${who}: forgiven loan of ${forgiven} cents has no matching Schedule A row, not counted (${r.file} ${r.tranId})`,
           );
-        } else {
-          log.push(`${who}: forgiven loan from a non-candidate lender not counted (${r.file} ${r.tranId})`);
         }
       }
     }
@@ -197,6 +209,14 @@ export function summarize(
       if (isCandidate(r)) loansFromCandidateCents += outstanding;
       else otherLoansCents += outstanding;
     }
+  }
+  for (const r of lateLoans) {
+    const fromCandidate = isCandidate(r);
+    if (fromCandidate) loansFromCandidateCents += r.cents;
+    else otherLoansCents += r.cents;
+    log.push(
+      `${who}: late-report loan of ${r.cents} cents from ${fromCandidate ? "the candidate" : "another lender"}, counted as a loan (${r.file} ${r.tranId})`,
+    );
   }
 
   const reportedDiffs: ReportedDiff[] = [];
@@ -217,7 +237,7 @@ export function summarize(
         reportedDiffs.push({
           filed: f.entry.filed,
           line: check.line,
-          label: line.label || check.label,
+          label: check.label,
           reportedCents,
           scheduleCents,
         });
@@ -231,7 +251,7 @@ export function summarize(
   }
 
   const status: MoneySummary["status"] =
-    filings.length > 0 || late.length > 0 ? "filed" : candidate?.shortForm ? "short-form" : "no-filings";
+    filings.length > 0 || lateRows.length > 0 ? "filed" : candidate?.shortForm ? "short-form" : "no-filings";
   const paper = filings.some((f) => f.summary !== null || f.rows.some((r) => r.source === "paper"));
 
   return {
