@@ -44,7 +44,8 @@ Node 24 and pnpm are pinned (`.nvmrc`, `engines`, `packageManager`); run pnpm th
 This repo is public. Everything committed is read by strangers.
 
 - Commit the design (`docs/specs/`) and plan (`docs/plans/`) in the same branch and PR as the code they describe.
-  Record architecture decisions as ADRs in `docs/adr/`.
+  Record architecture decisions as ADRs in `docs/adr/`. Agent working files (task ledgers, briefs, reports,
+  review packages, mockups) stay out of git; `.superpowers/` is ignored for that.
 - Before committing any doc, plan, commit message or PR text, keep out:
   - names of clients, employers or other private projects (write "conventions from other projects");
   - personal details beyond the public contact `info@openalameda.org`;
