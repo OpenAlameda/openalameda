@@ -9,14 +9,6 @@ export const ROUTES = ["/", "/elections", "/meetings", "/about"] as const;
 
 export type RouteResult = { route: string; problems: string[] };
 
-export type CheckOptions = {
-  /**
-   * Check that og:image is present, absolute on the site's origin, and serves
-   * a 1200x630 PNG. Defaults to true.
-   */
-  checkImages?: boolean;
-};
-
 const CARD_WIDTH = 1200;
 const CARD_HEIGHT = 630;
 
@@ -130,7 +122,7 @@ function failureReason(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-async function checkRoute(base: URL, route: string, opts: Required<CheckOptions>): Promise<string[]> {
+async function checkRoute(base: URL, route: string): Promise<string[]> {
   const url = new URL(route, base);
   let res: Response;
   try {
@@ -142,9 +134,7 @@ async function checkRoute(base: URL, route: string, opts: Required<CheckOptions>
   // A non-200 page's tags belong to the error page, so checking them adds only noise.
   if (res.status !== 200) return [`status ${res.status}`];
   const html = await res.text();
-  const problems = problemsIn(html, url);
-  if (opts.checkImages) problems.push(...(await imageProblems(html, base)));
-  return problems;
+  return [...problemsIn(html, url), ...(await imageProblems(html, base))];
 }
 
 /**
@@ -161,10 +151,7 @@ export function parseBaseUrl(baseUrl: string): URL {
 }
 
 /** Checks every route's raw HTML for the full share-preview metadata set, and each preview image. */
-export async function checkSite(baseUrl: string, opts: CheckOptions = {}): Promise<RouteResult[]> {
+export async function checkSite(baseUrl: string): Promise<RouteResult[]> {
   const base = parseBaseUrl(baseUrl);
-  const options = { checkImages: opts.checkImages ?? true };
-  return Promise.all(
-    ROUTES.map(async (route) => ({ route, problems: await checkRoute(base, route, options) })),
-  );
+  return Promise.all(ROUTES.map(async (route) => ({ route, problems: await checkRoute(base, route) })));
 }

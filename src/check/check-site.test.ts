@@ -252,11 +252,4 @@ describe("checkSite", () => {
       "og:image https://example.org/about/opengraph-image?abc123 is not a PNG",
     ]);
   });
-
-  test("skips the og:image checks when checkImages is false", async () => {
-    const stub = serve(base, "/", { tags: { "og:image": null } });
-    const results = await checkSite(base, { checkImages: false });
-    expect(results.flatMap((r) => r.problems)).toEqual([]);
-    expect(stub).toHaveBeenCalledTimes(4);
-  });
 });
