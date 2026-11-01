@@ -1,11 +1,16 @@
 import { readFile } from "node:fs/promises";
+import type { ReactNode } from "react";
 import { ImageResponse } from "next/og";
-
-/** Titles longer than this get a smaller font so two lines hold them. */
-const LONG_TITLE = 28;
 
 /** Share-preview size every card renders at. */
 export const CARD_SIZE = { width: 1200, height: 630 };
+
+/** The card's side padding, and the width left for text inside it. */
+const PAD = 80;
+export const TEXT_WIDTH = CARD_SIZE.width - 2 * PAD;
+const NAME_SIZES = [96, 80, 68, 58, 50, 44];
+/** The default card's title sizes: large for a short title, smaller when it needs two lines. */
+const TITLE_SIZES = [104, 72];
 
 // The tokens from src/app/globals.css; satori cannot read CSS variables.
 export const NAVY = "#05204E";
@@ -42,8 +47,8 @@ export function loadPoppins(): Promise<Buffer> {
   return poppins;
 }
 
-/** The site's standard card: wordmark, page title and domain on navy. */
-export async function defaultCard(title: string): Promise<ImageResponse> {
+/** Every card's frame: a teal band, then the wordmark, the card's content and the domain on navy. */
+export async function renderCard(children: ReactNode): Promise<ImageResponse> {
   const font = await loadPoppins();
   return new ImageResponse(
     <div
@@ -54,6 +59,7 @@ export async function defaultCard(title: string): Promise<ImageResponse> {
         flexDirection: "column",
         backgroundColor: NAVY,
         fontFamily: "Poppins",
+        color: PAPER,
       }}
     >
       <div style={{ height: 24, backgroundColor: TEAL }} />
@@ -63,31 +69,39 @@ export async function defaultCard(title: string): Promise<ImageResponse> {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "56px 80px 64px",
+          padding: `48px ${PAD}px 56px`,
         }}
       >
-        <div style={{ fontSize: 44, color: "white" }}>OpenAlameda</div>
-        {/* Satori ignores lineClamp on flex containers, so the title must be a block. */}
-        <div
-          style={{
-            display: "block",
-            fontSize: title.length > LONG_TITLE ? 72 : 104,
-            lineHeight: 1.1,
-            color: PAPER,
-            maxWidth: CARD_SIZE.width - 160,
-            lineClamp: 2,
-          }}
-        >
-          {title}
-        </div>
-        <div style={{ fontSize: 30, color: PAPER, opacity: 0.8 }}>openalameda.org</div>
+        <div style={{ fontSize: 40, color: "white" }}>OpenAlameda</div>
+        {children}
+        <div style={{ fontSize: 28, opacity: 0.8 }}>openalameda.org</div>
       </div>
     </div>,
-    {
-      ...CARD_SIZE,
-      fonts: [{ name: "Poppins", data: font, weight: 600, style: "normal" }],
-    },
+    { ...CARD_SIZE, fonts: [{ name: "Poppins", data: font, weight: 600, style: "normal" }] },
   );
+}
+
+/** A name that always fits in two lines: sized to its length, then clamped. Satori needs a block for lineClamp. */
+export function Name({
+  text,
+  width = TEXT_WIDTH,
+  sizes = NAME_SIZES,
+}: {
+  text: string;
+  width?: number;
+  sizes?: number[];
+}) {
+  const size = fitFontSize(text, width, sizes);
+  return (
+    <div style={{ display: "block", fontSize: size, lineHeight: 1.1, maxWidth: width, lineClamp: 2 }}>
+      {text}
+    </div>
+  );
+}
+
+/** The site's standard card: the page title in the card frame. */
+export function defaultCard(title: string): Promise<ImageResponse> {
+  return renderCard(<Name text={title} sizes={TITLE_SIZES} />);
 }
 
 /** Reads a response's whole body, so lazy render failures surface here. */

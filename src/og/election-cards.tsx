@@ -1,63 +1,8 @@
 import type { ReactNode } from "react";
-import { ImageResponse } from "next/og";
+import type { ImageResponse } from "next/og";
 import { DONOR_TYPES, LOCALITIES, type MoneySummary } from "@/elections/types";
 import { formatDate, formatUsd, heatOpacity, othersCents } from "@/elections/view";
-import { CARD_SIZE, NAVY, PAPER, TEAL, fitFontSize, loadPoppins } from "./card";
-
-const PAD = 80;
-const TEXT_WIDTH = CARD_SIZE.width - 2 * PAD;
-const NAME_SIZES = [96, 80, 68, 58, 50, 44];
-
-async function render(children: ReactNode): Promise<ImageResponse> {
-  const font = await loadPoppins();
-  return new ImageResponse(
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: NAVY,
-        fontFamily: "Poppins",
-        color: PAPER,
-      }}
-    >
-      <div style={{ height: 24, backgroundColor: TEAL }} />
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: `48px ${PAD}px 56px`,
-        }}
-      >
-        <div style={{ fontSize: 40, color: "white" }}>OpenAlameda</div>
-        {children}
-        <div style={{ fontSize: 28, opacity: 0.8 }}>openalameda.org</div>
-      </div>
-    </div>,
-    { ...CARD_SIZE, fonts: [{ name: "Poppins", data: font, weight: 600, style: "normal" }] },
-  );
-}
-
-/** A name that always fits in two lines: sized to its length, then clamped. Satori needs a block for lineClamp. */
-function Name({
-  text,
-  width = TEXT_WIDTH,
-  sizes = NAME_SIZES,
-}: {
-  text: string;
-  width?: number;
-  sizes?: number[];
-}) {
-  const size = fitFontSize(text, width, sizes);
-  return (
-    <div style={{ display: "block", fontSize: size, lineHeight: 1.1, maxWidth: width, lineClamp: 2 }}>
-      {text}
-    </div>
-  );
-}
+import { TEAL, TEXT_WIDTH, Name, renderCard } from "./card";
 
 function through(dataThrough: string | undefined): ReactNode {
   return dataThrough ? (
@@ -69,7 +14,7 @@ function through(dataThrough: string | undefined): ReactNode {
 
 /** Election preview: the election's name and how current the data is. */
 export function electionCard(opts: { name: string; dataThrough?: string }): Promise<ImageResponse> {
-  return render(
+  return renderCard(
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       <Name text={opts.name} />
       {through(opts.dataThrough)}
@@ -87,7 +32,7 @@ export function raceCard(opts: {
   const max = Math.max(1, ...bars.map((b) => b.raisedCents));
   const labelWidth = 400;
   const barArea = TEXT_WIDTH - labelWidth - 170;
-  return render(
+  return renderCard(
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <Name text={opts.name} sizes={[72, 60, 52, 44]} />
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -160,7 +105,7 @@ export function candidateCard(opts: {
   const s = opts.summary;
   const filed = s !== undefined && s.status === "filed";
   const textWidth = filed ? TEXT_WIDTH - 340 : TEXT_WIDTH;
-  return render(
+  return renderCard(
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 20, width: textWidth }}>
         <Name text={opts.name} width={textWidth} sizes={[80, 68, 58, 50, 44, 38]} />
