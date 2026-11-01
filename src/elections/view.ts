@@ -5,6 +5,7 @@ import {
   type BandCents,
   type DonorType,
   type KeyDate,
+  type AppliedCorrection,
   type Locality,
   type MoneySummary,
   type Race,
@@ -196,4 +197,39 @@ export function heatOpacity(share: number): number {
 export function displayName(race: Race, key: string): string {
   if (race.kind === "measure") return `${key === "yes" ? "Yes" : "No"} on ${race.name}`;
   return race.candidates.find((c) => c.slug === key)?.ballotName ?? key;
+}
+
+/** CAL column names in plain words; a column not listed reads as its own name. */
+const FIELD_WORDS: Record<string, string> = {
+  Entity_ZIP4: "ZIP code",
+  Entity_City: "city",
+  Entity_ST: "state",
+  Entity_Cd: "contributor type",
+  Tran_Date: "date",
+  Amount: "amount",
+  Description: "description",
+};
+
+/** One correction in words for the candidate page. These are the only places that wording lives. */
+export function correctionLine(c: AppliedCorrection): {
+  field: string;
+  reading: string;
+  reason: string;
+  decision: string;
+} {
+  return {
+    field: FIELD_WORDS[c.field] ?? c.field,
+    reading: `written as ${c.asFiled}, read as ${c.correctedTo}`,
+    reason: c.reason,
+    decision: `decided by ${c.decidedBy} on ${formatDate(c.decidedOn)}`,
+  };
+}
+
+/** The corrections that touched one candidate's filings; an election without a list has none. */
+export function correctionsFor(
+  corrections: AppliedCorrection[] | undefined,
+  race: string,
+  candidate: string,
+): AppliedCorrection[] {
+  return (corrections ?? []).filter((c) => c.race === race && c.candidate === candidate);
 }

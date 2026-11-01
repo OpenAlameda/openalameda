@@ -31,10 +31,19 @@ test("the candidate's name is the page's visible h1", async () => {
 test("unknown-ZIP money is disclosed where the other locality is named", async () => {
   const note = "has no usable ZIP code and is counted as outside Alameda County.";
   const html = await text("mayor/tony-daysog");
-  expect(html).toContain(note);
+  expect(html).toContain(`$75 of this ${note}`);
   const sliced = await text("mayor/tony-daysog?from=other");
   expect(title(sliced)).toContain("from outside Alameda County or with no usable ZIP");
   expect(await text("mayor/tracy-jensen")).not.toContain(note);
+});
+
+test("a candidate with a transcription correction shows how we read the filing; others do not", async () => {
+  const html = await text("mayor/tony-daysog");
+  expect(html).toContain("How we read the filings");
+  expect(html).toContain("ZIP code");
+  expect(html).toContain("written as 9451, read as 94501");
+  expect(html).toContain("decided by the maintainer on November 1, 2026");
+  expect(await text("mayor/tracy-jensen")).not.toContain("How we read the filings");
 });
 
 test("a candidate with no filings says so", async () => {

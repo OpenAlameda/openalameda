@@ -8,6 +8,8 @@ import { ELECTIONS, getElection, getFinance, getRace, getRaces, summaryKey } fro
 import { candidateKeys, nameOf } from "@/elections/slugs";
 import { BANDS, type Band, type MoneySummary } from "@/elections/types";
 import {
+  correctionLine,
+  correctionsFor,
   formatDate,
   formatUsd,
   hasUnknownZip,
@@ -124,6 +126,8 @@ export default async function CandidatePage({ params, searchParams }: Props) {
     [race],
   );
 
+  const corrections = correctionsFor(finance?.corrections, race.slug, candidate).map(correctionLine);
+
   return (
     <div className="space-y-8">
       <p className="text-sm">
@@ -211,6 +215,24 @@ export default async function CandidatePage({ params, searchParams }: Props) {
             {outside.map((l) => (
               <li key={l.key} className="break-words">
                 <span className="font-semibold">{l.name}</span>: {l.parts.join(" · ")}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {corrections.length > 0 && (
+        <section aria-labelledby="readings" className="space-y-3">
+          <h2 id="readings" className="text-2xl font-semibold">
+            How we read the filings
+          </h2>
+          <p className="text-sm">
+            Where a paper filing was unclear, we recorded how we read it. Every reading is listed here.
+          </p>
+          <ul className="space-y-2 text-sm">
+            {corrections.map((c) => (
+              <li key={`${c.field}-${c.reading}-${c.decision}`}>
+                <span className="font-semibold">{c.field}:</span> {c.reading}. {c.reason} — {c.decision}.
               </li>
             ))}
           </ul>

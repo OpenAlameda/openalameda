@@ -18,6 +18,8 @@ import {
   sliceQuery,
   topCells,
   unknownZipNote,
+  correctionLine,
+  correctionsFor,
 } from "./view.ts";
 
 const zeroCell = { cents: 0, count: 0 };
@@ -313,5 +315,40 @@ describe("sliceCents", () => {
     expect(sliceCents(s, { type: "individual" })).toBe(103);
     expect(sliceCents(s, { from: "other", type: "individual" })).toBe(3);
     expect(sliceCents(s, { from: "county" })).toBe(0);
+  });
+});
+
+describe("transcription corrections", () => {
+  const applied = {
+    filing: "pdf/x.pdf",
+    tranId: "T-1",
+    field: "Entity_ZIP4",
+    asFiled: "9451",
+    correctedTo: "94501",
+    reason: "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
+    decidedBy: "the maintainer",
+    decidedOn: "2026-11-01",
+    race: "mayor",
+    candidate: "tony-daysog",
+  };
+
+  it("correctionLine words a correction for the page", () => {
+    expect(correctionLine(applied)).toEqual({
+      field: "ZIP code",
+      reading: "written as 9451, read as 94501",
+      reason: applied.reason,
+      decision: "decided by the maintainer on November 1, 2026",
+    });
+  });
+
+  it("correctionLine falls back to the column name for a field it has no words for", () => {
+    expect(correctionLine({ ...applied, field: "Odd_Col" }).field).toBe("Odd_Col");
+  });
+
+  it("correctionsFor picks one candidate's corrections and tolerates a missing list", () => {
+    const other = { ...applied, candidate: "tracy-jensen" };
+    expect(correctionsFor([applied, other], "mayor", "tony-daysog")).toEqual([applied]);
+    expect(correctionsFor([applied], "mayor", "nobody")).toEqual([]);
+    expect(correctionsFor(undefined, "mayor", "tony-daysog")).toEqual([]);
   });
 });
