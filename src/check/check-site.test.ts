@@ -267,6 +267,6 @@ describe("checkSite", () => {
     const stub = serve(base, "/", { tags: { "og:image": null } });
     const results = await checkSite(base, { checkImages: false });
     expect(results.flatMap((r) => r.problems)).toEqual([]);
-    expect(stub).toHaveBeenCalledTimes(4);
+    expect(stub).toHaveBeenCalledTimes(ROUTES.length);
   });
 });
