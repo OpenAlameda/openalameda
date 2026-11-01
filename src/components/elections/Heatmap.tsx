@@ -41,7 +41,7 @@ type HeatmapProps = {
   /** Smaller cells and no percentages, for race cards. */
   compact?: boolean;
   /** Names the grid for screen readers, e.g. the candidate's display name. */
-  label?: string;
+  label: string;
 };
 
 function same(a: Slice, b: Slice): boolean {
@@ -50,7 +50,8 @@ function same(a: Slice, b: Slice): boolean {
 
 /**
  * The 3×3 locality × donor type grid, each cell shaded by its share of itemized dollars from others on
- * one absolute scale, so grids compare across candidates. Tapping the active slice clears it.
+ * one absolute scale, so grids compare across candidates. Tapping the active slice clears it. Render it
+ * only when others gave money: the shares divide by that total.
  */
 export function Heatmap({ summary, hrefFor, selected = {}, compact = false, label }: HeatmapProps) {
   const titleId = useId();
@@ -79,12 +80,7 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false, labe
     );
   }
 
-  const summaryText =
-    whole > 0
-      ? "Share of itemized contributions from others, by where donors live and what kind of donor they are."
-      : "No itemized contributions from others.";
-
-  const fullText = label ? `${label}: ${summaryText}` : summaryText;
+  const fullText = `${label}: Share of itemized contributions from others, by where donors live and what kind of donor they are.`;
 
   return (
     <div>
@@ -141,8 +137,7 @@ export function Heatmap({ summary, hrefFor, selected = {}, compact = false, labe
               )}
               {DONOR_TYPES.map((type, c) => {
                 const cents = summary.matrix[from][type].cents;
-                const share = whole > 0 ? cents / whole : 0;
-                const opacity = heatOpacity(share);
+                const opacity = heatOpacity(cents / whole);
                 const x = rowHead + c * (cw + gap);
                 const isSelected = same({ from, type }, selected);
                 const cell = (
