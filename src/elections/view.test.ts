@@ -361,6 +361,19 @@ describe("transcription corrections", () => {
     expect(line.key).toBe("pdf/x.pdf|T-1|Entity_ST");
   });
 
+  it("correctionLine words a locality override and a filled-in state", () => {
+    const locality = correctionLine({
+      ...applied,
+      field: "locality",
+      asFiled: "unknown",
+      correctedTo: "other",
+    });
+    expect(locality.field).toBe("Where the money came from");
+    expect(locality.reading).toBe("no ZIP code, counted as outside Alameda County");
+    const state = correctionLine({ ...applied, field: "Entity_ST", asFiled: "", correctedTo: "CA" });
+    expect(`${state.field}: ${state.reading}`).toBe("State: left blank, read as CA");
+  });
+
   it("raceCorrections groups a measure race's corrections by side and skips sides without any", () => {
     const measure: MeasureRace = {
       kind: "measure",

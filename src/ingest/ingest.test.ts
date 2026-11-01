@@ -408,6 +408,61 @@ describe("ingest", () => {
     });
   });
 
+  describe("a locality correction", () => {
+    const noZip = () => {
+      const filings = fixtureFilings();
+      filings[0].rows[0].zip5 = null; // A1 has no ZIP
+      return filings;
+    };
+    const locality = {
+      filing: "cand-460-sept.xls",
+      tranId: "A1",
+      field: "locality",
+      asFiled: "unknown",
+      correctedTo: "other",
+      reason: "No ZIP was written; the city is outside Alameda County.",
+      decidedBy: "human" as const,
+      decidedAt: "2026-11-01T13:31:23Z",
+    };
+    const summaryOf = (corrections: IngestInput["corrections"]) =>
+      ingest({ ...input(noZip()), corrections }).finance.summaries["council/pat-testperson"];
+
+    test("takes the row out of the unknown-ZIP total and leaves the money in its category", () => {
+      const before = summaryOf([]);
+      const after = summaryOf([locality]);
+      expect(before.unknownLocalityCents).toBe(50000);
+      expect(after.unknownLocalityCents).toBe(0);
+      expect(after.matrix).toEqual(before.matrix);
+      expect(after.raisedCents).toBe(before.raisedCents);
+    });
+
+    test("moves the money to the category it names", () => {
+      const after = summaryOf([{ ...locality, correctedTo: "alameda" }]);
+      expect(after.unknownLocalityCents).toBe(0);
+      expect(after.matrix.alameda["individual"].cents).toBe(
+        summaryOf([]).matrix.alameda["individual"].cents + 50000,
+      );
+    });
+
+    test("is listed in finance.json and fails when the row's locality is not asFiled", () => {
+      const { finance } = ingest({ ...input(noZip()), corrections: [locality] });
+      expect(finance.corrections).toEqual([{ ...locality, race: "council", candidate: "pat-testperson" }]);
+      expect(() => summaryOf([{ ...locality, asFiled: "county" }])).toThrow(/stale correction/);
+      expect(() => ingest({ ...input(), corrections: [locality] })).toThrow(/stale correction/);
+    });
+
+    test("must pass the counted-row check", () => {
+      const filings = noZip();
+      filings.find((f) => f.entry.path === "cand-497-old.xls")!.rows[0].zip5 = null; // L0, dropped by the dedupe
+      expect(() =>
+        ingest({
+          ...input(filings),
+          corrections: [{ ...locality, filing: "cand-497-old.xls", tranId: "L0" }],
+        }),
+      ).toThrow(/dropped by the late-window dedupe/);
+    });
+  });
+
   test("a correction on a measure side's filing carries the race and the side", () => {
     const { finance } = ingest({
       ...input(),

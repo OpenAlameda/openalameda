@@ -26,6 +26,8 @@ export type CalRow = {
   entityLast: string;
   entityFirst: string;
   zip5: string | null;
+  /** Set by a locality correction: counts the row in this locality whatever its ZIP says. */
+  localityOverride?: "alameda" | "county" | "other";
   tranDate: string | null;
   thruDate: string | null;
   cents: number;

@@ -166,7 +166,7 @@ export function summarize(
     logNearMiss(r, "counted as from others");
     const code = r.entityCd.trim().toUpperCase();
     if (!(code in KNOWN_TYPES)) unknownCodes.set(code, (unknownCodes.get(code) ?? 0) + 1);
-    const where = locality(r.zip5, countyZips);
+    const where = r.localityOverride ?? locality(r.zip5, countyZips);
     if (where === null) unknownLocalityCents += r.cents;
     const cell = matrix[where ?? "other"][donorType(code)];
     cell.cents += r.cents;

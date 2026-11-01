@@ -28,21 +28,29 @@ test("the candidate's name is the page's visible h1", async () => {
   expect(html).toMatch(/<h1[^>]*>(?:<a[^>]*>)?Tony Daysog/);
 });
 
-test("unknown-ZIP money is disclosed where the other locality is named", async () => {
+test("once every no-ZIP gift is placed by a correction, no unknown-ZIP disclosure is shown", async () => {
   const note = "has no usable ZIP code and is counted as outside Alameda County.";
   const html = await text("mayor/tony-daysog");
-  expect(html).toContain(`$75 of this ${note}`);
+  expect(html).not.toContain(note);
   const sliced = await text("mayor/tony-daysog?from=other");
-  expect(title(sliced)).toContain("from outside Alameda County or with no usable ZIP");
+  expect(title(sliced)).toContain("from outside Alameda County");
+  expect(title(sliced)).not.toContain("no usable ZIP");
   expect(await text("mayor/tracy-jensen")).not.toContain(note);
 });
 
-test("a candidate with a transcription correction shows how we read the filing; others do not", async () => {
-  const html = await text("mayor/tony-daysog");
+test("a candidate with transcription corrections lists each reading; others do not", async () => {
+  const page = await text("mayor/tony-daysog");
+  const html = (page.match(/<section aria-labelledby="readings"[\s\S]*?<\/section>/)?.[0] ?? "").replace(
+    /<[^>]+>/g,
+    "",
+  );
   expect(html).toContain("How we read the filings");
-  expect(html).toContain("ZIP code");
-  expect(html).toContain("written as 9451, read as 94501");
+  expect(html).toContain("ZIP code: written as 9451, read as 94501");
+  expect(html).toContain("State: left blank, read as CA");
+  expect(html).toContain("Where the money came from: no ZIP code, counted as outside Alameda County");
   expect(html).toContain("decided by a person on Nov 1, 2026, 5:15 AM PT");
+  expect(html).toContain("decided by a person on Nov 1, 2026, 5:31 AM PT");
+  expect(html.match(/decided by a person on Nov 1, 2026/g)).toHaveLength(3);
   expect(await text("mayor/tracy-jensen")).not.toContain("How we read the filings");
 });
 

@@ -20,6 +20,7 @@ import {
 import { summarize } from "./money.ts";
 import { outsideSpending, type Attribution } from "./outside.ts";
 import { toCents, type CalRow, type ManifestEntry } from "./raw.ts";
+import { applyLocalityOverrides } from "./corrections.ts";
 import { belongsTo, selectFilings, type LoadedFiling } from "./select.ts";
 
 export type IngestInput = {
@@ -91,7 +92,9 @@ function toFiling(f: LoadedFiling): Filing {
 export function ingest(input: IngestInput): { finance: FinanceFile; log: string[] } {
   const log: string[] = [];
   const { races, countyZips } = input;
-  const selection = selectFilings(input.filings, log);
+  // Locality corrections set a derived category on a row, so they apply before anything is counted.
+  const allFilings = applyLocalityOverrides(input.filings, input.corrections, countyZips, log);
+  const selection = selectFilings(allFilings, log);
   const people = entrants(races);
   const raceCommittees = people.flatMap((p) => p.committees);
 
@@ -99,7 +102,7 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
   // split its amendments and late windows across keys and double-count; say so in the log.
   for (const c of raceCommittees) {
     const keys = new Set<string>();
-    for (const f of input.filings) {
+    for (const f of allFilings) {
       for (const key of new Set([f.filerKey, ...f.rows.map((r) => r.filerKey)])) {
         if (belongsTo(c, key, f.filerName)) keys.add(key);
       }
@@ -129,7 +132,7 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
 
   // 496 rows that rule 2 or the late dedupe left out, so every 496 row shows up in the log.
   const counted = new Set<CalRow>(selection.late);
-  for (const f of input.filings) {
+  for (const f of allFilings) {
     for (const r of f.rows) {
       if (r.formType !== "F496" || counted.has(r)) continue;
       const why = r.memo
@@ -151,8 +154,8 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
     if (ownedBy(raceCommittees, r.filerKey, r.filerName)) usedFiles.add(r.file);
   }
   for (const r of outside.counted) usedFiles.add(r.file);
-  const used = input.filings.filter((f) => usedFiles.has(f.entry.path));
-  for (const f of input.filings) {
+  const used = allFilings.filter((f) => usedFiles.has(f.entry.path));
+  for (const f of allFilings) {
     if (!usedFiles.has(f.entry.path))
       log.push(`not used for this election: ${f.entry.path} (${f.filerName})`);
   }
@@ -182,7 +185,7 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
 
   // Each correction, with the race and candidate whose committee filed the report it touches.
   const corrections: AppliedCorrection[] = input.corrections.map((c) => {
-    const filing = input.filings.find((f) => f.entry.path === c.filing);
+    const filing = allFilings.find((f) => f.entry.path === c.filing);
     if (!filing) throw new Error(`correction ${c.filing} ${c.tranId}: no such filing`);
     // A correction counts only when its row does: a superseded, deduped or unused copy would publish a
     // reading that no total reflects.

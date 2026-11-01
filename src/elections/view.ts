@@ -221,13 +221,29 @@ export function electionDescription(electionDay: string): string {
 /** CAL column names in plain words; a column not listed reads as its own name. */
 const FIELD_WORDS: Record<string, string> = {
   Entity_ZIP4: "ZIP code",
-  Entity_City: "city",
-  Entity_ST: "state",
-  Entity_Cd: "contributor type",
-  Tran_Date: "date",
-  Amount: "amount",
-  Description: "description",
+  Entity_City: "City",
+  Entity_ST: "State",
+  Entity_Cd: "Contributor type",
+  Tran_Date: "Date",
+  Amount: "Amount",
+  Memo_Code: "Memo flag",
+  locality: "Where the money came from",
 };
+
+const LOCALITY_WORDS: Record<string, string> = {
+  unknown: "no ZIP code",
+  alameda: "the city of Alameda",
+  county: "elsewhere in Alameda County",
+  other: "outside Alameda County",
+};
+
+/** The reading half of a correction line: a locality override reads "no ZIP code, counted as ...". */
+function readingOf(c: AppliedCorrection): string {
+  if (c.field === "locality") {
+    return `${LOCALITY_WORDS[c.asFiled] ?? c.asFiled}, counted as ${LOCALITY_WORDS[c.correctedTo] ?? c.correctedTo}`;
+  }
+  return `${c.asFiled === "" ? "left blank" : `written as ${c.asFiled}`}, read as ${c.correctedTo}`;
+}
 
 /** "2026-11-01T13:15:55Z" -> "Nov 1, 2026, 5:15 AM PT": Pacific time, so the text never depends on the server. */
 function formatPacific(iso: string): string {
@@ -254,7 +270,7 @@ export function correctionLine(c: AppliedCorrection): {
   return {
     key: `${c.filing}|${c.tranId}|${c.field}`,
     field: FIELD_WORDS[c.field] ?? c.field,
-    reading: `${c.asFiled === "" ? "left blank" : `written as ${c.asFiled}`}, read as ${c.correctedTo}`,
+    reading: readingOf(c),
     reason: c.reason,
     decision: `decided by ${c.decidedBy === "agent" ? "an AI agent" : "a person"} on ${formatPacific(c.decidedAt)}`,
   };

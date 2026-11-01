@@ -2,8 +2,10 @@
 // wrote it. Applied as an overlay on the rows read from raw data, before any counting rule runs; the raw
 // files are never written. A correction that no longer fits its row stops the ingest rather than apply
 // silently. Pure: the CLI does the file I/O. Erasable TypeScript only so Node can run it with type stripping.
-import type { Correction } from "../elections/types.ts";
-import { tranIdOf } from "./raw.ts";
+import { LOCALITIES, type Correction } from "../elections/types.ts";
+import { locality } from "./money.ts";
+import { tranIdOf, type CalRow } from "./raw.ts";
+import type { LoadedFiling } from "./select.ts";
 
 export type FilingRecords = { path: string; records: Record<string, string>[] };
 
@@ -31,6 +33,13 @@ export const CORRECTABLE_FIELDS = [
   "Amount",
   "Memo_Code",
 ] as const;
+
+/**
+ * The derived locality (alameda, county, other), which is not a column: a correction to it overrides the
+ * category the ingest derived from the row's ZIP. `asFiled` is that derived reading, or "unknown" for a
+ * row with no usable ZIP; `correctedTo` is one of the locality keys.
+ */
+export const LOCALITY_FIELD = "locality";
 
 /** Keys that must be non-empty; `asFiled` may be empty, to fill in a field the filer left blank. */
 const REQUIRED = KEYS.filter((k) => k !== "asFiled");
@@ -66,10 +75,21 @@ export function parseCorrections(json: unknown): Correction[] {
     if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(at8601) || !isRealTimestamp(at8601)) {
       throw new Error(`${at}: "decidedAt" must be a UTC timestamp like 2026-11-01T13:15:55Z`);
     }
-    if (!(CORRECTABLE_FIELDS as readonly string[]).includes(rec.field as string)) {
-      throw new Error(
-        `${at}: "${rec.field}" cannot be corrected here; allowed: ${CORRECTABLE_FIELDS.join(", ")}`,
-      );
+    const allowed = [...CORRECTABLE_FIELDS, LOCALITY_FIELD];
+    if (!allowed.includes(rec.field as string)) {
+      throw new Error(`${at}: "${rec.field}" cannot be corrected here; allowed: ${allowed.join(", ")}`);
+    }
+    if (rec.field === LOCALITY_FIELD) {
+      if (!(LOCALITIES as readonly string[]).includes(rec.correctedTo as string)) {
+        throw new Error(
+          `${at}: a locality correction's "correctedTo" must be one of ${LOCALITIES.join(", ")}`,
+        );
+      }
+      if (![...LOCALITIES, "unknown"].includes(rec.asFiled as string)) {
+        throw new Error(
+          `${at}: a locality correction's "asFiled" must be one of ${LOCALITIES.join(", ")}, unknown`,
+        );
+      }
     }
     return Object.fromEntries(KEYS.map((k) => [k, rec[k]])) as Correction;
   });
@@ -87,6 +107,7 @@ export function applyCorrections(
 ): FilingRecords[] {
   const out = filings.map((f) => ({ path: f.path, records: f.records.map((r) => ({ ...r })) }));
   for (const c of corrections) {
+    if (c.field === LOCALITY_FIELD) continue; // not a column; applyLocalityOverrides handles it
     const at = `correction ${c.filing} ${c.tranId} ${c.field}`;
     const filing = out.find((f) => f.path === c.filing);
     if (!filing) throw new Error(`${at}: no such filing`);
@@ -101,6 +122,37 @@ export function applyCorrections(
       throw new Error(`${at}: the row no longer reads "${c.asFiled}" (stale correction)`);
     }
     row[c.field] = c.correctedTo;
+    log.push(`correction applied: ${c.filing} ${c.tranId} ${c.field} "${c.asFiled}" -> "${c.correctedTo}"`);
+  }
+  return out;
+}
+
+/**
+ * The filings with each locality correction set on its row (copies; the input is left as it was). Throws
+ * when the filing or row is missing, or the row's derived locality is not the correction's `asFiled`.
+ */
+export function applyLocalityOverrides(
+  filings: LoadedFiling[],
+  corrections: Correction[],
+  countyZips: Set<string>,
+  log: string[],
+): LoadedFiling[] {
+  const out = filings.map((f) => ({ ...f, rows: f.rows.map((r): CalRow => ({ ...r })) }));
+  for (const c of corrections) {
+    if (c.field !== LOCALITY_FIELD) continue;
+    const at = `correction ${c.filing} ${c.tranId} ${c.field}`;
+    const filing = out.find((f) => f.entry.path === c.filing);
+    if (!filing) throw new Error(`${at}: no such filing`);
+    const hits = filing.rows.filter((r) => r.tranId === c.tranId);
+    if (hits.length === 0) throw new Error(`${at}: no row with that Tran_ID in the filing`);
+    if (hits.length > 1) throw new Error(`${at}: more than one row has that Tran_ID`);
+    const row = hits[0];
+    if (row.localityOverride) throw new Error(`${at}: the row already has a locality correction`);
+    const derived = locality(row.zip5, countyZips) ?? "unknown";
+    if (derived !== c.asFiled) {
+      throw new Error(`${at}: the row's locality is "${derived}", not "${c.asFiled}" (stale correction)`);
+    }
+    row.localityOverride = c.correctedTo as CalRow["localityOverride"];
     log.push(`correction applied: ${c.filing} ${c.tranId} ${c.field} "${c.asFiled}" -> "${c.correctedTo}"`);
   }
   return out;

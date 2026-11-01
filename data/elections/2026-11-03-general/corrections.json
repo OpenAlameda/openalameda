@@ -9,6 +9,26 @@
       "reason": "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
       "decidedBy": "human",
       "decidedAt": "2026-11-01T13:15:55Z"
+    },
+    {
+      "filing": "pdf/daysog-mayor-460-10222026.pdf",
+      "tranId": "daysog-mayor-460-10222026-A-6",
+      "field": "Entity_ST",
+      "asFiled": "",
+      "correctedTo": "CA",
+      "reason": "Filer wrote the city Walnut Creek with no state; Walnut Creek is in California.",
+      "decidedBy": "human",
+      "decidedAt": "2026-11-01T13:31:23Z"
+    },
+    {
+      "filing": "pdf/daysog-mayor-460-10222026.pdf",
+      "tranId": "daysog-mayor-460-10222026-A-6",
+      "field": "locality",
+      "asFiled": "unknown",
+      "correctedTo": "other",
+      "reason": "No ZIP was written; Walnut Creek is in Contra Costa County, so the money is from outside Alameda County.",
+      "decidedBy": "human",
+      "decidedAt": "2026-11-01T13:31:23Z"
     }
   ]
 }

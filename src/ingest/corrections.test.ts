@@ -1,6 +1,13 @@
 import { describe, expect, test } from "vitest";
 import type { Correction } from "../elections/types.ts";
-import { applyCorrections, CORRECTABLE_FIELDS, parseCorrections, type FilingRecords } from "./corrections.ts";
+import { loaded, row } from "./fixtures.ts";
+import {
+  applyCorrections,
+  applyLocalityOverrides,
+  CORRECTABLE_FIELDS,
+  parseCorrections,
+  type FilingRecords,
+} from "./corrections.ts";
 import { toCalRows } from "./raw.ts";
 
 const FILING = "pdf/testperson-460-10222026.pdf";
@@ -70,6 +77,51 @@ describe("applyCorrections", () => {
     ["the row no longer reads asFiled", { asFiled: "9452" }, /stale correction/],
   ])("throws when %s", (_name, change, message) => {
     expect(() => applyCorrections(files(), [{ ...CORRECTION, ...change }], [])).toThrow(message);
+  });
+});
+
+describe("locality corrections", () => {
+  const LOCALITY: Correction = {
+    ...CORRECTION,
+    field: "locality",
+    asFiled: "unknown",
+    correctedTo: "other",
+    reason: "No ZIP was written; the city is outside Alameda County.",
+  };
+
+  test("parse accepts the derived-locality field with locality keys", () => {
+    expect(parseCorrections({ corrections: [LOCALITY] })).toEqual([LOCALITY]);
+    expect(parseCorrections({ corrections: [{ ...LOCALITY, asFiled: "county" }] })).toHaveLength(1);
+  });
+
+  test.each([
+    ["a correctedTo that is not a locality key", { correctedTo: "unknown" }],
+    ["an asFiled that is not a locality reading", { asFiled: "9451" }],
+  ])("parse rejects %s", (_name, change) => {
+    expect(() => parseCorrections({ corrections: [{ ...LOCALITY, ...change }] })).toThrow(
+      /corrections\.json/,
+    );
+  });
+
+  test("the column overlay leaves a locality correction alone, and does not need the field as a column", () => {
+    const out = applyCorrections(files(), [LOCALITY], []);
+    expect(out).toEqual(files());
+  });
+
+  test("applyLocalityOverrides sets the override on a copy of the row and checks the derived reading", () => {
+    const zips = new Set(["94607"]);
+    const filing = loaded({ path: FILING }, [row({ tranId: "T-1", zip5: null })]);
+    const log: string[] = [];
+    const out = applyLocalityOverrides([filing], [LOCALITY], zips, log);
+    expect(out[0].rows[0].localityOverride).toBe("other");
+    expect(filing.rows[0].localityOverride).toBeUndefined();
+    expect(log).toEqual([`correction applied: ${FILING} T-1 locality "unknown" -> "other"`]);
+    const withZip = loaded({ path: FILING }, [row({ tranId: "T-1", zip5: "94607" })]);
+    expect(() => applyLocalityOverrides([withZip], [LOCALITY], zips, [])).toThrow(/stale correction/);
+    expect(() => applyLocalityOverrides([filing], [{ ...LOCALITY, tranId: "T-9" }], zips, [])).toThrow(
+      /no row with that Tran_ID/,
+    );
+    expect(() => applyLocalityOverrides([filing], [LOCALITY, LOCALITY], zips, [])).toThrow(/already has/);
   });
 });
 

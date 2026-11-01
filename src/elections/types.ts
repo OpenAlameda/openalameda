@@ -71,6 +71,7 @@ export type MoneySummary = {
   matrix: Matrix;
   bands: BandCents;
   bandsByCell: Record<Locality, Record<DonorType, BandCents>>;
+  /** Money with no usable ZIP that no correction placed; it is counted as outside Alameda County. */
   unknownLocalityCents: number;
   outside: { supportCents: number; opposeCents: number };
   reportedDiffs: ReportedDiff[];
