@@ -206,10 +206,7 @@ function input(filings = fixtureFilings()): IngestInput {
     manifest: MANIFEST,
     races: RACES,
     attributions: {
-      "2000001:X1": {
-        targets: [{ target: "council/pat-testperson", side: "support" }],
-        why: "names the candidate",
-      },
+      "2000001:X1": { target: "council/pat-testperson", side: "support", why: "names the candidate" },
     },
     corrections: [],
     countyZips: new Set(["94501", "94502", "94607"]),

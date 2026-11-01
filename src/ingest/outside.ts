@@ -6,8 +6,7 @@ import type { CalRow } from "./raw.ts";
 import { belongsTo, type Selection } from "./select.ts";
 
 type Side = "support" | "oppose";
-export type Attribution =
-  { targets: { target: string; side: Side; cents?: number }[]; why: string } | { notLocal: string };
+export type Attribution = { target: string; side: Side; why: string } | { notLocal: string };
 
 type Target = { key: string; committees: Committee[] };
 
@@ -84,22 +83,6 @@ function matchRow(
   return { target, side };
 }
 
-/** Equal split with the remainder cents to the first target, unless the attribution gives cents. */
-function split(cents: number, targets: { target: string; side: Side; cents?: number }[]): number[] {
-  const given = targets.reduce((sum, t) => sum + (t.cents ?? 0), 0);
-  const open = targets.filter((t) => t.cents === undefined).length;
-  if (open === 0) return targets.map((t) => t.cents ?? 0);
-  const rest = cents - given;
-  const base = Math.trunc(rest / open);
-  let remainder = rest - base * open;
-  return targets.map((t) => {
-    if (t.cents !== undefined) return t.cents;
-    const share = base + remainder;
-    remainder = 0;
-    return share;
-  });
-}
-
 function describeRow(r: CalRow): string {
   const parts = [squash(r.description)];
   const cand = squash(`${r.candFirst} ${r.candLast}`);
@@ -147,17 +130,12 @@ export function outsideSpending(
       log.push(`${label} -> not local: ${attribution.notLocal}`);
       continue;
     }
-    let resolved: { target: string; side: Side; cents: number }[];
+    let resolved: { target: string; side: Side };
     if (attribution) {
-      for (const t of attribution.targets) {
-        if (!targets.has(t.target)) {
-          throw new Error(`outside-attributions ${key}: target "${t.target}" is not on the ballot`);
-        }
+      if (!targets.has(attribution.target)) {
+        throw new Error(`outside-attributions ${key}: target "${attribution.target}" is not on the ballot`);
       }
-      const shares = split(r.cents, attribution.targets);
-      resolved = attribution.targets.map((t, i) => ({ target: t.target, side: t.side, cents: shares[i] }));
-      const sum = shares.reduce((a, b) => a + b, 0);
-      if (sum !== r.cents) log.push(`${label}: attributed cents sum to ${sum}, the row says ${r.cents}`);
+      resolved = { target: attribution.target, side: attribution.side };
       log.push(`${label} -> attributed (${attribution.why})`);
     } else {
       const m = matchRow(r, names, races);
@@ -175,30 +153,26 @@ export function outsideSpending(
         });
         continue;
       }
-      resolved = [{ ...m, cents: r.cents }];
+      resolved = m;
       log.push(`${label} -> ${m.side} ${m.target}`);
     }
 
-    let reached = false;
-    for (const t of resolved) {
-      const target = targets.get(t.target);
-      if (target && target.committees.some((c) => belongsTo(c, r.filerKey, r.filerName))) {
-        log.push(`${label}: ${t.target} is the filer's own campaign, not outside spending`);
-        continue;
-      }
-      reached = true;
-      const group = totals.get(r.filerKey) ?? new Map<string, number>();
-      const k = `${t.target}\t${t.side}`;
-      group.set(k, (group.get(k) ?? 0) + t.cents);
-      totals.set(r.filerKey, group);
-      // The longest seen name is stable across input order; names differ only by typos and spacing.
-      const name = squash(r.filerName);
-      const held = groupNames.get(r.filerKey);
-      if (held === undefined || name.length > held.length || (name.length === held.length && name < held)) {
-        groupNames.set(r.filerKey, name);
-      }
+    const target = targets.get(resolved.target);
+    if (target && target.committees.some((c) => belongsTo(c, r.filerKey, r.filerName))) {
+      log.push(`${label}: ${resolved.target} is the filer's own campaign, not outside spending`);
+      continue;
     }
-    if (reached) counted.push(r);
+    const group = totals.get(r.filerKey) ?? new Map<string, number>();
+    const k = `${resolved.target}\t${resolved.side}`;
+    group.set(k, (group.get(k) ?? 0) + r.cents);
+    totals.set(r.filerKey, group);
+    // The longest seen name is stable across input order; names differ only by typos and spacing.
+    const name = squash(r.filerName);
+    const held = groupNames.get(r.filerKey);
+    if (held === undefined || name.length > held.length || (name.length === held.length && name < held)) {
+      groupNames.set(r.filerKey, name);
+    }
+    counted.push(r);
   }
 
   for (const key of Object.keys(attributions).sort()) {

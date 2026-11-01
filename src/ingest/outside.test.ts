@@ -137,41 +137,9 @@ describe("outsideSpending: Schedule D (D7)", () => {
 });
 
 describe("outsideSpending: 496 rows (D5, D8)", () => {
-  test("two targets without cents split 1001 cents as 501 and 500", () => {
-    const { groups } = run([pac460(), pac496([f496({ tranId: "E1", cents: 1001 })])], {
-      "890076:E1": {
-        targets: [
-          { target: "school-board/carrie-hahnel", side: "support" },
-          { target: "school-board/joyce-boyd", side: "support" },
-        ],
-        why: "mailer for two candidates",
-      },
-    });
-    expect(groups[0].totals).toEqual([
-      { target: "school-board/carrie-hahnel", side: "support", cents: 501 },
-      { target: "school-board/joyce-boyd", side: "support", cents: 500 },
-    ]);
-  });
-
-  test("targets with cents use them", () => {
-    const { groups } = run([pac496([f496({ tranId: "E1", cents: 1000 })])], {
-      "890076:E1": {
-        targets: [
-          { target: "school-board/carrie-hahnel", side: "support", cents: 700 },
-          { target: "school-board/joyce-boyd", side: "oppose", cents: 300 },
-        ],
-        why: "split stated on the filing",
-      },
-    });
-    expect(groups[0].totals).toEqual([
-      { target: "school-board/carrie-hahnel", side: "support", cents: 700 },
-      { target: "school-board/joyce-boyd", side: "oppose", cents: 300 },
-    ]);
-  });
-
   test("a 496 row dated on or before the spender's latest thru is not counted (rule 2)", () => {
     const { groups, unmatched } = run([pac460(), pac496([f496({ tranId: "E2", tranDate: "2026-09-19" })])], {
-      "890076:E2": { targets: [{ target: "school-board/carrie-hahnel", side: "support" }], why: "x" },
+      "890076:E2": { target: "school-board/carrie-hahnel", side: "support", why: "x" },
     });
     expect(groups).toEqual([]);
     expect(unmatched).toEqual([]);
@@ -214,7 +182,7 @@ describe("outsideSpending: 496 rows (D5, D8)", () => {
   test("an attribution overrides D7 matching on a D row", () => {
     const { groups } = run(
       [pac460([dRow({ tranId: "D7", candLast: "Carrie Hahnel", supOpp: "S", cents: 100 })])],
-      { "890076:D7": { targets: [{ target: "school-board/joyce-boyd", side: "oppose" }], why: "x" } },
+      { "890076:D7": { target: "school-board/joyce-boyd", side: "oppose", why: "x" } },
     );
     expect(groups[0].totals).toEqual([{ target: "school-board/joyce-boyd", side: "oppose", cents: 100 }]);
   });
@@ -222,7 +190,7 @@ describe("outsideSpending: 496 rows (D5, D8)", () => {
   test("an attribution to a target that is not on the ballot throws", () => {
     expect(() =>
       run([pac496([f496({ tranId: "E6" })])], {
-        "890076:E6": { targets: [{ target: "mayor/nobody", side: "support" }], why: "x" },
+        "890076:E6": { target: "mayor/nobody", side: "support", why: "x" },
       }),
     ).toThrow(/mayor\/nobody/);
   });
