@@ -1,5 +1,6 @@
 import type { OutsideGroup, Race } from "./types";
-import { displayName, formatUsd } from "./view";
+import { nameOf } from "./slugs";
+import { formatUsd } from "./view";
 
 export type OutsideLine = { key: string; name: string; parts: string[] };
 
@@ -15,12 +16,9 @@ export function outsideLines(groups: OutsideGroup[], races: Race[]): OutsideLine
       const [raceSlug, who] = t.target.split("/");
       const race = races.find((r) => r.slug === raceSlug);
       if (!race || !who) continue;
-      const known =
-        race.kind === "office" ? race.candidates.some((c) => c.slug === who) : who === "yes" || who === "no";
-      if (!known) continue;
-      parts.push(
-        `${formatUsd(t.cents)} ${t.side === "support" ? "for" : "against"} ${displayName(race, who)}`,
-      );
+      const name = nameOf(race, who);
+      if (name === undefined) continue;
+      parts.push(`${formatUsd(t.cents)} ${t.side === "support" ? "for" : "against"} ${name}`);
     }
     if (parts.length > 0) lines.push({ key: g.key, name: g.name, parts });
   }

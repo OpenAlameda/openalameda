@@ -10,6 +10,7 @@ import {
   type MoneySummary,
   type Race,
 } from "./types";
+import { candidateKeys } from "./slugs";
 
 /** A heatmap selection: a cell, a whole row (`from`) or a whole column (`type`). */
 export type Slice = { from?: Locality; type?: DonorType };
@@ -290,8 +291,7 @@ export function raceCorrections(
   corrections: AppliedCorrection[] | undefined,
   race: Race,
 ): { key: string; name: string; lines: ReturnType<typeof correctionLine>[] }[] {
-  const keys = race.kind === "office" ? race.candidates.map((c) => c.slug) : ["yes", "no"];
-  return keys
+  return candidateKeys(race)
     .map((key) => ({
       key,
       name: displayName(race, key),

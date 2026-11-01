@@ -8,6 +8,7 @@ import { todayInLA } from "@/elections/focus";
 import { ELECTIONS, getElection, getFinance, getRaces, summaryKey } from "@/elections/registry";
 import type { FinanceFile, Race } from "@/elections/types";
 import { outsideLines } from "@/elections/outside";
+import { candidateKeys } from "@/elections/slugs";
 import { displayName, electionDescription, formatDate, offBallotNote } from "@/elections/view";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -53,6 +54,7 @@ export default async function ElectionPage({ params }: Props) {
   const finance = getFinance(election.slug);
   const today = todayInLA(new Date());
   const rov = election.links.acvote ?? COUNTY_ROV_URL;
+  const summaryOf = (race: Race, key: string) => finance?.summaries[summaryKey(race.slug, key)];
 
   return (
     <div className="space-y-10">
@@ -89,32 +91,26 @@ export default async function ElectionPage({ params }: Props) {
             </h3>
             {race.kind === "measure" && <p className="text-sm">{race.title}</p>}
             {offBallotNote(race) && <p className="text-sm">{offBallotNote(race)}</p>}
-            {race.kind === "office" ? (
-              race.candidates.map((c) => (
-                <CandidateMoney
-                  key={c.slug}
-                  as="h4"
-                  name={c.ballotName}
-                  summary={finance?.summaries[summaryKey(race.slug, c.slug)]}
-                  shortFormFiled={c.shortForm?.filed}
-                />
-              ))
-            ) : (
-              <>
-                {(["yes", "no"] as const).map((side) => (
-                  <CandidateMoney
-                    key={side}
-                    as="h4"
-                    name={displayName(race, side)}
-                    summary={finance?.summaries[summaryKey(race.slug, side)]}
-                    bothSidesEmpty={[
-                      finance?.summaries[summaryKey(race.slug, "yes")],
-                      finance?.summaries[summaryKey(race.slug, "no")],
-                    ].every((s) => !s || s.status === "no-filings")}
-                  />
-                ))}
-              </>
-            )}
+            {candidateKeys(race).map((key) => (
+              <CandidateMoney
+                key={key}
+                as="h4"
+                name={displayName(race, key)}
+                summary={summaryOf(race, key)}
+                shortFormFiled={
+                  race.kind === "office"
+                    ? race.candidates.find((c) => c.slug === key)?.shortForm?.filed
+                    : undefined
+                }
+                bothSidesEmpty={
+                  race.kind === "measure" &&
+                  candidateKeys(race).every((k) => {
+                    const s = summaryOf(race, k);
+                    return !s || s.status === "no-filings";
+                  })
+                }
+              />
+            ))}
           </article>
         ))}
       </section>

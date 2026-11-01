@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CandidateMoney } from "@/components/elections/CandidateMoney";
 import { SourceLine } from "@/components/elections/SourceLine";
 import { ELECTIONS, getElection, getFinance, getRace, getRaces, summaryKey } from "@/elections/registry";
+import { candidateKeys } from "@/elections/slugs";
 import type { MoneySummary, Race } from "@/elections/types";
 import {
   displayName,
@@ -28,9 +29,7 @@ export function generateStaticParams() {
 
 /** The race's candidates, or its Yes and No sides, with the slug that keys their summary. */
 function entries(race: Race): { key: string; name: string }[] {
-  return race.kind === "office"
-    ? race.candidates.map((c) => ({ key: c.slug, name: c.ballotName }))
-    : (["yes", "no"] as const).map((side) => ({ key: side, name: displayName(race, side) }));
+  return candidateKeys(race).map((key) => ({ key, name: displayName(race, key) }));
 }
 
 /** Filed money first, biggest raised first; no-filings and short-form entries follow in ballot order. */
