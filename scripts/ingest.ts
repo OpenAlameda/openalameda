@@ -109,6 +109,7 @@ const filings: LoadedFiling[] = sources.map((s, i) => {
   const rows = toCalRows(s.entry.path, corrected[i].records, s.source);
   return {
     entry: s.entry,
+    source: s.source,
     filerKey: rows[0]?.filerKey ?? filerKey("", s.entry.filer),
     filerName: rows[0]?.filerName ?? s.entry.filer,
     rows,

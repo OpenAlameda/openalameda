@@ -7,7 +7,6 @@ import {
   LOCALITIES,
   type BandCents,
   type AppliedCorrection,
-  type Candidate,
   type Committee,
   type Correction,
   type Filing,
@@ -17,11 +16,12 @@ import {
   type RacesFile,
   type UnreadFiling,
 } from "../elections/types.ts";
+import { entrants, squash, usd } from "./common.ts";
 import { rowKey, summarize, type CountTrace } from "./money.ts";
 import { outsideSpending, type Attribution } from "./outside.ts";
 import { toCents, type CalRow, type ManifestEntry } from "./raw.ts";
 import { applyLocalityOverrides, LOCALITY_FIELD } from "./corrections.ts";
-import { belongsTo, selectFilings, type LoadedFiling } from "./select.ts";
+import { belongsTo, LATE_FAMILIES, PERIOD_FAMILIES, selectFilings, type LoadedFiling } from "./select.ts";
 
 export type IngestInput = {
   filings: LoadedFiling[];
@@ -34,45 +34,7 @@ export type IngestInput = {
   collectedOn: string;
 };
 
-type Entrant = {
-  key: string;
-  race: string;
-  candidateSlug: string;
-  committees: Committee[];
-  candidate: Candidate | null;
-};
-
-/** Every candidate and measure side, in races.json display order. */
-function entrants(races: RacesFile): Entrant[] {
-  const out: Entrant[] = [];
-  for (const race of races.races) {
-    if (race.kind === "office") {
-      for (const c of race.candidates) {
-        out.push({
-          key: `${race.slug}/${c.slug}`,
-          race: race.slug,
-          candidateSlug: c.slug,
-          committees: c.committees,
-          candidate: c,
-        });
-      }
-    } else {
-      for (const side of ["yes", "no"] as const) {
-        out.push({
-          key: `${race.slug}/${side}`,
-          race: race.slug,
-          candidateSlug: side,
-          committees: race.sides[side].committees,
-          candidate: null,
-        });
-      }
-    }
-  }
-  return out;
-}
-
-const PERIOD_FAMILIES = new Set(["460", "450", "460-T"]);
-const isLate = (f: LoadedFiling) => f.entry.family === "497" || f.entry.family === "496";
+const isLate = (f: LoadedFiling) => LATE_FAMILIES.has(f.entry.family);
 const ownedBy = (committees: Committee[], filerKey: string, filerName: string) =>
   committees.some((c) => belongsTo(c, filerKey, filerName));
 
@@ -84,7 +46,7 @@ function toFiling(f: LoadedFiling): Filing {
     amendment: f.entry.amendment,
     filed: f.entry.filed,
     period: f.entry.period ? { from: f.entry.period.from, thru: f.entry.period.thru } : null,
-    source: /\.xls$/i.test(f.entry.path) ? "efile" : "paper",
+    source: f.source,
     file: f.entry.path,
   };
 }
@@ -141,7 +103,7 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
         ? "memo row"
         : `dated ${r.tranDate ?? "never"}, on or before the thru of the filer's latest 460 (or a duplicate)`;
       log.push(
-        `outside F496 ${r.filerKey}:${r.tranId} $${(r.cents / 100).toFixed(2)} "${r.description}" not counted: ${why}`,
+        `outside F496 ${r.filerKey}:${r.tranId} ${usd(r.cents)} "${r.description}" not counted: ${why}`,
       );
     }
   }
@@ -226,7 +188,7 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
         `${at}: the row is counted, but its locality is not used by any total (an expenditure, a loan, or the candidate's own or carried-over money)`,
       );
     }
-    return { ...c, race: owner?.race ?? null, candidate: owner?.candidateSlug ?? null };
+    return { ...c, race: owner.race, candidate: owner.candidateSlug };
   });
 
   const finance: FinanceFile = {
@@ -364,8 +326,6 @@ export function serializeFinance(f: FinanceFile): string {
 const INDEX_COLUMNS = ["Filer Name", "Form Type", "Amendment #", "Filing Date", "Transaction Type", "Amount"];
 const PERIOD_TYPES = new Set(["Monetary Contributions Received", "Nonmonetary Contributions Received"]);
 const LATE_TYPES = new Set(["Contribution Received"]);
-const squashLower = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
-const usd = (cents: number) => `${cents < 0 ? "-" : ""}$${(Math.abs(cents) / 100).toFixed(2)}`;
 
 /**
  * Per candidate or measure side: ingest's raised vs. the index rows (contributions on period reports,
@@ -387,8 +347,10 @@ export function crossCheck(
     if (p.committees.length === 0) continue;
     const summary = finance.summaries[p.key];
     const filings = finance.filings.filter((f) => ownedBy(p.committees, f.filerKey, f.filer));
-    const names = new Set(p.committees.flatMap((c) => [c.name, ...(c.aliases ?? [])]).map(squashLower));
-    for (const f of filings) names.add(squashLower(f.filer));
+    const names = new Set(
+      p.committees.flatMap((c) => [c.name, ...(c.aliases ?? [])]).map((n) => squash(n).toLowerCase()),
+    );
+    for (const f of filings) names.add(squash(f.filer).toLowerCase());
 
     let indexCents = 0;
     let blank = 0;
@@ -396,7 +358,7 @@ export function crossCheck(
     for (const f of filings) {
       const family = f.form.replace(/-A$/, "");
       const rows = index.filter((r) => {
-        if (!names.has(squashLower(r["Filer Name"]))) return false;
+        if (!names.has(squash(r["Filer Name"]).toLowerCase())) return false;
         const form = (r["Form Type"].trim().split(/\s+/)[0] ?? "").replace(/-A$/, "");
         if (form !== family || r["Filing Date"].trim().slice(0, 10) !== f.filed) return false;
         const amendment = r["Amendment #"].trim();

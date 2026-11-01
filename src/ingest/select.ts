@@ -1,10 +1,13 @@
 // Which filings and late-report rows count (spec ingest rules 1, 2 and 4; data rulings D2, D3, D5).
 // Pure: callers load the files. Erasable TypeScript only so Node can run it with type stripping.
 import type { Committee } from "../elections/types.ts";
+import { squash } from "./common.ts";
 import type { CalRow, ManifestEntry, SummaryLine } from "./raw.ts";
 
 export type LoadedFiling = {
   entry: ManifestEntry;
+  /** Whether the rows came from an efile export or a transcribed paper filing. */
+  source: "efile" | "paper";
   filerKey: string;
   filerName: string;
   rows: CalRow[];
@@ -22,8 +25,8 @@ export type Selection = {
   latestThru: Map<string, string>;
 };
 
-const PERIOD_FAMILIES = new Set(["460", "450", "460-T"]);
-const LATE_FAMILIES = new Set(["497", "496"]);
+export const PERIOD_FAMILIES = new Set(["460", "450", "460-T"]);
+export const LATE_FAMILIES = new Set(["497", "496"]);
 const LATE_FORMS = new Set(["F497P1", "F496"]);
 /** Period report families that carry Schedule D (460 and its amendments and termination form). */
 const SCHEDULE_D_FAMILIES = new Set(["460", "460-T"]);
@@ -127,8 +130,6 @@ export function selectFilings(filings: LoadedFiling[], log: string[]): Selection
 
   return { period, superseded, late, latestThru };
 }
-
-const squash = (s: string) => s.trim().replace(/\s+/g, " ");
 
 /**
  * A filing belongs to a committee by numeric Filer_ID; a filer without one, or a committee

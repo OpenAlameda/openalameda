@@ -96,6 +96,23 @@ export function parseCorrections(json: unknown): Correction[] {
 }
 
 /**
+ * The one row a correction names, from its filing's rows (undefined when no filing has its path). Throws
+ * when the filing is missing, no row has the Tran_ID, or more than one does.
+ */
+function correctedRow<R>(
+  at: string,
+  rows: R[] | undefined,
+  tranIdOfRow: (r: R, i: number) => string,
+  tranId: string,
+): R {
+  if (!rows) throw new Error(`${at}: no such filing`);
+  const hits = rows.filter((r, i) => tranIdOfRow(r, i) === tranId);
+  if (hits.length === 0) throw new Error(`${at}: no row with that Tran_ID in the filing`);
+  if (hits.length > 1) throw new Error(`${at}: more than one row has that Tran_ID`);
+  return hits[0];
+}
+
+/**
  * The filings' records with each correction applied to a copy; the input is left as it was. Throws when a
  * correction's filing or row is missing, its field is not a column of that filing, or the row no longer
  * holds the `asFiled` value. Logs one line per applied correction.
@@ -109,12 +126,8 @@ export function applyCorrections(
   for (const c of corrections) {
     if (c.field === LOCALITY_FIELD) continue; // not a column; applyLocalityOverrides handles it
     const at = `correction ${c.filing} ${c.tranId} ${c.field}`;
-    const filing = out.find((f) => f.path === c.filing);
-    if (!filing) throw new Error(`${at}: no such filing`);
-    const hits = filing.records.filter((r, i) => tranIdOf(filing.path, r, i) === c.tranId);
-    if (hits.length === 0) throw new Error(`${at}: no row with that Tran_ID in the filing`);
-    if (hits.length > 1) throw new Error(`${at}: more than one row has that Tran_ID`);
-    const row = hits[0];
+    const records = out.find((f) => f.path === c.filing)?.records;
+    const row = correctedRow(at, records, (r, i) => tranIdOf(c.filing, r, i), c.tranId);
     if (!Object.hasOwn(row, c.field)) throw new Error(`${at}: "${c.field}" is not a column of the filing`);
     // A blank asFiled means the field was empty, exactly; any text, even spaces, is a changed row.
     const stale = c.asFiled === "" ? row[c.field] !== "" : row[c.field].trim() !== c.asFiled;
@@ -141,12 +154,8 @@ export function applyLocalityOverrides(
   for (const c of corrections) {
     if (c.field !== LOCALITY_FIELD) continue;
     const at = `correction ${c.filing} ${c.tranId} ${c.field}`;
-    const filing = out.find((f) => f.entry.path === c.filing);
-    if (!filing) throw new Error(`${at}: no such filing`);
-    const hits = filing.rows.filter((r) => r.tranId === c.tranId);
-    if (hits.length === 0) throw new Error(`${at}: no row with that Tran_ID in the filing`);
-    if (hits.length > 1) throw new Error(`${at}: more than one row has that Tran_ID`);
-    const row = hits[0];
+    const rows = out.find((f) => f.entry.path === c.filing)?.rows;
+    const row = correctedRow(at, rows, (r) => r.tranId, c.tranId);
     if (row.localityOverride) throw new Error(`${at}: the row already has a locality correction`);
     const derived = locality(row.zip5, countyZips) ?? "unknown";
     if (derived !== c.asFiled) {

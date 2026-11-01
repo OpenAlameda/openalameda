@@ -114,7 +114,7 @@ export type Correction = {
   decidedAt: string;
 };
 /** A correction as finance.json carries it: the log entry plus the race and candidate it touched. */
-/** `candidate` is the candidate's slug, or "yes" / "no" for a measure side; null when no race committee owns the filing. */
+/** `candidate` is the candidate's slug, or "yes" / "no" for a measure side. */
 export type AppliedCorrection = Correction & { race: string; candidate: string };
 export type FinanceFile = {
   election: string;

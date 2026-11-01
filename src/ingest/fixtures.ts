@@ -48,7 +48,10 @@ export function manifestEntry(overrides: Partial<ManifestEntry> = {}): ManifestE
   };
 }
 
-/** A loaded filing; the filer key and name default to the first row's, else the fixture filer. */
+/**
+ * A loaded filing; the filer key and name default to the first row's, else the fixture filer, and an
+ * `.xls` path reads as efile, any other as paper.
+ */
 export function loaded(
   entry: Partial<ManifestEntry>,
   rows: CalRow[] = [],
@@ -57,6 +60,7 @@ export function loaded(
   const e = manifestEntry(entry);
   return {
     entry: e,
+    source: /\.xls$/i.test(e.path) ? "efile" : "paper",
     filerKey: rows[0]?.filerKey ?? "1000001",
     filerName: rows[0]?.filerName ?? e.filer,
     rows: rows.map((r) => ({ ...r, file: e.path })),

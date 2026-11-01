@@ -1,42 +1,13 @@
 // Outside spending: independent expenditures from Schedule D rows and counted 496 rows, attributed to a
 // candidate or measure side (spec ingest rule 9; data rulings D7 and D8). Pure: the log is the only side
 // channel. Erasable TypeScript only so Node can run it with type stripping.
-import type { Committee, OutsideGroup, OutsideTotal, RacesFile, Unmatched } from "../elections/types.ts";
+import type { OutsideGroup, OutsideTotal, RacesFile, Unmatched } from "../elections/types.ts";
+import { entrants, nameKey, squash, usd } from "./common.ts";
 import type { CalRow } from "./raw.ts";
 import { belongsTo, type Selection } from "./select.ts";
 
 type Side = "support" | "oppose";
 export type Attribution = { target: string; side: Side; why: string } | { notLocal: string };
-
-type Target = { key: string; committees: Committee[] };
-
-const squash = (s: string) => s.trim().replace(/\s+/g, " ");
-const nameKey = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z ]/g, " ")
-    .replace(/ +/g, " ")
-    .trim();
-
-/** Every summary key on the ballot, with the committees that speak for it. */
-function ballotTargets(races: RacesFile): Map<string, Target> {
-  const out = new Map<string, Target>();
-  for (const race of races.races) {
-    if (race.kind === "office") {
-      for (const c of race.candidates) {
-        out.set(`${race.slug}/${c.slug}`, { key: `${race.slug}/${c.slug}`, committees: c.committees });
-      }
-    } else {
-      for (const side of ["yes", "no"] as const) {
-        out.set(`${race.slug}/${side}`, {
-          key: `${race.slug}/${side}`,
-          committees: race.sides[side].committees,
-        });
-      }
-    }
-  }
-  return out;
-}
 
 /** Candidate names ("first last", normalized) → summary key: ballot name and "First Last" from legalName. */
 function candidateNames(races: RacesFile): Map<string, string> {
@@ -92,14 +63,13 @@ function describeRow(r: CalRow): string {
   return parts.filter(Boolean).join("; ");
 }
 
-const dollars = (cents: number) => `$${(cents / 100).toFixed(2)}`;
-
 export function outsideSpending(
   input: { selection: Selection; races: RacesFile; attributions: Record<string, Attribution> },
   log: string[],
 ): { groups: OutsideGroup[]; unmatched: Unmatched[]; counted: CalRow[] } {
   const { selection, races, attributions } = input;
-  const targets = ballotTargets(races);
+  // Every summary key on the ballot, with the committees that speak for it.
+  const targets = new Map(entrants(races).map((e) => [e.key, e]));
   const names = candidateNames(races);
 
   // Schedule D independent expenditures from kept period reports, then counted 496 rows.
@@ -123,7 +93,7 @@ export function outsideSpending(
 
   for (const r of rows) {
     const key = `${r.filerKey}:${r.tranId}`;
-    const label = `outside ${r.formType} ${key} ${dollars(r.cents)} ${r.tranDate ?? "no date"} "${describeRow(r)}"`;
+    const label = `outside ${r.formType} ${key} ${usd(r.cents)} ${r.tranDate ?? "no date"} "${describeRow(r)}"`;
     const attribution = Object.hasOwn(attributions, key) ? attributions[key] : undefined;
     if (attribution) used.add(key);
     if (attribution && "notLocal" in attribution) {

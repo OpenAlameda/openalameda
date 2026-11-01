@@ -14,6 +14,7 @@ import {
   type MoneySummary,
   type ReportedDiff,
 } from "../elections/types.ts";
+import { nameKey, squash } from "./common.ts";
 import type { CalRow } from "./raw.ts";
 import type { LoadedFiling } from "./select.ts";
 
@@ -47,15 +48,6 @@ export function band(cents: number): Band {
   return "under-100";
 }
 
-const nameKey = (s: string) =>
-  s
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .toLowerCase()
-    .replace(/[^a-z ]/g, "")
-    .replace(/ +/g, " ")
-    .trim();
-
 const firstToken = (s: string) => nameKey(s).split(" ")[0] ?? "";
 
 /**
@@ -70,8 +62,6 @@ export function namesMatch(legalName: string, last: string, first: string): bool
   if (!wantLast || !wantFirst) return false;
   return nameKey(last) === wantLast && firstToken(first) === wantFirst;
 }
-
-const squash = (s: string) => s.trim().replace(/\s+/g, " ");
 
 const sameEntity = (a: CalRow, b: CalRow) =>
   nameKey(a.entityLast) === nameKey(b.entityLast) && nameKey(a.entityFirst) === nameKey(b.entityFirst);
