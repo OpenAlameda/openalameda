@@ -199,6 +199,18 @@ export function displayName(race: Race, key: string): string {
   return race.candidates.find((c) => c.slug === key)?.ballotName ?? key;
 }
 
+const OFF_BALLOT_NOTE = "Ran unopposed, so this seat is not on the ballot.";
+
+/** The note for a race that is not on the ballot; null for one that is (and for any measure). */
+export function offBallotNote(race: Race): string | null {
+  return race.kind === "office" && race.onBallot === false ? (race.note ?? OFF_BALLOT_NOTE) : null;
+}
+
+/** The election-wide description: it names the date, not a vote, since some races are off the ballot. */
+export function electionDescription(electionDay: string): string {
+  return `Who is paying for each Alameda race in the ${formatDate(electionDay)} election: raised, spent and where the money comes from.`;
+}
+
 /** CAL column names in plain words; a column not listed reads as its own name. */
 const FIELD_WORDS: Record<string, string> = {
   Entity_ZIP4: "ZIP code",

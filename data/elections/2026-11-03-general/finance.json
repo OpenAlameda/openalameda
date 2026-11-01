@@ -1547,145 +1547,6 @@
       },
       "reportedDiffs": []
     },
-    "school-board/ryan-lalonde": {
-      "status": "filed",
-      "paper": false,
-      "raisedCents": 200000,
-      "spentCents": 0,
-      "ownCents": 0,
-      "carriedCents": 0,
-      "loansFromCandidateCents": 75000,
-      "otherLoansCents": 0,
-      "contributionCount": 2,
-      "matrix": {
-        "alameda": {
-          "individual": {
-            "cents": 0,
-            "count": 0
-          },
-          "organization": {
-            "cents": 0,
-            "count": 0
-          },
-          "political": {
-            "cents": 0,
-            "count": 0
-          }
-        },
-        "county": {
-          "individual": {
-            "cents": 0,
-            "count": 0
-          },
-          "organization": {
-            "cents": 0,
-            "count": 0
-          },
-          "political": {
-            "cents": 100000,
-            "count": 1
-          }
-        },
-        "other": {
-          "individual": {
-            "cents": 0,
-            "count": 0
-          },
-          "organization": {
-            "cents": 0,
-            "count": 0
-          },
-          "political": {
-            "cents": 100000,
-            "count": 1
-          }
-        }
-      },
-      "bands": {
-        "1000+": 200000,
-        "500-999": 0,
-        "250-499": 0,
-        "100-249": 0,
-        "under-100": 0
-      },
-      "bandsByCell": {
-        "alameda": {
-          "individual": {
-            "1000+": 0,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          },
-          "organization": {
-            "1000+": 0,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          },
-          "political": {
-            "1000+": 0,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          }
-        },
-        "county": {
-          "individual": {
-            "1000+": 0,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          },
-          "organization": {
-            "1000+": 0,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          },
-          "political": {
-            "1000+": 100000,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          }
-        },
-        "other": {
-          "individual": {
-            "1000+": 0,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          },
-          "organization": {
-            "1000+": 0,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          },
-          "political": {
-            "1000+": 100000,
-            "500-999": 0,
-            "250-499": 0,
-            "100-249": 0,
-            "under-100": 0
-          }
-        }
-      },
-      "unknownLocalityCents": 0,
-      "outside": {
-        "supportCents": 0,
-        "opposeCents": 0
-      },
-      "reportedDiffs": []
-    },
     "school-board/gary-lym": {
       "status": "no-filings",
       "paper": false,
@@ -2089,6 +1950,145 @@
           },
           "political": {
             "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "school-board-two-year-term/ryan-lalonde": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 200000,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 75000,
+      "otherLoansCents": 0,
+      "contributionCount": 2,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 100000,
+            "count": 1
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 100000,
+            "count": 1
+          }
+        }
+      },
+      "bands": {
+        "1000+": 200000,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 100000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 100000,
             "500-999": 0,
             "250-499": 0,
             "100-249": 0,

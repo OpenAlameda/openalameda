@@ -25,6 +25,10 @@ export type OfficeRace = {
   slug: string;
   name: string;
   seats: number;
+  /** False for a seat that is not on the ballot (an unopposed race); absent means on the ballot. */
+  onBallot?: boolean;
+  /** Shown beside an off-ballot race; `offBallotNote` falls back to a standard sentence. */
+  note?: string;
   links: Links;
   candidates: Candidate[];
 };

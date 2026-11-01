@@ -19,6 +19,8 @@ import {
   topCells,
   unknownZipNote,
   correctionLine,
+  electionDescription,
+  offBallotNote,
   correctionsFor,
 } from "./view.ts";
 
@@ -359,5 +361,26 @@ describe("transcription corrections", () => {
     expect(correctionsFor([applied, other], "mayor", "tony-daysog")).toEqual([applied]);
     expect(correctionsFor([applied], "mayor", "nobody")).toEqual([]);
     expect(correctionsFor(undefined, "mayor", "tony-daysog")).toEqual([]);
+  });
+});
+
+describe("off-ballot races", () => {
+  const office: OfficeRace = { kind: "office", slug: "s", name: "S", seats: 1, links: {}, candidates: [] };
+
+  it("offBallotNote is null unless onBallot is false", () => {
+    expect(offBallotNote(office)).toBeNull();
+    expect(offBallotNote({ ...office, onBallot: true })).toBeNull();
+  });
+
+  it("offBallotNote uses the race's note, else the standard sentence", () => {
+    expect(offBallotNote({ ...office, onBallot: false, note: "Custom." })).toBe("Custom.");
+    expect(offBallotNote({ ...office, onBallot: false })).toBe(
+      "Ran unopposed, so this seat is not on the ballot.",
+    );
+  });
+
+  it("electionDescription does not promise a vote on every race", () => {
+    expect(electionDescription("2026-11-03")).not.toMatch(/ballot|vote/i);
+    expect(electionDescription("2026-11-03")).toContain("November 3, 2026");
   });
 });

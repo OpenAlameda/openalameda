@@ -75,3 +75,33 @@ test("an unknown race is a 404 inside the site frame", async () => {
   expect(res.status).toBe(404);
   expect(await res.text()).toContain("not affiliated with the City of Alameda");
 });
+
+const NOTE = "Ran unopposed, so this seat is not on the ballot.";
+const plain = async (res: Response) => (await res.text()).replace(/<!-- -->/g, "");
+
+test("the two-year-term seat renders its note and raised figure, and no election-day line", async () => {
+  const res = await get("school-board-two-year-term");
+  expect(res.status).toBe(200);
+  const html = await plain(res);
+  const raised = getFinance(SLUG)!.summaries["school-board-two-year-term/ryan-lalonde"].raisedCents;
+  expect(html).toContain("School Board, two-year term");
+  expect(html).toContain(NOTE);
+  expect(html).toContain(formatUsd(raised));
+  expect(html).not.toContain("Election day:");
+});
+
+test("the school-board race no longer lists the unopposed candidate; the election page notes the seat", async () => {
+  const html = await plain(await get("school-board"));
+  expect(html).not.toContain("LaLonde");
+  expect(html).not.toContain(NOTE);
+  const election = await plain(await get(""));
+  expect(election).toContain("School Board, two-year term");
+  expect(election).toContain(NOTE);
+});
+
+test("the unopposed candidate's page works under the new race and carries the note", async () => {
+  const res = await get("school-board-two-year-term/ryan-lalonde");
+  expect(res.status).toBe(200);
+  expect(await plain(res)).toContain(NOTE);
+  expect((await get("school-board/ryan-lalonde")).status).toBe(404);
+});

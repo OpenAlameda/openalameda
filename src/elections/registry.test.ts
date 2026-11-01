@@ -30,6 +30,7 @@ describe("registry", () => {
       "mayor",
       "city-council",
       "school-board",
+      "school-board-two-year-term",
       "measure-l",
       "measure-m",
       "measure-n",

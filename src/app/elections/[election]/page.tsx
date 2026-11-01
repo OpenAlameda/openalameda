@@ -8,7 +8,7 @@ import { todayInLA } from "@/elections/focus";
 import { ELECTIONS, getElection, getFinance, getRaces, summaryKey } from "@/elections/registry";
 import type { FinanceFile, Race } from "@/elections/types";
 import { outsideLines } from "@/elections/outside";
-import { displayName, formatDate } from "@/elections/view";
+import { displayName, electionDescription, formatDate, offBallotNote } from "@/elections/view";
 import { pageMetadata } from "@/lib/metadata";
 
 type Props = { params: Promise<{ election: string }> };
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!election) return {};
   return pageMetadata({
     title: election.name,
-    description: `Who is paying for each Alameda race on the ${formatDate(election.electionDay)} ballot: raised, spent and where the money comes from.`,
+    description: electionDescription(election.electionDay),
     path: `/elections/${election.slug}`,
   });
 }
@@ -88,6 +88,7 @@ export default async function ElectionPage({ params }: Props) {
               <Link href={`/elections/${election.slug}/${race.slug}`}>{race.name}</Link>
             </h3>
             {race.kind === "measure" && <p className="text-sm">{race.title}</p>}
+            {offBallotNote(race) && <p className="text-sm">{offBallotNote(race)}</p>}
             {race.kind === "office" ? (
               race.candidates.map((c) => (
                 <CandidateMoney

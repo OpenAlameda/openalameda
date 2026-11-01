@@ -77,6 +77,10 @@ Known for 2026-11-03 (verify against the County's candidate list before shipping
 
 Note (2026-11-01): the City's final roster (8/12/2026) lists six council candidates, and Donald Scott Means is not among them; he is removed from `races.json`, and his committee's 460-T is logged as not used for this election.
 
+Note (2026-11-01), race model: an office race may carry `onBallot: false` and a `note`; absent means on the ballot. The election page card, the race page and each candidate page show the note (`offBallotNote` in `src/elections/view.ts`), the race page drops its election-day line, and the election description names the date rather than a ballot.
+
+Note (2026-11-01), unopposed seat: the candidate for a separate two-year Alameda Unified board seat ran unopposed, so that seat is not on the ballot. It is the race `school-board-two-year-term` (one seat, labeled "School Board, two-year term"), flagged off the ballot, and that candidate is not in the two-seat `school-board` race. His filed money shows as usual.
+
 Ballotpedia measure pages:
 
 - L: https://ballotpedia.org/Alameda,_California,_Measure_L,_Emergency_Preparedness_and_Infrastructure_Bond_Measure_(November_2026)

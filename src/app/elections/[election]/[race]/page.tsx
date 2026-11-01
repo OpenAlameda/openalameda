@@ -5,7 +5,7 @@ import { CandidateMoney } from "@/components/elections/CandidateMoney";
 import { SourceLine } from "@/components/elections/SourceLine";
 import { ELECTIONS, getElection, getFinance, getRace, getRaces, summaryKey } from "@/elections/registry";
 import type { MoneySummary, Race } from "@/elections/types";
-import { displayName, formatDate, formatUsd } from "@/elections/view";
+import { displayName, formatDate, formatUsd, offBallotNote } from "@/elections/view";
 import { pageMetadata } from "@/lib/metadata";
 
 type Props = { params: Promise<{ election: string; race: string }> };
@@ -74,7 +74,11 @@ export default async function RacePage({ params }: Props) {
         </p>
         <h1 className="text-3xl font-semibold break-words">{race.name}</h1>
         {race.kind === "measure" && <p>{race.title}</p>}
-        <p>Election day: {formatDate(election.electionDay)}.</p>
+        {offBallotNote(race) ? (
+          <p>{offBallotNote(race)}</p>
+        ) : (
+          <p>Election day: {formatDate(election.electionDay)}.</p>
+        )}
         {(race.links.ballotpedia || race.links.acvote) && (
           <ul className="list-disc pl-5">
             {race.links.ballotpedia && (

@@ -178,18 +178,6 @@
           "priorCommittees": []
         },
         {
-          "slug": "ryan-lalonde",
-          "ballotName": "Ryan LaLonde",
-          "legalName": "LaLonde, Ryan",
-          "committees": [
-            {
-              "id": "1493199",
-              "name": "Re-Elect Ryan LaLonde for Alameda Unified School Board 2026"
-            }
-          ],
-          "priorCommittees": []
-        },
-        {
           "slug": "gary-lym",
           "ballotName": "Gary Lym",
           "legalName": "Lym, Gary",
@@ -211,6 +199,29 @@
           "legalName": "McMahon, Mike",
           "designation": "Independent Contractor",
           "committees": [],
+          "priorCommittees": []
+        }
+      ]
+    },
+    {
+      "kind": "office",
+      "slug": "school-board-two-year-term",
+      "name": "School Board, two-year term",
+      "seats": 1,
+      "onBallot": false,
+      "note": "Ran unopposed, so this seat is not on the ballot.",
+      "links": {},
+      "candidates": [
+        {
+          "slug": "ryan-lalonde",
+          "ballotName": "Ryan LaLonde",
+          "legalName": "LaLonde, Ryan",
+          "committees": [
+            {
+              "id": "1493199",
+              "name": "Re-Elect Ryan LaLonde for Alameda Unified School Board 2026"
+            }
+          ],
           "priorCommittees": []
         }
       ]

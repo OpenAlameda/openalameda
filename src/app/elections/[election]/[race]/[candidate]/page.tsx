@@ -13,6 +13,7 @@ import {
   formatDate,
   formatUsd,
   hasUnknownZip,
+  offBallotNote,
   othersCents,
   parseSlice,
   sliceBands,
@@ -145,6 +146,7 @@ export default async function CandidatePage({ params, searchParams }: Props) {
           hrefFor={(s) => `${path}${sliceQuery(s)}`}
           selected={slice}
         />
+        {offBallotNote(race) && <p className="text-sm">{offBallotNote(race)}</p>}
         {filed && <p className="text-sm">Tap a square, or a row or column name, to see just that slice.</p>}
         {filed && unknownZipNote(filed) && <p className="text-sm">{unknownZipNote(filed)}</p>}
       </section>
