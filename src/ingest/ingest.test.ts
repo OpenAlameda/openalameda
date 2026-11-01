@@ -335,7 +335,7 @@ describe("ingest", () => {
   test("finance.json carries each correction with its race and candidate, and only the allowed fields", () => {
     const correction = {
       filing: "cand-460-oct.xls",
-      tranId: "T2",
+      tranId: "A3",
       field: "Entity_ZIP4",
       asFiled: "9451",
       correctedTo: "94501",
@@ -379,21 +379,39 @@ describe("ingest", () => {
       const filings = [...fixtureFilings(), amended];
       const fails = { ...base, filing: "cand-460-oct.xls", tranId: "A3" };
       expect(() => ingest({ ...input(filings), corrections: [fails] })).toThrow(
-        /cand-460-oct\.xls A3: the filing is superseded by an amendment/,
+        /cand-460-oct\.xls A3 Entity_ZIP4: the filing is superseded by an amendment/,
       );
       expect(() =>
         ingest({ ...input(filings), corrections: [{ ...fails, filing: "cand-460-oct-amended.xls" }] }),
       ).not.toThrow();
     });
 
-    test("dropped by the late-window dedupe", () => {
-      const dropped = { ...base, filing: "cand-497-old.xls", tranId: "L0" };
-      expect(() => ingest({ ...input(), corrections: [dropped] })).toThrow(
-        /cand-497-old\.xls L0: the late-report row was dropped by the late-window dedupe/,
+    test("late row dated on or before the period report's thru date", () => {
+      const old = { ...base, filing: "cand-497-old.xls", tranId: "L0" };
+      expect(() => ingest({ ...input(), corrections: [old] })).toThrow(
+        /cand-497-old\.xls L0 Entity_ZIP4: the late-report row is dated on or before the thru date/,
       );
       expect(() =>
-        ingest({ ...input(), corrections: [{ ...dropped, filing: "cand-497-late.xls", tranId: "L1" }] }),
+        ingest({ ...input(), corrections: [{ ...old, filing: "cand-497-late.xls", tranId: "L1" }] }),
       ).not.toThrow();
+    });
+
+    test("late row whose duplicate copy was kept by the dedupe", () => {
+      const early = loaded(
+        {
+          path: "cand-497-early.xls",
+          filer: CAND.filerName,
+          form: "497",
+          family: "497",
+          period: null,
+          filed: "2026-10-24",
+        },
+        [row({ ...CAND, tranId: "L1", formType: "F497P1", tranDate: "2026-10-24", cents: 20000 })],
+      );
+      const dup = { ...base, filing: "cand-497-early.xls", tranId: "L1" };
+      expect(() => ingest({ ...input([...fixtureFilings(), early]), corrections: [dup] })).toThrow(
+        /cand-497-early\.xls L1 Entity_ZIP4: another copy of this late-report row was kept by the late-window dedupe/,
+      );
     });
 
     test("filing not used for this election", () => {
@@ -403,7 +421,7 @@ describe("ingest", () => {
       );
       const unused = { ...base, filing: "stray-460.xls", tranId: "S1" };
       expect(() => ingest({ ...input([...fixtureFilings(), stray]), corrections: [unused] })).toThrow(
-        /stray-460\.xls S1: the filing is not used for this election/,
+        /stray-460\.xls S1 Entity_ZIP4: the filing is not used for this election/,
       );
     });
   });
@@ -459,7 +477,7 @@ describe("ingest", () => {
           ...input(filings),
           corrections: [{ ...locality, filing: "cand-497-old.xls", tranId: "L0" }],
         }),
-      ).toThrow(/dropped by the late-window dedupe/);
+      ).toThrow(/dated on or before the thru date/);
     });
   });
 
@@ -482,23 +500,65 @@ describe("ingest", () => {
     expect(finance.corrections[0]).toMatchObject({ race: "measure-q", candidate: "yes" });
   });
 
-  test("a correction on a filing no committee in the race owns carries null race and candidate", () => {
-    const { finance } = ingest({
-      ...input(),
-      corrections: [
-        {
-          filing: "pac-460.xls",
-          tranId: "D1",
-          field: "Entity_ZIP4",
-          asFiled: "x",
-          correctedTo: "y",
-          reason: "r",
-          decidedBy: "agent",
-          decidedAt: "2026-11-01T13:15:55Z",
-        },
-      ],
+  test("a correction on an outside group's filing stops the ingest, since no page would show it", () => {
+    expect(() =>
+      ingest({
+        ...input(),
+        corrections: [
+          {
+            filing: "pac-460.xls",
+            tranId: "D1",
+            field: "Entity_ZIP4",
+            asFiled: "x",
+            correctedTo: "y",
+            reason: "r",
+            decidedBy: "agent",
+            decidedAt: "2026-11-01T13:15:55Z",
+          },
+        ],
+      }),
+    ).toThrow(/pac-460\.xls D1 Entity_ZIP4: .*outside-group filings are not shown on any page yet/);
+  });
+
+  describe("a correction must change a figure a total uses", () => {
+    const fix = {
+      filing: "cand-460-sept.xls",
+      field: "locality",
+      asFiled: "unknown",
+      correctedTo: "other",
+      reason: "r",
+      decidedBy: "human" as const,
+      decidedAt: "2026-11-01T13:31:23Z",
+    };
+    const withRows = () => {
+      const filings = fixtureFilings();
+      filings[0].rows.push(
+        row({ ...CAND, tranId: "M1", zip5: null, memo: true, cents: 900 }),
+        row({ ...CAND, tranId: "O1", zip5: null, entityLast: "Testperson", entityFirst: "Pat", cents: 700 }),
+      );
+      filings[0].rows.find((r) => r.tranId === "E1")!.zip5 = null;
+      return filings;
+    };
+    const run = (c: { tranId: string } & Partial<IngestInput["corrections"][number]>) => () =>
+      ingest({ ...input(withRows()), corrections: [{ ...fix, ...c }] });
+
+    test("a locality override on an expenditure or on the candidate's own money is not used", () => {
+      expect(run({ tranId: "E1" })).toThrow(/E1 locality: the row is counted, but its locality is not used/);
+      expect(run({ tranId: "O1" })).toThrow(/O1 locality: the row is counted, but its locality is not used/);
     });
-    expect(finance.corrections[0]).toMatchObject({ race: null, candidate: null });
+
+    test("a memo row is in no total, for a locality override or a ZIP fix", () => {
+      expect(run({ tranId: "M1" })).toThrow(/M1 locality: the row is not counted in any total/);
+      expect(run({ tranId: "M1", field: "Entity_ZIP4", asFiled: "", correctedTo: "94501" })).toThrow(
+        /M1 Entity_ZIP4: the row is not counted in any total/,
+      );
+    });
+
+    test("a ZIP fix on a counted row passes", () => {
+      expect(
+        run({ tranId: "A2", field: "Entity_ZIP4", asFiled: "94607", correctedTo: "94501" }),
+      ).not.toThrow();
+    });
   });
 
   test("unreadFilings lists only paper-not-downloaded filings of a race's own committees (D13)", () => {

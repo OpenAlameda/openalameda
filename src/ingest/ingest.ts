@@ -17,10 +17,10 @@ import {
   type RacesFile,
   type UnreadFiling,
 } from "../elections/types.ts";
-import { summarize } from "./money.ts";
+import { rowKey, summarize, type CountTrace } from "./money.ts";
 import { outsideSpending, type Attribution } from "./outside.ts";
 import { toCents, type CalRow, type ManifestEntry } from "./raw.ts";
-import { applyLocalityOverrides } from "./corrections.ts";
+import { applyLocalityOverrides, LOCALITY_FIELD } from "./corrections.ts";
 import { belongsTo, selectFilings, type LoadedFiling } from "./select.ts";
 
 export type IngestInput = {
@@ -37,7 +37,7 @@ export type IngestInput = {
 type Entrant = {
   key: string;
   race: string;
-  candidateSlug: string | null;
+  candidateSlug: string;
   committees: Committee[];
   candidate: Candidate | null;
 };
@@ -114,14 +114,16 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
     }
   }
 
+  const trace: CountTrace = { counted: new Set(), overridesUsed: new Set() };
   const summaries: Record<string, MoneySummary> = {};
   for (const p of people) {
     const filings = selection.period.filter((f) => ownedBy(p.committees, f.filerKey, f.filerName));
     const late = selection.late.filter((r) => ownedBy(p.committees, r.filerKey, r.filerName));
-    summaries[p.key] = summarize({ filings, late, candidate: p.candidate, countyZips }, log);
+    summaries[p.key] = summarize({ filings, late, candidate: p.candidate, countyZips }, log, trace);
   }
 
   const outside = outsideSpending({ selection, races, attributions: input.attributions }, log);
+  for (const r of outside.counted) trace.counted.add(rowKey(r));
   for (const g of outside.groups) {
     for (const t of g.totals) {
       const s = summaries[t.target];
@@ -187,22 +189,43 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
   const corrections: AppliedCorrection[] = input.corrections.map((c) => {
     const filing = allFilings.find((f) => f.entry.path === c.filing);
     if (!filing) throw new Error(`correction ${c.filing} ${c.tranId}: no such filing`);
-    // A correction counts only when its row does: a superseded, deduped or unused copy would publish a
+    // A correction must change something a published figure uses: its filing is counted, its row is
+    // counted into a total, a locality override was read, and a page shows it. Otherwise it would publish a
     // reading that no total reflects.
     const row = filing.rows.find((r) => r.tranId === c.tranId);
-    const at = `correction ${c.filing} ${c.tranId}`;
+    const at = `correction ${c.filing} ${c.tranId} ${c.field}`;
     if (selection.superseded.includes(filing)) {
       throw new Error(`${at}: the filing is superseded by an amendment, so its row is not counted`);
     }
     if (isLate(filing) && (!row || !selection.late.includes(row))) {
+      const dup = row && selection.late.some((r) => r.filerKey === row.filerKey && r.tranId === row.tranId);
       throw new Error(
-        `${at}: the late-report row was dropped by the late-window dedupe, so it is not counted`,
+        `${at}: ${
+          dup
+            ? "another copy of this late-report row was kept by the late-window dedupe, so this one is not counted"
+            : "the late-report row is dated on or before the thru date of the filer's latest period report, or has no date, so it is not counted"
+        }`,
       );
     }
     if (!usedFiles.has(filing.entry.path)) {
       throw new Error(`${at}: the filing is not used for this election, so its row is not counted`);
     }
     const owner = people.find((p) => ownedBy(p.committees, filing.filerKey, filing.filerName));
+    if (!owner) {
+      throw new Error(
+        `${at}: the filing belongs to no candidate or measure side; corrections on outside-group filings are not shown on any page yet`,
+      );
+    }
+    if (!row || !trace.counted.has(rowKey(row))) {
+      throw new Error(
+        `${at}: the row is not counted in any total (it may be a memo row, or a kind of row no figure uses)`,
+      );
+    }
+    if (c.field === LOCALITY_FIELD && !trace.overridesUsed.has(rowKey(row))) {
+      throw new Error(
+        `${at}: the row is counted, but its locality is not used by any total (an expenditure, a loan, or the candidate's own or carried-over money)`,
+      );
+    }
     return { ...c, race: owner?.race ?? null, candidate: owner?.candidateSlug ?? null };
   });
 

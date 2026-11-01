@@ -113,9 +113,20 @@ function latestPerFiler(filings: LoadedFiling[]): LoadedFiling[] {
   return [...latest.values()];
 }
 
+/** What counting used, for checking that a correction changed a published figure. */
+export type CountTrace = {
+  /** `rowKey` of every row counted into raised, spent or loans. */
+  counted: Set<string>;
+  /** `rowKey` of every row whose `localityOverride` placed money in the matrix. */
+  overridesUsed: Set<string>;
+};
+
+export const rowKey = (r: { file: string; tranId: string }) => `${r.file}|${r.tranId}`;
+
 export function summarize(
   input: { filings: LoadedFiling[]; late: CalRow[]; candidate: Candidate | null; countyZips: Set<string> },
   log: string[],
+  trace?: CountTrace,
 ): MoneySummary {
   const { filings, candidate, countyZips } = input;
   const lateRows = input.late.filter((r) => r.formType === "F497P1" && !r.memo);
@@ -151,6 +162,7 @@ export function summarize(
   };
 
   const contribution = (r: CalRow) => {
+    trace?.counted.add(rowKey(r));
     raisedCents += r.cents;
     const label = `${r.file} ${r.tranId}`;
     if (priorIds.has(r.cmteId.trim()) || priorNames.has(squash(r.entityLast))) {
@@ -167,6 +179,7 @@ export function summarize(
     const code = r.entityCd.trim().toUpperCase();
     if (!(code in KNOWN_TYPES)) unknownCodes.set(code, (unknownCodes.get(code) ?? 0) + 1);
     const where = r.localityOverride ?? locality(r.zip5, countyZips);
+    if (r.localityOverride) trace?.overridesUsed.add(rowKey(r));
     if (where === null) unknownLocalityCents += r.cents;
     const cell = matrix[where ?? "other"][donorType(code)];
     cell.cents += r.cents;
@@ -189,8 +202,10 @@ export function summarize(
     for (const r of f.rows) {
       if (r.memo) continue;
       if (RAISED_FORMS.has(r.formType)) contribution(r);
-      else if (SPENT_FORMS.has(r.formType)) spentCents += r.cents;
-      else if (r.formType === "B1" && r.amtForgCents) {
+      else if (SPENT_FORMS.has(r.formType)) {
+        trace?.counted.add(rowKey(r));
+        spentCents += r.cents;
+      } else if (r.formType === "B1" && r.amtForgCents) {
         // Form 460 reports a forgiven loan again as a Schedule A contribution, which is counted above.
         const forgiven = r.amtForgCents;
         const onA = f.rows.some(
@@ -214,6 +229,7 @@ export function summarize(
   for (const f of latestPerFiler(filings)) {
     for (const r of f.rows) {
       if (r.memo || r.formType !== "B1") continue;
+      trace?.counted.add(rowKey(r));
       const outstanding = r.amtCloseCents ?? r.cents;
       if (isCandidate(r)) loansFromCandidateCents += outstanding;
       else {
@@ -223,6 +239,7 @@ export function summarize(
     }
   }
   for (const r of lateLoans) {
+    trace?.counted.add(rowKey(r));
     const fromCandidate = isCandidate(r);
     if (fromCandidate) loansFromCandidateCents += r.cents;
     else {
