@@ -11,8 +11,8 @@ const CORRECTION: Correction = {
   asFiled: "9451",
   correctedTo: "94501",
   reason: "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
-  decidedBy: "the maintainer",
-  decidedOn: "2026-11-01",
+  decidedBy: "human",
+  decidedAt: "2026-11-01T13:15:55Z",
 };
 
 // Contributor names here are made up.
@@ -75,9 +75,19 @@ describe("parseCorrections", () => {
   test.each([
     ["not an object with a list", { corrections: "x" }],
     ["a missing key", { corrections: [{ ...CORRECTION, reason: undefined }] }],
-    ["an empty value", { corrections: [{ ...CORRECTION, decidedBy: " " }] }],
+    ["an empty value", { corrections: [{ ...CORRECTION, reason: " " }] }],
+    [
+      "a decidedBy that is neither agent nor human",
+      { corrections: [{ ...CORRECTION, decidedBy: "the maintainer" }] },
+    ],
     ["an unknown key", { corrections: [{ ...CORRECTION, note: "x" }] }],
-    ["a malformed date", { corrections: [{ ...CORRECTION, decidedOn: "11/01/2026" }] }],
+    ["a date without a time", { corrections: [{ ...CORRECTION, decidedAt: "2026-11-01" }] }],
+    ["a timestamp without seconds", { corrections: [{ ...CORRECTION, decidedAt: "2026-11-01T13:15Z" }] }],
+    [
+      "a timestamp that is not UTC",
+      { corrections: [{ ...CORRECTION, decidedAt: "2026-11-01T13:15:55-07:00" }] },
+    ],
+    ["an impossible timestamp", { corrections: [{ ...CORRECTION, decidedAt: "2026-13-45T13:15:55Z" }] }],
     ["a contributor-identifying field", { corrections: [{ ...CORRECTION, field: "Entity_Nam L" }] }],
   ])("rejects %s", (_name, json) => {
     expect(() => parseCorrections(json)).toThrow(/corrections\.json/);

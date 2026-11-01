@@ -15,7 +15,7 @@ const KEYS = [
   "correctedTo",
   "reason",
   "decidedBy",
-  "decidedOn",
+  "decidedAt",
 ] as const;
 
 /** Columns that identify a contributor; a correction there would put a name in the log and finance.json. */
@@ -38,8 +38,12 @@ export function parseCorrections(json: unknown): Correction[] {
     for (const k of Object.keys(rec)) {
       if (!(KEYS as readonly string[]).includes(k)) throw new Error(`${at}: unknown key "${k}"`);
     }
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(rec.decidedOn as string)) {
-      throw new Error(`${at}: "decidedOn" must be YYYY-MM-DD`);
+    if (rec.decidedBy !== "agent" && rec.decidedBy !== "human") {
+      throw new Error(`${at}: "decidedBy" must be "agent" or "human"`);
+    }
+    const at8601 = rec.decidedAt as string;
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(at8601) || Number.isNaN(Date.parse(at8601))) {
+      throw new Error(`${at}: "decidedAt" must be a UTC timestamp like 2026-11-01T13:15:55Z`);
     }
     if (IDENTIFYING.has(rec.field as string)) {
       throw new Error(`${at}: "${rec.field}" identifies a contributor and cannot be corrected here`);

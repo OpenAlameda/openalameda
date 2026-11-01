@@ -326,8 +326,8 @@ describe("transcription corrections", () => {
     asFiled: "9451",
     correctedTo: "94501",
     reason: "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
-    decidedBy: "the maintainer",
-    decidedOn: "2026-11-01",
+    decidedBy: "human" as const,
+    decidedAt: "2026-11-01T13:15:55Z",
     race: "mayor",
     candidate: "tony-daysog",
   };
@@ -337,8 +337,17 @@ describe("transcription corrections", () => {
       field: "ZIP code",
       reading: "written as 9451, read as 94501",
       reason: applied.reason,
-      decision: "decided by the maintainer on November 1, 2026",
+      decision: "decided by a person on Nov 1, 2026, 5:15 AM PT",
     });
+  });
+
+  it("correctionLine names an agent decision and converts to Pacific time across daylight saving", () => {
+    expect(correctionLine({ ...applied, decidedBy: "agent" }).decision).toBe(
+      "decided by an AI agent on Nov 1, 2026, 5:15 AM PT",
+    );
+    expect(correctionLine({ ...applied, decidedAt: "2026-07-04T03:05:00Z" }).decision).toBe(
+      "decided by a person on Jul 3, 2026, 8:05 PM PT",
+    );
   });
 
   it("correctionLine falls back to the column name for a field it has no words for", () => {

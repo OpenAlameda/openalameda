@@ -42,7 +42,7 @@ test("a candidate with a transcription correction shows how we read the filing; 
   expect(html).toContain("How we read the filings");
   expect(html).toContain("ZIP code");
   expect(html).toContain("written as 9451, read as 94501");
-  expect(html).toContain("decided by the maintainer on November 1, 2026");
+  expect(html).toContain("decided by a person on Nov 1, 2026, 5:15 AM PT");
   expect(await text("mayor/tracy-jensen")).not.toContain("How we read the filings");
 });
 

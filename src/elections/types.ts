@@ -105,9 +105,10 @@ export type Correction = {
   asFiled: string;
   correctedTo: string;
   reason: string;
-  decidedBy: string;
-  /** ISO YYYY-MM-DD. */
-  decidedOn: string;
+  /** Whether an AI agent or a person made the reading decision. */
+  decidedBy: "agent" | "human";
+  /** ISO 8601 UTC timestamp with seconds, e.g. 2026-11-01T13:15:55Z. */
+  decidedAt: string;
 };
 /** A correction as finance.json carries it: the log entry plus the race and candidate it touched. */
 export type AppliedCorrection = Correction & { race: string | null; candidate: string | null };

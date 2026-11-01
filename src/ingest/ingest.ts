@@ -309,7 +309,7 @@ export function serializeFinance(f: FinanceFile): string {
         correctedTo: c.correctedTo,
         reason: c.reason,
         decidedBy: c.decidedBy,
-        decidedOn: c.decidedOn,
+        decidedAt: c.decidedAt,
         race: c.race,
         candidate: c.candidate,
       }))

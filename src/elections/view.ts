@@ -210,6 +210,20 @@ const FIELD_WORDS: Record<string, string> = {
   Description: "description",
 };
 
+/** "2026-11-01T13:15:55Z" -> "Nov 1, 2026, 6:15 AM PT": Pacific time, so the text never depends on the server. */
+function formatPacific(iso: string): string {
+  const text = new Date(iso).toLocaleString("en-US", {
+    timeZone: "America/Los_Angeles",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  // Newer ICU puts a narrow no-break space before AM/PM.
+  return `${text.replace(/\u202f/g, " ")} PT`;
+}
+
 /** One correction in words for the candidate page. These are the only places that wording lives. */
 export function correctionLine(c: AppliedCorrection): {
   field: string;
@@ -221,7 +235,7 @@ export function correctionLine(c: AppliedCorrection): {
     field: FIELD_WORDS[c.field] ?? c.field,
     reading: `written as ${c.asFiled}, read as ${c.correctedTo}`,
     reason: c.reason,
-    decision: `decided by ${c.decidedBy} on ${formatDate(c.decidedOn)}`,
+    decision: `decided by ${c.decidedBy === "agent" ? "an AI agent" : "a person"} on ${formatPacific(c.decidedAt)}`,
   };
 }
 

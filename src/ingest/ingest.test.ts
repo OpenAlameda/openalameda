@@ -340,8 +340,8 @@ describe("ingest", () => {
       asFiled: "9451",
       correctedTo: "94501",
       reason: "Filer wrote a four-digit ZIP.",
-      decidedBy: "the maintainer",
-      decidedOn: "2026-11-01",
+      decidedBy: "human" as const,
+      decidedAt: "2026-11-01T13:15:55Z",
     };
     const { finance } = ingest({ ...input(), corrections: [correction] });
     expect(finance.corrections).toEqual([{ ...correction, race: "council", candidate: "pat-testperson" }]);
@@ -363,8 +363,8 @@ describe("ingest", () => {
           asFiled: "x",
           correctedTo: "y",
           reason: "r",
-          decidedBy: "d",
-          decidedOn: "2026-11-01",
+          decidedBy: "agent",
+          decidedAt: "2026-11-01T13:15:55Z",
         },
       ],
     });

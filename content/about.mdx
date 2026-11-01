@@ -44,7 +44,7 @@ Two kinds of money are in the "raised" total but kept out of the grids and perce
 
 A donor counts as "City of Alameda" if their ZIP code is 94501 or 94502. Any other ZIP code in Alameda County counts as "Alameda County." Everything else, and any gift with a missing or unreadable ZIP, is "Other." The county list comes from the Census Bureau's 2020 table that matches ZIP areas to counties. A ZIP code that crosses the county line is assigned to the county that holds the largest share of its land. Some ZIP codes, such as 94708 (Kensington and the Berkeley hills), are therefore not on the list.
 
-When a paper filing is unclear, we record each reading decision, show it on the candidate's page, and keep the log in `data/elections/<election>/corrections.json`.
+When a paper filing is unclear, we record each reading decision, including whether an AI agent or a person made it and when, show it on the candidate's page, and keep the log in `data/elections/<election>/corrections.json`.
 
 The type of donor comes from the code on the filing. "Individual" is a person. "Organization" is a business, union or other group. "Political" is another committee or a party.
 

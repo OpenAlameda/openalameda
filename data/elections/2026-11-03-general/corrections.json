@@ -7,8 +7,8 @@
       "asFiled": "9451",
       "correctedTo": "94501",
       "reason": "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
-      "decidedBy": "the maintainer",
-      "decidedOn": "2026-11-01"
+      "decidedBy": "human",
+      "decidedAt": "2026-11-01T13:15:55Z"
     }
   ]
 }
