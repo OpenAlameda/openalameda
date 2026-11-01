@@ -5,12 +5,12 @@ import {
   type BandCents,
   type DonorType,
   type KeyDate,
+  type MeasureRace,
   type AppliedCorrection,
   type Locality,
   type MoneySummary,
   type Race,
 } from "./types";
-import { candidateKeys } from "./slugs";
 
 /** A heatmap selection: a cell, a whole row (`from`) or a whole column (`type`). */
 export type Slice = { from?: Locality; type?: DonorType };
@@ -75,20 +75,15 @@ export function cellLabel(from: Locality, type: DonorType, unknownZip = false): 
   return `${word} ${TYPE_WORD[type]}`;
 }
 
-/** The largest nonzero cells by dollars, as shares of dollars from others. */
-export function topCells(
-  s: MoneySummary,
-  n = 3,
-): { from: Locality; type: DonorType; label: string; pct: string }[] {
+/** The three largest nonzero cells by dollars, as shares of dollars from others. */
+export function topCells(s: MoneySummary): { label: string; pct: string }[] {
   const whole = othersCents(s);
   const cells = LOCALITIES.flatMap((from) =>
     DONOR_TYPES.map((type) => ({ from, type, cents: s.matrix[from][type].cents })),
   ).filter((c) => c.cents > 0);
   // Array.prototype.sort is stable, so ties keep row-major order.
   cells.sort((a, b) => b.cents - a.cents);
-  return cells.slice(0, n).map(({ from, type, cents }) => ({
-    from,
-    type,
+  return cells.slice(0, 3).map(({ from, type, cents }) => ({
     label: cellLabel(from, type, hasUnknownZip(s)),
     pct: pct(cents, whole),
   }));
@@ -286,12 +281,12 @@ export function correctionsFor(
   return (corrections ?? []).filter((c) => c.race === race && c.candidate === candidate);
 }
 
-/** A race's corrections by candidate or measure side, for the race page; entries with none are left out. */
+/** A measure's corrections by side, for the race page; sides with none are left out. */
 export function raceCorrections(
   corrections: AppliedCorrection[] | undefined,
-  race: Race,
+  race: MeasureRace,
 ): { key: string; name: string; lines: ReturnType<typeof correctionLine>[] }[] {
-  return candidateKeys(race)
+  return (["yes", "no"] as const)
     .map((key) => ({
       key,
       name: displayName(race, key),

@@ -107,18 +107,14 @@ describe("topCells", () => {
       "other/individual": 75,
     });
     expect(topCells(s)).toEqual([
-      { from: "alameda", type: "individual", label: "Alameda individuals", pct: "62%" },
-      { from: "county", type: "individual", label: "county individuals", pct: "14%" },
-      { from: "other", type: "political", label: "non-local political", pct: "9%" },
+      { label: "Alameda individuals", pct: "62%" },
+      { label: "county individuals", pct: "14%" },
+      { label: "non-local political", pct: "9%" },
     ]);
   });
-  it("returns fewer than n when fewer are nonzero, and none when empty", () => {
+  it("returns fewer than three when fewer are nonzero, and none when empty", () => {
     expect(topCells(summary({ "alameda/individual": 5 }))).toHaveLength(1);
     expect(topCells(summary())).toEqual([]);
-  });
-  it("honors n", () => {
-    const s = summary({ "alameda/individual": 5, "county/individual": 4, "other/individual": 3 });
-    expect(topCells(s, 2)).toHaveLength(2);
   });
 });
 

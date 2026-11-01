@@ -46,16 +46,14 @@ function Name({
   text,
   width = TEXT_WIDTH,
   sizes = NAME_SIZES,
-  lines = 2,
 }: {
   text: string;
   width?: number;
   sizes?: number[];
-  lines?: number;
 }) {
-  const size = fitFontSize(text, width, sizes, lines);
+  const size = fitFontSize(text, width, sizes);
   return (
-    <div style={{ display: "block", fontSize: size, lineHeight: 1.1, maxWidth: width, lineClamp: lines }}>
+    <div style={{ display: "block", fontSize: size, lineHeight: 1.1, maxWidth: width, lineClamp: 2 }}>
       {text}
     </div>
   );

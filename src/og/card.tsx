@@ -13,17 +13,17 @@ export const TEAL = "#0B6E6E";
 export const PAPER = "#FAF7F2";
 
 /**
- * The largest of `sizes` (descending) at which `text` fits in `lines` lines of `maxWidth` pixels, by an
+ * The largest of `sizes` (descending) at which `text` fits in two lines of `maxWidth` pixels, by an
  * average-glyph-width estimate that leaves room for word-wrap waste. Falls back to the smallest size;
  * `lineClamp` on the element then cuts what still overflows.
  */
-export function fitFontSize(text: string, maxWidth: number, sizes: number[], lines = 2): number {
+export function fitFontSize(text: string, maxWidth: number, sizes: number[]): number {
   const AVG_GLYPH = 0.65; // em, Poppins SemiBold with margin for wrapping
   const longestWord = Math.max(...text.split(/\s+/).map((w) => w.length));
   // A word cannot wrap, so it must fit on one line by itself.
   const fit = sizes.find((size) => {
     const perLine = Math.floor(maxWidth / (size * AVG_GLYPH));
-    return longestWord <= perLine && text.length <= perLine * lines;
+    return longestWord <= perLine && text.length <= perLine * 2;
   });
   return fit ?? sizes[sizes.length - 1];
 }
