@@ -33,7 +33,7 @@ Node 24 and pnpm are pinned (`.nvmrc`, `engines`, `packageManager`); run pnpm th
 - Report unknowns as unknown.
 - Fix log noise where it is emitted.
 - Write comments that say what and why, never history.
-- Don't hard-wrap Markdown: one line per paragraph or list item, and let the editor soft-wrap. Tables and code blocks keep their own lines.
+- Look for an existing helper before writing one; when two modules need the same helper, promote it to a shared module instead of copying it.
 - Keep project facts in the repo; keep expiring status in issues and PRs.
 - Record future work as GitHub issues.
 
