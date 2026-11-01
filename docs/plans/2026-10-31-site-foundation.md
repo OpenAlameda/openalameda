@@ -168,8 +168,6 @@ These steps are outward-facing. The user approved them in the spec.
   - `findMeta(html: string, key: string): string | undefined`. It matches `<meta name=…>` or `<meta property=…>`, plus `<link rel="canonical">` when `key === 'canonical'`.
   - Task 4 sets `checkImages` to default `true`. Until then it defaults to `false`.
 
-> **Note (2026-11-01):** once Task 4 landed, nothing turned image checks off, so the `checkImages` option was removed; `checkSite` takes only `baseUrl` and always checks images.
-
 - [ ] **Step 1: Write the failing e2e test.**
   - `global-setup.ts` runs `pnpm build`, then `next start -p 3100`, setting `SITE_URL=http://localhost:3100` for both. The build needs it too, because static pages bake `metadataBase` in at build time. The setup waits until `/` returns 200 and kills the server in teardown.
   - `site.test.ts`:
