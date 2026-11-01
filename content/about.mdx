@@ -24,15 +24,15 @@ Campaign finance data comes from the <a href={SOURCE_URL}>City of Alameda campai
 
 ### What is counted and what is not
 
-Everything on the election pages comes from the campaign disclosure filings candidates and committees send the City. We collect them by hand, one at a time and at a human pace, so we are gentle on the City's portal and so a person looks at each filing. Because of that, the numbers are only as current as the date shown on each page ("data through"), and they do not update on their own.
+Everything on the election pages comes from the campaign disclosure filings candidates and committees send the City. Filing collection is supervised, directed by a person and done at a pace which is respectful of the resources of the City's portal. Because of that, the numbers are only as current as the date shown on each page ("data through"), and they do not update on their own.
 
-The figures cover itemized contributions only. A campaign has to list a donor by name once that donor's gifts in a campaign period add up to $100 or more. Smaller gifts are reported only as a lump sum, so they are not in the donor breakdowns. Each card says how much was raised and spent in all, and the grids and percentages describe the itemized money from others.
+The figures cover itemized contributions only. A campaign is required to provide information about a donor's gifts once they total $100 or more in a campaign period. Smaller gifts are reported only as a lump sum, so they are not in the donor breakdowns. Each card says how much was raised and spent in all, and the grids and percentages describe the itemized money from others.
 
 ### Amendments, late reports and loans
 
-When a campaign amends a report, we use the newest version and ignore the one it replaced. Reports filed on paper are typed in by hand, and each is marked "from paper filing." For those, we compare the summary page with the schedules behind it. If they disagree, the card uses the schedules and we note the difference ("reported vs. schedule"). We do not check the "loans received" line, because it repeats from one report to the next.
+When a campaign amends a report, we use the newest version and ignore the one it replaced. Reports filed on paper are transcribed, and each is marked "from paper filing." For those, we compare the summary page with the schedules behind it. If they disagree, the card uses the schedules and we note the difference ("reported vs. schedule"). The "loans received" line repeats from one report to the next, so we only note changes there.
 
-A loan is not money raised. A loan the candidate made to their own campaign is shown on its own line, as "loaned by the candidate." If a candidate forgives a loan, the campaign's Form 460 already reports it as a contribution, so we count it once, as money from the candidate, and do not add it on top.
+A loan is not money raised. A loan the candidate made to their own campaign is shown on its own line, as "loaned by the candidate." If a candidate forgives a loan, the campaign's Form 460 would then report it as a contribution, so we count it once, as money from the candidate, and do not add it on top.
 
 Late contribution reports (the 24-hour "497" reports) work the same way: the loans on them are counted as loans, not as money raised.
 
@@ -40,13 +40,15 @@ Late contribution reports (the 24-hour "497" reports) work the same way: the loa
 
 Two kinds of money are in the "raised" total but kept out of the grids and percentages, so those show who else is paying: the candidate's own contributions, and money carried over from the candidate's earlier campaign committees. Each appears as its own line on the card.
 
-### Where donors live, and what kind of donor
+### Where and who donations come from
+
+We categorize donation sources geographically and by donor type.
+
+Geographically, we divide donations into "Inside the city of Alameda," "Inside Alameda County," and "Everywhere Else." For donor type, we sort into "Individual", "Organization" for businesses, unions, or other groups; and "Political" for donations from other campaigns, political action committees (PACs), and political parties. All of this information comes directly from the campaign's filings.
 
 A donor counts as "City of Alameda" if their ZIP code is 94501 or 94502. Any other ZIP code in Alameda County counts as "Alameda County." Everything else, and any gift with a missing or unreadable ZIP, is "Other." The county list comes from the Census Bureau's 2020 table that matches ZIP areas to counties. A ZIP code that crosses the county line is assigned to the county that holds the largest share of its land. Some ZIP codes, such as 94708 (Kensington and the Berkeley hills), are therefore not on the list.
 
 When a paper filing is unclear, we record each reading decision, including whether an AI agent or a person made it and when, show it on the candidate's page, and keep the log in `data/elections/<election>/corrections.json`.
-
-The type of donor comes from the code on the filing. "Individual" is a person. "Organization" is a business, union or other group. "Political" is another committee or a party.
 
 ### Outside groups
 
@@ -58,7 +60,7 @@ We never show the name of an individual donor, only totals. Organizations and po
 
 ### Filings we couldn't read
 
-If we could not read a filing, the election page lists it in an amber note under the figures. Those filings are not in the totals.
+Some handwritten filings can be hard to read. We seek to transcribe them faithfully, and record the decisions we make for transparency. In some extreme cases, we may not be able to reach a confident decision; that data is shown separately in an amber-highlighted note and is not included in any totals.
 
 ### Reporting errors
 
