@@ -18,7 +18,6 @@ test("the mayor page names every candidate, labels paper filing and links each c
     expect(html).toContain(`/elections/${SLUG}/mayor/${c.slug}`);
   }
   expect(html).toContain("from paper filing");
-  expect(html).toContain("Reported totals differ from the schedules");
   expect(html).toContain("data through");
 });
 

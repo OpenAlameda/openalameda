@@ -11,7 +11,7 @@ const title = (html: string) => tag(html, /<title>([^<]*)<\/title>/);
 const description = (html: string) => tag(html, /<meta name="description" content="([^"]*)"/);
 const canonical = (html: string) => tag(html, /<link rel="canonical" href="([^"]*)"/);
 
-test("a paper filer's page shows the loan line and the paper label", async () => {
+test("a paper filer's page shows the loan line, the paper label and the reported-totals note", async () => {
   const res = await get("mayor/tony-daysog");
   expect(res.status).toBe(200);
   const html = (await res.text()).replace(/<!-- -->/g, "");
@@ -20,6 +20,7 @@ test("a paper filer's page shows the loan line and the paper label", async () =>
   expect(html).toContain("from paper filing");
   expect(html).toContain("Under $100 (itemized)");
   expect(html).toContain("not all of the small gifts");
+  expect(html).toContain("Reported totals differ from the schedules");
 });
 
 test("the candidate's name is the page's visible h1", async () => {

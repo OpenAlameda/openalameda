@@ -125,20 +125,6 @@ export default async function RacePage({ params }: Props) {
                   {formatUsd(summary.outside.opposeCents)} against
                 </p>
               )}
-              {summary && summary.reportedDiffs.length > 0 && (
-                <div className="rounded-md bg-amber-50 p-3 text-sm ring-1 ring-amber-300">
-                  <p className="font-semibold">Reported totals differ from the schedules</p>
-                  <ul className="mt-1 list-disc pl-5">
-                    {summary.reportedDiffs.map((d) => (
-                      <li key={`${d.filed}-${d.line}`}>
-                        Report filed {formatDate(d.filed)}, {d.label.toLowerCase()}: reported{" "}
-                        {formatUsd(d.reportedCents)}, itemized lines add up to {formatUsd(d.scheduleCents)}.
-                        We use the itemized lines.
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </article>
           ))}
         </div>
