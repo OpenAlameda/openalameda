@@ -148,13 +148,17 @@ function stemOf(file: string): string {
   return base.replace(/\.[^.]+$/, "");
 }
 
+/** A row's `Tran_ID`, or `<file stem>-<row number>` when the filing leaves it blank. */
+export function tranIdOf(file: string, record: Record<string, string>, index: number): string {
+  return (record["Tran_ID"] ?? "").trim() || `${stemOf(file)}-${index + 1}`;
+}
+
 /** Maps CAL-named records to CalRows; a missing column reads as empty (transcribed filings omit some). */
 export function toCalRows(
   file: string,
   records: Record<string, string>[],
   source: "efile" | "paper",
 ): CalRow[] {
-  const stem = stemOf(file);
   return records.map((r, i) => {
     const get = (...names: string[]) => {
       for (const n of names) {
@@ -173,7 +177,7 @@ export function toCalRows(
       filerName: name,
       recType: get("Rec_Type"),
       formType: form === "496" ? "F496" : form,
-      tranId: get("Tran_ID") || `${stem}-${i + 1}`,
+      tranId: tranIdOf(file, r, i),
       entityCd: get("Entity_Cd"),
       entityLast: get("Entity_Nam L"),
       entityFirst: get("Entity_Nam F"),

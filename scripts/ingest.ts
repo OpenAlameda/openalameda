@@ -6,6 +6,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, join } from "node:path";
 import type { RacesFile } from "../src/elections/types.ts";
+import { applyCorrections, parseCorrections } from "../src/ingest/corrections.ts";
 import { crossCheck, ingest, serializeFinance } from "../src/ingest/ingest.ts";
 import type { Attribution } from "../src/ingest/outside.ts";
 import { filerKey, parseManifest, parseSummary, parseTsv, toCalRows } from "../src/ingest/raw.ts";
@@ -61,8 +62,13 @@ function records(text: string): Record<string, string>[] {
 }
 
 const manifest = parseManifest(readFileSync(join(rawDir, "manifest.tsv"), "utf8"));
-const filings: LoadedFiling[] = [];
 const readLog: string[] = [];
+const sources: {
+  entry: (typeof manifest)[number];
+  source: "efile" | "paper";
+  summaryPath: string | null;
+  records: Record<string, string>[];
+}[] = [];
 for (const entry of manifest) {
   let text: string;
   let summaryPath: string | null = null;
@@ -86,15 +92,29 @@ for (const entry of manifest) {
     // viewer-only, paper-not-downloaded and the like: no transactions to read.
     continue;
   }
-  const rows = toCalRows(entry.path, records(text), source);
-  filings.push({
-    entry,
-    filerKey: rows[0]?.filerKey ?? filerKey("", entry.filer),
-    filerName: rows[0]?.filerName ?? entry.filer,
-    rows,
-    summary: summaryPath ? parseSummary(readFileSync(summaryPath, "utf8")) : null,
-  });
+  sources.push({ entry, source, summaryPath, records: records(text) });
 }
+
+// Corrections overlay the records read above, before any row is counted; raw files are never written.
+const correctionsPath = join(electionDir, "corrections.json");
+const corrections = parseCorrections(
+  existsSync(correctionsPath) ? JSON.parse(readFileSync(correctionsPath, "utf8")) : undefined,
+);
+const corrected = applyCorrections(
+  sources.map((s) => ({ path: s.entry.path, records: s.records })),
+  corrections,
+  readLog,
+);
+const filings: LoadedFiling[] = sources.map((s, i) => {
+  const rows = toCalRows(s.entry.path, corrected[i].records, s.source);
+  return {
+    entry: s.entry,
+    filerKey: rows[0]?.filerKey ?? filerKey("", s.entry.filer),
+    filerName: rows[0]?.filerName ?? s.entry.filer,
+    rows,
+    summary: s.summaryPath ? parseSummary(readFileSync(s.summaryPath, "utf8")) : null,
+  };
+});
 
 const races = JSON.parse(readFileSync(join(electionDir, "races.json"), "utf8")) as RacesFile;
 const zips = JSON.parse(readFileSync(join("data", "geo", "alameda-county-zips.json"), "utf8")) as {
@@ -110,6 +130,7 @@ const { finance, log } = ingest({
   manifest,
   races,
   attributions,
+  corrections,
   countyZips: new Set(zips.zips),
   collectedOn,
 });

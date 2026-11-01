@@ -95,6 +95,22 @@ export type Filing = {
   file: string;
 };
 export type UnreadFiling = { filer: string; form: string; filed: string; period: string; note: string };
+/** A hand-kept decision to read a filing's field differently from how the filer wrote it. */
+export type Correction = {
+  /** The manifest path of the source filing, as in `Filing.file`. */
+  filing: string;
+  tranId: string;
+  /** The CAL column name. */
+  field: string;
+  asFiled: string;
+  correctedTo: string;
+  reason: string;
+  decidedBy: string;
+  /** ISO YYYY-MM-DD. */
+  decidedOn: string;
+};
+/** A correction as finance.json carries it: the log entry plus the race and candidate it touched. */
+export type AppliedCorrection = Correction & { race: string | null; candidate: string | null };
 export type FinanceFile = {
   election: string;
   dataThrough: string;
@@ -105,4 +121,5 @@ export type FinanceFile = {
   unmatched: Unmatched[];
   filings: Filing[];
   unreadFilings: UnreadFiling[];
+  corrections: AppliedCorrection[];
 };

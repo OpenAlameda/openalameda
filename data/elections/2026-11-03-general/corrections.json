@@ -1,0 +1,14 @@
+{
+  "corrections": [
+    {
+      "filing": "pdf/daysog-mayor-460-10222026.pdf",
+      "tranId": "daysog-mayor-460-10222026-C-1",
+      "field": "Entity_ZIP4",
+      "asFiled": "9451",
+      "correctedTo": "94501",
+      "reason": "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
+      "decidedBy": "the maintainer",
+      "decidedOn": "2026-11-01"
+    }
+  ]
+}

@@ -294,8 +294,8 @@
       "matrix": {
         "alameda": {
           "individual": {
-            "cents": 515000,
-            "count": 7
+            "cents": 715000,
+            "count": 8
           },
           "organization": {
             "cents": 0,
@@ -322,8 +322,8 @@
         },
         "other": {
           "individual": {
-            "cents": 207500,
-            "count": 2
+            "cents": 7500,
+            "count": 1
           },
           "organization": {
             "cents": 0,
@@ -345,7 +345,7 @@
       "bandsByCell": {
         "alameda": {
           "individual": {
-            "1000+": 300000,
+            "1000+": 500000,
             "500-999": 100000,
             "250-499": 95000,
             "100-249": 20000,
@@ -391,7 +391,7 @@
         },
         "other": {
           "individual": {
-            "1000+": 200000,
+            "1000+": 0,
             "500-999": 0,
             "250-499": 0,
             "100-249": 0,
@@ -413,7 +413,7 @@
           }
         }
       },
-      "unknownLocalityCents": 207500,
+      "unknownLocalityCents": 7500,
       "outside": {
         "supportCents": 0,
         "opposeCents": 0
@@ -3812,5 +3812,19 @@
       "file": "tracy-jensen-497-a0-10222026.xls"
     }
   ],
-  "unreadFilings": []
+  "unreadFilings": [],
+  "corrections": [
+    {
+      "filing": "pdf/daysog-mayor-460-10222026.pdf",
+      "tranId": "daysog-mayor-460-10222026-C-1",
+      "field": "Entity_ZIP4",
+      "asFiled": "9451",
+      "correctedTo": "94501",
+      "reason": "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
+      "decidedBy": "the maintainer",
+      "decidedOn": "2026-11-01",
+      "race": "mayor",
+      "candidate": "tony-daysog"
+    }
+  ]
 }

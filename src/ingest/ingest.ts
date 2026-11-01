@@ -6,8 +6,10 @@ import {
   DONOR_TYPES,
   LOCALITIES,
   type BandCents,
+  type AppliedCorrection,
   type Candidate,
   type Committee,
+  type Correction,
   type Filing,
   type FinanceFile,
   type Matrix,
@@ -25,11 +27,19 @@ export type IngestInput = {
   manifest: ManifestEntry[];
   races: RacesFile;
   attributions: Record<string, Attribution>;
+  /** Corrections already applied to `filings`' rows; ingest records them in finance.json. */
+  corrections: Correction[];
   countyZips: Set<string>;
   collectedOn: string;
 };
 
-type Entrant = { key: string; committees: Committee[]; candidate: Candidate | null };
+type Entrant = {
+  key: string;
+  race: string;
+  candidateSlug: string | null;
+  committees: Committee[];
+  candidate: Candidate | null;
+};
 
 /** Every candidate and measure side, in races.json display order. */
 function entrants(races: RacesFile): Entrant[] {
@@ -37,11 +47,23 @@ function entrants(races: RacesFile): Entrant[] {
   for (const race of races.races) {
     if (race.kind === "office") {
       for (const c of race.candidates) {
-        out.push({ key: `${race.slug}/${c.slug}`, committees: c.committees, candidate: c });
+        out.push({
+          key: `${race.slug}/${c.slug}`,
+          race: race.slug,
+          candidateSlug: c.slug,
+          committees: c.committees,
+          candidate: c,
+        });
       }
     } else {
       for (const side of ["yes", "no"] as const) {
-        out.push({ key: `${race.slug}/${side}`, committees: race.sides[side].committees, candidate: null });
+        out.push({
+          key: `${race.slug}/${side}`,
+          race: race.slug,
+          candidateSlug: null,
+          committees: race.sides[side].committees,
+          candidate: null,
+        });
       }
     }
   }
@@ -158,6 +180,14 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
     }
   }
 
+  // Each correction, with the race and candidate whose committee filed the report it touches.
+  const corrections: AppliedCorrection[] = input.corrections.map((c) => {
+    const filing = input.filings.find((f) => f.entry.path === c.filing);
+    if (!filing) throw new Error(`correction ${c.filing} ${c.tranId}: no such filing`);
+    const owner = people.find((p) => ownedBy(p.committees, filing.filerKey, filing.filerName));
+    return { ...c, race: owner?.race ?? null, candidate: owner?.candidateSlug ?? null };
+  });
+
   const finance: FinanceFile = {
     election: races.election,
     dataThrough,
@@ -167,6 +197,7 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
     unmatched: outside.unmatched,
     filings: used.map(toFiling),
     unreadFilings,
+    corrections,
   };
   return { finance, log };
 }
@@ -269,6 +300,20 @@ export function serializeFinance(f: FinanceFile): string {
     unreadFilings: f.unreadFilings
       .map((u) => ({ filer: u.filer, form: u.form, filed: u.filed, period: u.period, note: u.note }))
       .sort((a, b) => cmp([a.filer, b.filer], [a.filed, b.filed], [a.period, b.period])),
+    corrections: f.corrections
+      .map((c) => ({
+        filing: c.filing,
+        tranId: c.tranId,
+        field: c.field,
+        asFiled: c.asFiled,
+        correctedTo: c.correctedTo,
+        reason: c.reason,
+        decidedBy: c.decidedBy,
+        decidedOn: c.decidedOn,
+        race: c.race,
+        candidate: c.candidate,
+      }))
+      .sort((a, b) => cmp([a.filing, b.filing], [a.tranId, b.tranId], [a.field, b.field])),
   };
   return `${JSON.stringify(out, null, 2)}\n`;
 }

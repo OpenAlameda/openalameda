@@ -211,6 +211,7 @@ function input(filings = fixtureFilings()): IngestInput {
         why: "names the candidate",
       },
     },
+    corrections: [],
     countyZips: new Set(["94501", "94502", "94607"]),
     collectedOn: "2026-10-31",
   };
@@ -329,6 +330,45 @@ describe("ingest", () => {
   test("serialized output names no individual contributor", () => {
     const text = serializeFinance(ingest(input()).finance);
     for (const name of SURNAMES) expect(text).not.toContain(name);
+  });
+
+  test("finance.json carries each correction with its race and candidate, and only the allowed fields", () => {
+    const correction = {
+      filing: "cand-460-oct.xls",
+      tranId: "T2",
+      field: "Entity_ZIP4",
+      asFiled: "9451",
+      correctedTo: "94501",
+      reason: "Filer wrote a four-digit ZIP.",
+      decidedBy: "the maintainer",
+      decidedOn: "2026-11-01",
+    };
+    const { finance } = ingest({ ...input(), corrections: [correction] });
+    expect(finance.corrections).toEqual([{ ...correction, race: "council", candidate: "pat-testperson" }]);
+    const parsed = JSON.parse(serializeFinance(finance)) as { corrections: Record<string, unknown>[] };
+    expect(Object.keys(parsed.corrections[0]).sort()).toEqual(
+      [...Object.keys(correction), "race", "candidate"].sort(),
+    );
+    expect(serializeFinance(finance)).not.toContain(SURNAMES[0]);
+  });
+
+  test("a correction on a filing no committee in the race owns carries null race and candidate", () => {
+    const { finance } = ingest({
+      ...input(),
+      corrections: [
+        {
+          filing: "pac-460.xls",
+          tranId: "D1",
+          field: "Entity_ZIP4",
+          asFiled: "x",
+          correctedTo: "y",
+          reason: "r",
+          decidedBy: "d",
+          decidedOn: "2026-11-01",
+        },
+      ],
+    });
+    expect(finance.corrections[0]).toMatchObject({ race: null, candidate: null });
   });
 
   test("unreadFilings lists only paper-not-downloaded filings of a race's own committees (D13)", () => {
