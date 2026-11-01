@@ -42,6 +42,18 @@ export function CandidateMoney({
     </Heading>
   );
 
+  // Card variant only; the race page draws its own outside line (see [race]/page.tsx), the candidate page a section.
+  // Outside groups can spend for a candidate who has filed nothing, so every status shows it.
+  const outside = summary?.outside;
+  const outsideLine = variant === "card" &&
+    outside &&
+    (outside.supportCents > 0 || outside.opposeCents > 0) && (
+      <p className="text-sm">
+        Outside groups: {formatUsd(outside.supportCents)} supporting · {formatUsd(outside.opposeCents)}{" "}
+        opposing
+      </p>
+    );
+
   if (!summary || summary.status === "no-filings") {
     return (
       <div>
@@ -51,6 +63,7 @@ export function CandidateMoney({
             ? "No campaign finance filings on record with the City for either side."
             : "No campaign finance filings on record with the City."}
         </p>
+        {outsideLine}
       </div>
     );
   }
@@ -63,13 +76,13 @@ export function CandidateMoney({
           Filed a short form: expects to raise and spend under $2,000. No committee.
           {shortFormFiled ? ` Filed ${formatDate(shortFormFiled)}.` : ""}
         </p>
+        {outsideLine}
       </div>
     );
   }
 
   const split = shares(summary);
   const top = topCells(summary);
-  const { supportCents, opposeCents } = summary.outside;
   return (
     <div className="space-y-2">
       {title}
@@ -90,12 +103,7 @@ export function CandidateMoney({
           )}
         </ul>
       )}
-      {/* Card variant only; the race page draws its own outside line (see [race]/page.tsx), the candidate page a section. */}
-      {variant === "card" && (supportCents > 0 || opposeCents > 0) && (
-        <p className="text-sm">
-          Outside groups: {formatUsd(supportCents)} supporting · {formatUsd(opposeCents)} opposing
-        </p>
-      )}
+      {outsideLine}
       {split ? (
         <>
           <p className="text-sm">
