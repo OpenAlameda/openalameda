@@ -12,7 +12,7 @@ export const PAGES = {
   },
   elections: {
     title: "Elections",
-    description: "Campaign contributions in City of Alameda elections. The explorer is on its way.",
+    description: "Campaign money in City of Alameda elections, race by race.",
     path: "/elections",
   },
   meetings: {

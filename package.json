@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "test": "vitest run --project unit",
     "test:e2e": "vitest run --project e2e",
-    "check-site": "node scripts/check-site.ts"
+    "check-site": "node scripts/check-site.ts",
+    "ingest": "node scripts/ingest.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",

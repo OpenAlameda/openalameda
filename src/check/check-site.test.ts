@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { pngSize } from "@/lib/png-size";
-import { checkSite, findMeta, parseBaseUrl } from "./check-site";
+import { ROUTES, checkSite, findMeta, parseBaseUrl } from "./check-site";
 
 const html = `<!DOCTYPE html><html><head>
 <title>Elections · OpenAlameda</title>
@@ -72,14 +72,14 @@ function cardUrl(base: string, path: string): string {
 }
 
 /** A page carrying every tag checkSite requires, with overrides by key. */
-function page(base: string, path: string, override: Record<string, string | null> = {}): string {
+function page(base: string, path: string, override: Record<string, string | null> = {}, search = ""): string {
   const tags: Record<string, string | null> = {
     description: "d",
     "og:title": "t",
     "og:description": "d",
     "twitter:card": "summary_large_image",
     "og:image": cardUrl(base, path),
-    canonical: path === "/" ? base : `${base}${path}`,
+    canonical: path === "/" ? base : `${base}${path}${search}`,
     ...override,
   };
   const head = Object.entries(tags)
@@ -114,7 +114,8 @@ function serve(base: string, route: string, { tags = {}, image = card }: Overrid
       const path = url.pathname.slice(0, -"/opengraph-image".length) || "/";
       return path === route ? image() : card();
     }
-    return new Response(page(base, url.pathname, url.pathname === route ? tags : {}), { status: 200 });
+    const isRoute = url.pathname + url.search === route;
+    return new Response(page(base, url.pathname, isRoute ? tags : {}, url.search), { status: 200 });
   });
   vi.stubGlobal("fetch", stub);
   return stub;
@@ -143,6 +144,15 @@ describe("checkSite", () => {
     expect(await problemsFor(base, "/about")).toEqual([
       "canonical is /about, expected https://example.org/about",
     ]);
+  });
+
+  test("expects a route's query string in its canonical", async () => {
+    const route = "/elections/2026-11-03-general/city-council/marcie-johnson?from=alameda&type=individual";
+    serve(base, route);
+    expect(await problemsFor(base, route)).toEqual([]);
+    const bare = `${base}${route.split("?")[0]}`;
+    serve(base, route, { tags: { canonical: bare } });
+    expect(await problemsFor(base, route)).toEqual([`canonical is ${bare}, expected ${base}${route}`]);
   });
 
   test("reports every missing tag on a page with an empty head", async () => {
@@ -175,7 +185,7 @@ describe("checkSite", () => {
   test("reports a non-200 status alone", async () => {
     vi.stubGlobal("fetch", async () => new Response("", { status: 404 }));
     const results = await checkSite(base);
-    expect(results.map((r) => r.problems)).toEqual(Array(4).fill(["status 404"]));
+    expect(results.map((r) => r.problems)).toEqual(Array(ROUTES.length).fill(["status 404"]));
   });
 
   test("fetches each og:image exactly as emitted, hash query included", async () => {
@@ -185,7 +195,7 @@ describe("checkSite", () => {
     expect(fetched).toEqual(
       expect.arrayContaining([
         "https://example.org/opengraph-image?abc123",
-        "https://example.org/elections/opengraph-image?abc123",
+        "https://example.org/elections/2026-11-03-general/opengraph-image?abc123",
         "https://example.org/meetings/opengraph-image?abc123",
         "https://example.org/about/opengraph-image?abc123",
       ]),
@@ -208,29 +218,29 @@ describe("checkSite", () => {
   });
 
   test("reports an og:image that responds with a non-PNG content-type", async () => {
-    serve(base, "/elections", {
+    serve(base, "/elections/2026-11-03-general", {
       image: () => new Response("<html></html>", { status: 200, headers: { "content-type": "text/html" } }),
     });
-    expect(await problemsFor(base, "/elections")).toEqual([
-      "og:image https://example.org/elections/opengraph-image?abc123 content-type is text/html, expected image/png",
+    expect(await problemsFor(base, "/elections/2026-11-03-general")).toEqual([
+      "og:image https://example.org/elections/2026-11-03-general/opengraph-image?abc123 content-type is text/html, expected image/png",
     ]);
   });
 
   test("accepts an image/png content-type with parameters", async () => {
-    serve(base, "/elections", {
+    serve(base, "/elections/2026-11-03-general", {
       image: () =>
         new Response(pngHeader(1200, 630), {
           status: 200,
           headers: { "content-type": "image/png; charset=binary" },
         }),
     });
-    expect(await problemsFor(base, "/elections")).toEqual([]);
+    expect(await problemsFor(base, "/elections/2026-11-03-general")).toEqual([]);
   });
 
   test("reports an og:image that responds with a non-200 status", async () => {
-    serve(base, "/elections", { image: () => new Response("", { status: 500 }) });
-    expect(await problemsFor(base, "/elections")).toEqual([
-      "og:image https://example.org/elections/opengraph-image?abc123 status 500",
+    serve(base, "/elections/2026-11-03-general", { image: () => new Response("", { status: 500 }) });
+    expect(await problemsFor(base, "/elections/2026-11-03-general")).toEqual([
+      "og:image https://example.org/elections/2026-11-03-general/opengraph-image?abc123 status 500",
     ]);
   });
 
@@ -257,6 +267,6 @@ describe("checkSite", () => {
     const stub = serve(base, "/", { tags: { "og:image": null } });
     const results = await checkSite(base, { checkImages: false });
     expect(results.flatMap((r) => r.problems)).toEqual([]);
-    expect(stub).toHaveBeenCalledTimes(4);
+    expect(stub).toHaveBeenCalledTimes(ROUTES.length);
   });
 });

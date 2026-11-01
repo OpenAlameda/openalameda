@@ -1,0 +1,3683 @@
+{
+  "election": "2026-11-03-general",
+  "dataThrough": "2026-10-29",
+  "collectedOn": "2026-10-31",
+  "summaries": {
+    "mayor/tracy-jensen": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 6035999,
+      "spentCents": 4371581,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 1000000,
+      "otherLoansCents": 0,
+      "contributionCount": 273,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 4376499,
+            "count": 234
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 437500,
+            "count": 13
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 45000,
+            "count": 1
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 877000,
+            "count": 23
+          },
+          "organization": {
+            "cents": 50000,
+            "count": 1
+          },
+          "political": {
+            "cents": 250000,
+            "count": 1
+          }
+        }
+      },
+      "bands": {
+        "1000+": 1400000,
+        "500-999": 1315000,
+        "250-499": 1430000,
+        "100-249": 1723499,
+        "under-100": 167500
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 800000,
+            "500-999": 750000,
+            "250-499": 1090000,
+            "100-249": 1576499,
+            "under-100": 160000
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 100000,
+            "500-999": 175000,
+            "250-499": 90000,
+            "100-249": 65000,
+            "under-100": 7500
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 45000,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 250000,
+            "500-999": 340000,
+            "250-499": 205000,
+            "100-249": 82000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 50000,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 250000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "mayor/malia-vella": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 7024000,
+      "spentCents": 2786204,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 107,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 1219000,
+            "count": 62
+          },
+          "organization": {
+            "cents": 640000,
+            "count": 2
+          },
+          "political": {
+            "cents": 200000,
+            "count": 2
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 250000,
+            "count": 11
+          },
+          "organization": {
+            "cents": 100000,
+            "count": 1
+          },
+          "political": {
+            "cents": 665000,
+            "count": 3
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 1330000,
+            "count": 19
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 2620000,
+            "count": 7
+          }
+        }
+      },
+      "bands": {
+        "1000+": 5490000,
+        "500-999": 450000,
+        "250-499": 460000,
+        "100-249": 610000,
+        "under-100": 14000
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 300000,
+            "500-999": 150000,
+            "250-499": 285000,
+            "100-249": 470000,
+            "under-100": 14000
+          },
+          "organization": {
+            "1000+": 590000,
+            "500-999": 50000,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 200000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 100000,
+            "250-499": 100000,
+            "100-249": 50000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 100000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 590000,
+            "500-999": 50000,
+            "250-499": 25000,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 1090000,
+            "500-999": 100000,
+            "250-499": 50000,
+            "100-249": 90000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 2620000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 2885634,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "mayor/tony-daysog": {
+      "status": "filed",
+      "paper": true,
+      "raisedCents": 1362000,
+      "spentCents": 3264400,
+      "ownCents": 639500,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 2680500,
+      "otherLoansCents": 0,
+      "contributionCount": 9,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 715000,
+            "count": 8
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 7500,
+            "count": 1
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 500000,
+        "500-999": 100000,
+        "250-499": 95000,
+        "100-249": 20000,
+        "under-100": 7500
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 500000,
+            "500-999": 100000,
+            "250-499": 95000,
+            "100-249": 20000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 7500
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": [
+        {
+          "filed": "2026-09-24",
+          "line": 6,
+          "label": "Payments made",
+          "reportedCents": 86500,
+          "scheduleCents": 85500
+        },
+        {
+          "filed": "2026-10-22",
+          "line": 10,
+          "label": "Nonmonetary adjustment",
+          "reportedCents": 0,
+          "scheduleCents": 200000
+        }
+      ]
+    },
+    "city-council/marcie-johnson": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 1566352,
+      "spentCents": 889710,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 71,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 941000,
+            "count": 45
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 25000,
+            "count": 1
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 125000,
+            "count": 7
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 475352,
+            "count": 18
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 415352,
+        "500-999": 350000,
+        "250-499": 211000,
+        "100-249": 575000,
+        "under-100": 15000
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 200000,
+            "500-999": 250000,
+            "250-499": 126000,
+            "100-249": 360000,
+            "under-100": 5000
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 25000,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 30000,
+            "100-249": 95000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 215352,
+            "500-999": 100000,
+            "250-499": 30000,
+            "100-249": 120000,
+            "under-100": 10000
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "city-council/thushan-amarasiriwardena": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 245000,
+      "spentCents": 650173,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 2000000,
+      "otherLoansCents": 0,
+      "contributionCount": 12,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 235000,
+            "count": 11
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 10000,
+            "count": 1
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 50000,
+        "250-499": 130000,
+        "100-249": 65000,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 50000,
+            "250-499": 130000,
+            "100-249": 55000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 10000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 1021800,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "city-council/tyler-savage": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 731644,
+      "spentCents": 482467,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 30,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 626644,
+            "count": 26
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 95000,
+            "count": 3
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 10000,
+            "count": 1
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 260000,
+        "250-499": 310050,
+        "100-249": 156145,
+        "under-100": 5449
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 210000,
+            "250-499": 285050,
+            "100-249": 126145,
+            "under-100": 5449
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 50000,
+            "250-499": 25000,
+            "100-249": 20000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 10000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 2017507,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "city-council/amos-white": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 470000,
+      "spentCents": 165788,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 50000,
+      "otherLoansCents": 0,
+      "contributionCount": 22,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 345000,
+            "count": 15
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 35000,
+            "count": 2
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 90000,
+            "count": 5
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 100000,
+        "500-999": 100000,
+        "250-499": 100000,
+        "100-249": 170000,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 100000,
+            "500-999": 50000,
+            "250-499": 75000,
+            "100-249": 120000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 25000,
+            "100-249": 10000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 50000,
+            "250-499": 0,
+            "100-249": 40000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "city-council/maria-l-bondonno": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 30000,
+      "spentCents": 2455210,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 2500000,
+      "otherLoansCents": 0,
+      "contributionCount": 3,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 10000,
+            "count": 1
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 20000,
+            "count": 2
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 30000,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 10000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 20000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "city-council/steve-slauson": {
+      "status": "short-form",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "school-board/carrie-hahnel": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 1570806,
+      "spentCents": 622690,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 75906,
+      "otherLoansCents": 0,
+      "contributionCount": 42,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 276478,
+            "count": 13
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 120000,
+            "count": 2
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 55775,
+            "count": 3
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 250000,
+            "count": 2
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 303553,
+            "count": 16
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 565000,
+            "count": 6
+          }
+        }
+      },
+      "bands": {
+        "1000+": 840000,
+        "500-999": 50000,
+        "250-499": 470093,
+        "100-249": 210713,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 209315,
+            "100-249": 67163,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 100000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 20000,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 25000,
+            "100-249": 30775,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 250000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 210778,
+            "100-249": 92775,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 490000,
+            "500-999": 50000,
+            "250-499": 25000,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 337500,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "school-board/joyce-boyd": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 710500,
+      "spentCents": 358901,
+      "ownCents": 300500,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 6,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 335000,
+            "count": 4
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 50000,
+            "count": 1
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 25000,
+            "count": 1
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 300000,
+        "500-999": 50000,
+        "250-499": 25000,
+        "100-249": 35000,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 300000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 35000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 50000,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 25000,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "school-board/gary-lym": {
+      "status": "no-filings",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 337500,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "school-board/sarah-putnam": {
+      "status": "no-filings",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "school-board/mike-mcmahon": {
+      "status": "no-filings",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "school-board-two-year-term/ryan-lalonde": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 200000,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 75000,
+      "otherLoansCents": 0,
+      "contributionCount": 2,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 100000,
+            "count": 1
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 100000,
+            "count": 1
+          }
+        }
+      },
+      "bands": {
+        "1000+": 200000,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 100000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 100000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "measure-l/yes": {
+      "status": "filed",
+      "paper": false,
+      "raisedCents": 9765625,
+      "spentCents": 1462033,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 24,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 120000,
+            "count": 7
+          },
+          "organization": {
+            "cents": 3080625,
+            "count": 4
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 2280000,
+            "count": 2
+          },
+          "political": {
+            "cents": 700000,
+            "count": 2
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 585000,
+            "count": 4
+          },
+          "organization": {
+            "cents": 500000,
+            "count": 2
+          },
+          "political": {
+            "cents": 2500000,
+            "count": 3
+          }
+        }
+      },
+      "bands": {
+        "1000+": 9480000,
+        "500-999": 100000,
+        "250-499": 105625,
+        "100-249": 80000,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 50000,
+            "100-249": 70000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 3000000,
+            "500-999": 50000,
+            "250-499": 30625,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 2280000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 700000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 500000,
+            "500-999": 50000,
+            "250-499": 25000,
+            "100-249": 10000,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 500000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 2500000,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 1148891,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "measure-l/no": {
+      "status": "filed",
+      "paper": true,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "measure-m/yes": {
+      "status": "no-filings",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "measure-m/no": {
+      "status": "no-filings",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "measure-n/yes": {
+      "status": "no-filings",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    },
+    "measure-n/no": {
+      "status": "no-filings",
+      "paper": false,
+      "raisedCents": 0,
+      "spentCents": 0,
+      "ownCents": 0,
+      "carriedCents": 0,
+      "loansFromCandidateCents": 0,
+      "otherLoansCents": 0,
+      "contributionCount": 0,
+      "matrix": {
+        "alameda": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "cents": 0,
+            "count": 0
+          },
+          "organization": {
+            "cents": 0,
+            "count": 0
+          },
+          "political": {
+            "cents": 0,
+            "count": 0
+          }
+        }
+      },
+      "bands": {
+        "1000+": 0,
+        "500-999": 0,
+        "250-499": 0,
+        "100-249": 0,
+        "under-100": 0
+      },
+      "bandsByCell": {
+        "alameda": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "county": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        },
+        "other": {
+          "individual": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "organization": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          },
+          "political": {
+            "1000+": 0,
+            "500-999": 0,
+            "250-499": 0,
+            "100-249": 0,
+            "under-100": 0
+          }
+        }
+      },
+      "unknownLocalityCents": 0,
+      "outside": {
+        "supportCents": 0,
+        "opposeCents": 0
+      },
+      "reportedDiffs": []
+    }
+  },
+  "outsideGroups": [
+    {
+      "key": "1326421",
+      "name": "Alameda Education Association Political Action Committee",
+      "totals": [
+        {
+          "target": "school-board/carrie-hahnel",
+          "side": "support",
+          "cents": 337500
+        },
+        {
+          "target": "school-board/gary-lym",
+          "side": "support",
+          "cents": 337500
+        }
+      ]
+    },
+    {
+      "key": "890076",
+      "name": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "totals": [
+        {
+          "target": "city-council/thushan-amarasiriwardena",
+          "side": "support",
+          "cents": 1021800
+        },
+        {
+          "target": "city-council/tyler-savage",
+          "side": "support",
+          "cents": 2017507
+        },
+        {
+          "target": "mayor/malia-vella",
+          "side": "support",
+          "cents": 2885634
+        },
+        {
+          "target": "measure-l/yes",
+          "side": "support",
+          "cents": 198891
+        }
+      ]
+    },
+    {
+      "key": "name:Alameda Firefighters Association IAFF Local 689",
+      "name": "Alameda Firefighters Association IAFF Local 689",
+      "totals": [
+        {
+          "target": "measure-l/yes",
+          "side": "support",
+          "cents": 950000
+        }
+      ]
+    }
+  ],
+  "unmatched": [
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "tranId": "PDT116",
+      "formType": "F496",
+      "date": "2026-10-26",
+      "cents": 950000,
+      "description": "Digital Ads"
+    }
+  ],
+  "filings": [
+    {
+      "filerKey": "name:Alameda Climate Change Belivers Opposing Measure L 2026",
+      "filer": "Alameda Climate Change Belivers Opposing Measure L 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-09-19"
+      },
+      "source": "paper",
+      "file": "pdf/climate-belivers-460-09242026.pdf"
+    },
+    {
+      "filerKey": "name:Alameda Climate Change Belivers Opposing Measure L 2026",
+      "filer": "Alameda Climate Change Belivers Opposing Measure L 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "paper",
+      "file": "pdf/climate-belivers-460-10222026.pdf"
+    },
+    {
+      "filerKey": "1326421",
+      "filer": "Alameda Education Association Political Action Committee",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-20",
+      "period": null,
+      "source": "efile",
+      "file": "aea-pac-496-a0-10202026-2.xls"
+    },
+    {
+      "filerKey": "1326421",
+      "filer": "Alameda Education Association Political Action Committee",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-20",
+      "period": null,
+      "source": "efile",
+      "file": "aea-pac-496-a0-10202026.xls"
+    },
+    {
+      "filerKey": "name:Alameda Firefighters Association IAFF Local 689",
+      "filer": "Alameda Firefighters Association IAFF Local 689",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-20",
+      "period": null,
+      "source": "paper",
+      "file": "transcribed/iaff-assocaition-496-10202026.tsv"
+    },
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-07-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "firefighters-pac-460-a0-09242026.xls"
+    },
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "firefighters-pac-460-a0-10222026.xls"
+    },
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-27",
+      "period": null,
+      "source": "efile",
+      "file": "firefighters-pac-496-a0-10272026-2.xls"
+    },
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-27",
+      "period": null,
+      "source": "efile",
+      "file": "firefighters-pac-496-a0-10272026-3.xls"
+    },
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-27",
+      "period": null,
+      "source": "efile",
+      "file": "firefighters-pac-496-a0-10272026-4.xls"
+    },
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-27",
+      "period": null,
+      "source": "efile",
+      "file": "firefighters-pac-496-a0-10272026.xls"
+    },
+    {
+      "filerKey": "890076",
+      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
+      "form": "496",
+      "amendment": 0,
+      "filed": "2026-10-29",
+      "period": null,
+      "source": "efile",
+      "file": "firefighters-pac-496-a0-10292026.xls"
+    },
+    {
+      "filerKey": "1495492",
+      "filer": "Amos White for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-05",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "amos-white-460-a0-10052026.xls"
+    },
+    {
+      "filerKey": "1495492",
+      "filer": "Amos White for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "amos-white-460-a0-10222026.xls"
+    },
+    {
+      "filerKey": "1491388",
+      "filer": "Carrie Hahnel for AUSD Board of Education 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-08-03",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-06-30"
+      },
+      "source": "efile",
+      "file": "hahnel-460-a0-08032026.xls"
+    },
+    {
+      "filerKey": "1491388",
+      "filer": "Carrie Hahnel for AUSD Board of Education 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-21",
+      "period": {
+        "from": "2026-07-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "hahnel-460-a0-09212026.xls"
+    },
+    {
+      "filerKey": "1491388",
+      "filer": "Carrie Hahnel for AUSD Board of Education 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-21",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "hahnel-460-a0-10212026.xls"
+    },
+    {
+      "filerKey": "1491388",
+      "filer": "Carrie Hahnel for AUSD Board of Education 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-21",
+      "period": null,
+      "source": "efile",
+      "file": "hahnel-497-a0-10212026.xls"
+    },
+    {
+      "filerKey": "1491388",
+      "filer": "Carrie Hahnel for AUSD Board of Education 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-25",
+      "period": null,
+      "source": "efile",
+      "file": "hahnel-497-a0-10252026.xls"
+    },
+    {
+      "filerKey": "1492067",
+      "filer": "Daysog for Mayor 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-07-06",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-06-30"
+      },
+      "source": "paper",
+      "file": "pdf/daysog-mayor-460-07062026.pdf"
+    },
+    {
+      "filerKey": "1492067",
+      "filer": "Daysog for Mayor 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-07-01",
+        "thru": "2026-09-19"
+      },
+      "source": "paper",
+      "file": "pdf/daysog-mayor-460-09242026.pdf"
+    },
+    {
+      "filerKey": "1492067",
+      "filer": "Daysog for Mayor 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "paper",
+      "file": "pdf/daysog-mayor-460-10222026.pdf"
+    },
+    {
+      "filerKey": "1487626",
+      "filer": "Joyce Boyd for Alameda Unified School District Board 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-07-24",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-06-30"
+      },
+      "source": "efile",
+      "file": "joyce-boyd-460-a0-07242026.xls"
+    },
+    {
+      "filerKey": "1487626",
+      "filer": "Joyce Boyd for Alameda Unified School District Board 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-07-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "joyce-boyd-460-a0-09242026.xls"
+    },
+    {
+      "filerKey": "1487626",
+      "filer": "Joyce Boyd for Alameda Unified School District Board 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "joyce-boyd-460-a0-10222026.xls"
+    },
+    {
+      "filerKey": "1486162",
+      "filer": "Malia Vella for Alameda Mayor 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-07-31",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-06-30"
+      },
+      "source": "efile",
+      "file": "malia-vella-460-a0-07312026.xls"
+    },
+    {
+      "filerKey": "1486162",
+      "filer": "Malia Vella for Alameda Mayor 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-21",
+      "period": {
+        "from": "2026-07-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "malia-vella-460-a0-09212026.xls"
+    },
+    {
+      "filerKey": "1486162",
+      "filer": "Malia Vella for Alameda Mayor 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-21",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "malia-vella-460-a0-10212026.xls"
+    },
+    {
+      "filerKey": "1486162",
+      "filer": "Malia Vella for Alameda Mayor 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-21",
+      "period": null,
+      "source": "efile",
+      "file": "malia-vella-497-a0-10212026.xls"
+    },
+    {
+      "filerKey": "1486162",
+      "filer": "Malia Vella for Alameda Mayor 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-23",
+      "period": null,
+      "source": "efile",
+      "file": "malia-vella-497-a0-10232026.xls"
+    },
+    {
+      "filerKey": "1488958",
+      "filer": "Marcie Johnson for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-07-22",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-06-30"
+      },
+      "source": "efile",
+      "file": "marcie-johnson-460-a0-07222026.xls"
+    },
+    {
+      "filerKey": "1488958",
+      "filer": "Marcie Johnson for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-22",
+      "period": {
+        "from": "2026-07-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "marcie-johnson-460-a0-09222026.xls"
+    },
+    {
+      "filerKey": "1488958",
+      "filer": "Marcie Johnson for Alameda City Council 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-20",
+      "period": null,
+      "source": "efile",
+      "file": "marcie-johnson-497-a0-10202026.xls"
+    },
+    {
+      "filerKey": "1488958",
+      "filer": "Marcie Johnson for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-21",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "marcie-johnson-460-a0-10212026.xls"
+    },
+    {
+      "filerKey": "1495863",
+      "filer": "Maria Bondonno for City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "maria-bondonno-460-a0-09242026.xls"
+    },
+    {
+      "filerKey": "1495863",
+      "filer": "Maria Bondonno for City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-21",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "maria-bondonno-460-a0-10212026.xls"
+    },
+    {
+      "filerKey": "1493199",
+      "filer": "Re-Elect Ryan LaLonde for Alameda Unified School Board 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "ryan-lalonde-460-a0-09242026.xls"
+    },
+    {
+      "filerKey": "1493199",
+      "filer": "Re-Elect Ryan LaLonde for Alameda Unified School Board 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-20",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "ryan-lalonde-460-a0-10202026.xls"
+    },
+    {
+      "filerKey": "1494405",
+      "filer": "SAFER Alameda Yes on L",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-22",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "safer-alameda-yes-on-l-460-a0-09222026.xls"
+    },
+    {
+      "filerKey": "1494405",
+      "filer": "Safer Alameda-Yes on Bond Measure L 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-21",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "safer-alameda-yes-on-l-460-a0-10212026.xls"
+    },
+    {
+      "filerKey": "1494405",
+      "filer": "Safer Alameda-Yes on Bond Measure L 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-23",
+      "period": null,
+      "source": "efile",
+      "file": "safer-alameda-yes-on-l-497-a0-10232026.xls"
+    },
+    {
+      "filerKey": "1494405",
+      "filer": "Safer Alameda-Yes on Bond Measure L 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-26",
+      "period": null,
+      "source": "efile",
+      "file": "safer-alameda-yes-on-l-497-a0-10262026.xls"
+    },
+    {
+      "filerKey": "1494405",
+      "filer": "Safer Alameda-Yes on Bond Measure L 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-29",
+      "period": null,
+      "source": "efile",
+      "file": "safer-alameda-yes-on-l-497-a0-10292026.xls"
+    },
+    {
+      "filerKey": "1492617",
+      "filer": "Savage for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "savage-460-a0-09242026.xls"
+    },
+    {
+      "filerKey": "1492617",
+      "filer": "Savage for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "savage-460-a0-10222026.xls"
+    },
+    {
+      "filerKey": "name:Thushan Amarasiriwardena for Alameda City Council 2026",
+      "filer": "Thushan Amarasiriwardena for Alameda City Council 2026",
+      "form": "460-A",
+      "amendment": 1,
+      "filed": "2026-09-24",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "thushan-460A-a1-09242026.xls"
+    },
+    {
+      "filerKey": "name:Thushan Amarasiriwardena for Alameda City Council 2026",
+      "filer": "Thushan Amarasiriwardena for Alameda City Council 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "thushan-460-a0-10222026.xls"
+    },
+    {
+      "filerKey": "name:Thushan Amarasiriwardena for Alameda City Council 2026",
+      "filer": "Thushan Amarasiriwardena for Alameda City Council 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": null,
+      "source": "efile",
+      "file": "thushan-497-a0-10222026.xls"
+    },
+    {
+      "filerKey": "1485047",
+      "filer": "Tracy Jensen for Alameda Mayor 2026",
+      "form": "460",
+      "amendment": 4,
+      "filed": "2026-08-10",
+      "period": {
+        "from": "2025-01-01",
+        "thru": "2025-12-31"
+      },
+      "source": "efile",
+      "file": "tracy-jensen-460A-a4-08102026.xls"
+    },
+    {
+      "filerKey": "1485047",
+      "filer": "Tracy Jensen for Alameda Mayor 2026",
+      "form": "460-A",
+      "amendment": 6,
+      "filed": "2026-10-15",
+      "period": {
+        "from": "2026-01-01",
+        "thru": "2026-06-30"
+      },
+      "source": "efile",
+      "file": "jensen-460A-a6-2026-10-15.xls"
+    },
+    {
+      "filerKey": "1485047",
+      "filer": "Tracy Jensen for Alameda Mayor 2026",
+      "form": "460-A",
+      "amendment": 1,
+      "filed": "2026-10-15",
+      "period": {
+        "from": "2026-07-01",
+        "thru": "2026-09-19"
+      },
+      "source": "efile",
+      "file": "tracy-jensen-460A-a1-10152026.xls"
+    },
+    {
+      "filerKey": "1485047",
+      "filer": "Tracy Jensen for Alameda Mayor 2026",
+      "form": "460",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": {
+        "from": "2026-09-20",
+        "thru": "2026-10-17"
+      },
+      "source": "efile",
+      "file": "tracy-jensen-460-a0-10222026.xls"
+    },
+    {
+      "filerKey": "1485047",
+      "filer": "Tracy Jensen for Alameda Mayor 2026",
+      "form": "497",
+      "amendment": 0,
+      "filed": "2026-10-22",
+      "period": null,
+      "source": "efile",
+      "file": "tracy-jensen-497-a0-10222026.xls"
+    }
+  ],
+  "unreadFilings": [],
+  "corrections": [
+    {
+      "filing": "pdf/daysog-mayor-460-10222026.pdf",
+      "tranId": "daysog-mayor-460-10222026-A-6",
+      "field": "Entity_ST",
+      "asFiled": "",
+      "correctedTo": "CA",
+      "reason": "Filer wrote the city Walnut Creek with no state; Walnut Creek is in California.",
+      "decidedBy": "human",
+      "decidedAt": "2026-11-01T13:31:23Z",
+      "race": "mayor",
+      "candidate": "tony-daysog"
+    },
+    {
+      "filing": "pdf/daysog-mayor-460-10222026.pdf",
+      "tranId": "daysog-mayor-460-10222026-A-6",
+      "field": "locality",
+      "asFiled": "unknown",
+      "correctedTo": "other",
+      "reason": "No ZIP was written; Walnut Creek is in Contra Costa County, so the money is from outside Alameda County.",
+      "decidedBy": "human",
+      "decidedAt": "2026-11-01T13:31:23Z",
+      "race": "mayor",
+      "candidate": "tony-daysog"
+    },
+    {
+      "filing": "pdf/daysog-mayor-460-10222026.pdf",
+      "tranId": "daysog-mayor-460-10222026-C-1",
+      "field": "Entity_ZIP4",
+      "asFiled": "9451",
+      "correctedTo": "94501",
+      "reason": "Filer wrote a four-digit ZIP; 94501 is the Alameda ZIP it most likely means.",
+      "decidedBy": "human",
+      "decidedAt": "2026-11-01T13:15:55Z",
+      "race": "mayor",
+      "candidate": "tony-daysog"
+    }
+  ]
+}
