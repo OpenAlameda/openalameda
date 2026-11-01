@@ -60,7 +60,7 @@ function entrants(races: RacesFile): Entrant[] {
         out.push({
           key: `${race.slug}/${side}`,
           race: race.slug,
-          candidateSlug: null,
+          candidateSlug: side,
           committees: race.sides[side].committees,
           candidate: null,
         });
@@ -184,6 +184,21 @@ export function ingest(input: IngestInput): { finance: FinanceFile; log: string[
   const corrections: AppliedCorrection[] = input.corrections.map((c) => {
     const filing = input.filings.find((f) => f.entry.path === c.filing);
     if (!filing) throw new Error(`correction ${c.filing} ${c.tranId}: no such filing`);
+    // A correction counts only when its row does: a superseded, deduped or unused copy would publish a
+    // reading that no total reflects.
+    const row = filing.rows.find((r) => r.tranId === c.tranId);
+    const at = `correction ${c.filing} ${c.tranId}`;
+    if (selection.superseded.includes(filing)) {
+      throw new Error(`${at}: the filing is superseded by an amendment, so its row is not counted`);
+    }
+    if (isLate(filing) && (!row || !selection.late.includes(row))) {
+      throw new Error(
+        `${at}: the late-report row was dropped by the late-window dedupe, so it is not counted`,
+      );
+    }
+    if (!usedFiles.has(filing.entry.path)) {
+      throw new Error(`${at}: the filing is not used for this election, so its row is not counted`);
+    }
     const owner = people.find((p) => ownedBy(p.committees, filing.filerKey, filing.filerName));
     return { ...c, race: owner?.race ?? null, candidate: owner?.candidateSlug ?? null };
   });

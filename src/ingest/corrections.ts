@@ -18,8 +18,28 @@ const KEYS = [
   "decidedAt",
 ] as const;
 
-/** Columns that identify a contributor; a correction there would put a name in the log and finance.json. */
-const IDENTIFYING = new Set(["Entity_Nam L", "Entity_Nam F", "Entity_Emp", "Entity_Occ"]);
+/**
+ * The only columns a correction may name. None identifies a person, so a correction's values can go in
+ * the log, finance.json and the candidate page without naming anyone.
+ */
+export const CORRECTABLE_FIELDS = [
+  "Entity_ZIP4",
+  "Entity_City",
+  "Entity_ST",
+  "Entity_Cd",
+  "Tran_Date",
+  "Amount",
+  "Memo_Code",
+] as const;
+
+/** Keys that must be non-empty; `asFiled` may be empty, to fill in a field the filer left blank. */
+const REQUIRED = KEYS.filter((k) => k !== "asFiled");
+
+/** True when the timestamp names a real moment: Date rolls 2026-02-30 over to March, so compare the round trip. */
+function isRealTimestamp(s: string): boolean {
+  const d = new Date(s);
+  return !Number.isNaN(d.getTime()) && d.toISOString().replace(".000Z", "Z") === s;
+}
 
 /** The validated corrections from `corrections.json`'s parsed text; a missing file is `undefined`. */
 export function parseCorrections(json: unknown): Correction[] {
@@ -31,9 +51,10 @@ export function parseCorrections(json: unknown): Correction[] {
     if (typeof item !== "object" || item === null) throw new Error(`${at}: expected an object`);
     const rec = item as Record<string, unknown>;
     for (const k of KEYS) {
-      if (typeof rec[k] !== "string" || (rec[k] as string).trim() === "") {
-        throw new Error(`${at}: "${k}" must be a non-empty string`);
-      }
+      if (typeof rec[k] !== "string") throw new Error(`${at}: "${k}" must be a string`);
+    }
+    for (const k of REQUIRED) {
+      if ((rec[k] as string).trim() === "") throw new Error(`${at}: "${k}" must be a non-empty string`);
     }
     for (const k of Object.keys(rec)) {
       if (!(KEYS as readonly string[]).includes(k)) throw new Error(`${at}: unknown key "${k}"`);
@@ -42,11 +63,13 @@ export function parseCorrections(json: unknown): Correction[] {
       throw new Error(`${at}: "decidedBy" must be "agent" or "human"`);
     }
     const at8601 = rec.decidedAt as string;
-    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(at8601) || Number.isNaN(Date.parse(at8601))) {
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(at8601) || !isRealTimestamp(at8601)) {
       throw new Error(`${at}: "decidedAt" must be a UTC timestamp like 2026-11-01T13:15:55Z`);
     }
-    if (IDENTIFYING.has(rec.field as string)) {
-      throw new Error(`${at}: "${rec.field}" identifies a contributor and cannot be corrected here`);
+    if (!(CORRECTABLE_FIELDS as readonly string[]).includes(rec.field as string)) {
+      throw new Error(
+        `${at}: "${rec.field}" cannot be corrected here; allowed: ${CORRECTABLE_FIELDS.join(", ")}`,
+      );
     }
     return Object.fromEntries(KEYS.map((k) => [k, rec[k]])) as Correction;
   });
@@ -72,7 +95,9 @@ export function applyCorrections(
     if (hits.length > 1) throw new Error(`${at}: more than one row has that Tran_ID`);
     const row = hits[0];
     if (!Object.hasOwn(row, c.field)) throw new Error(`${at}: "${c.field}" is not a column of the filing`);
-    if (row[c.field].trim() !== c.asFiled) {
+    // A blank asFiled means the field was empty, exactly; any text, even spaces, is a changed row.
+    const stale = c.asFiled === "" ? row[c.field] !== "" : row[c.field].trim() !== c.asFiled;
+    if (stale) {
       throw new Error(`${at}: the row no longer reads "${c.asFiled}" (stale correction)`);
     }
     row[c.field] = c.correctedTo;

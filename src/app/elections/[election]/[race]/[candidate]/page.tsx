@@ -233,7 +233,7 @@ export default async function CandidatePage({ params, searchParams }: Props) {
           </p>
           <ul className="space-y-2 text-sm">
             {corrections.map((c) => (
-              <li key={`${c.field}-${c.reading}-${c.decision}`}>
+              <li key={c.key}>
                 <span className="font-semibold">{c.field}:</span> {c.reading}. {c.reason} — {c.decision}.
               </li>
             ))}

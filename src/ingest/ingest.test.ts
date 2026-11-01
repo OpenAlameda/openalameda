@@ -352,6 +352,81 @@ describe("ingest", () => {
     expect(serializeFinance(finance)).not.toContain(SURNAMES[0]);
   });
 
+  describe("a correction whose row no total counts stops the ingest", () => {
+    const base = {
+      field: "Entity_ZIP4",
+      asFiled: "",
+      correctedTo: "94501",
+      reason: "r",
+      decidedBy: "human" as const,
+      decidedAt: "2026-11-01T13:15:55Z",
+    };
+
+    test("superseded by an amendment", () => {
+      const amended = loaded(
+        { path: "cand-460-oct-amended.xls", filer: CAND.filerName, period: OCT, filed: "2026-10-28" },
+        [
+          row({
+            ...CAND,
+            tranId: "A3",
+            entityLast: SURNAMES[2],
+            entityFirst: "Cy",
+            cents: 10000,
+            zip5: "10001",
+          }),
+        ],
+      );
+      const filings = [...fixtureFilings(), amended];
+      const fails = { ...base, filing: "cand-460-oct.xls", tranId: "A3" };
+      expect(() => ingest({ ...input(filings), corrections: [fails] })).toThrow(
+        /cand-460-oct\.xls A3: the filing is superseded by an amendment/,
+      );
+      expect(() =>
+        ingest({ ...input(filings), corrections: [{ ...fails, filing: "cand-460-oct-amended.xls" }] }),
+      ).not.toThrow();
+    });
+
+    test("dropped by the late-window dedupe", () => {
+      const dropped = { ...base, filing: "cand-497-old.xls", tranId: "L0" };
+      expect(() => ingest({ ...input(), corrections: [dropped] })).toThrow(
+        /cand-497-old\.xls L0: the late-report row was dropped by the late-window dedupe/,
+      );
+      expect(() =>
+        ingest({ ...input(), corrections: [{ ...dropped, filing: "cand-497-late.xls", tranId: "L1" }] }),
+      ).not.toThrow();
+    });
+
+    test("filing not used for this election", () => {
+      const stray = loaded(
+        { path: "stray-460.xls", filer: "Some Other Committee", period: OCT, filed: "2026-10-22" },
+        [row({ ...CAND, filerKey: "9999999", filerName: "Some Other Committee", tranId: "S1", cents: 100 })],
+      );
+      const unused = { ...base, filing: "stray-460.xls", tranId: "S1" };
+      expect(() => ingest({ ...input([...fixtureFilings(), stray]), corrections: [unused] })).toThrow(
+        /stray-460\.xls S1: the filing is not used for this election/,
+      );
+    });
+  });
+
+  test("a correction on a measure side's filing carries the race and the side", () => {
+    const { finance } = ingest({
+      ...input(),
+      corrections: [
+        {
+          filing: "yes-460.xls",
+          tranId: "Y1",
+          field: "Entity_ZIP4",
+          asFiled: "",
+          correctedTo: "94501",
+          reason: "r",
+          decidedBy: "human",
+          decidedAt: "2026-11-01T13:15:55Z",
+        },
+      ],
+    });
+    expect(finance.corrections[0]).toMatchObject({ race: "measure-q", candidate: "yes" });
+  });
+
   test("a correction on a filing no committee in the race owns carries null race and candidate", () => {
     const { finance } = ingest({
       ...input(),

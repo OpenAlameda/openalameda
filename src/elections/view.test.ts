@@ -22,6 +22,8 @@ import {
   electionDescription,
   offBallotNote,
   correctionsFor,
+  raceCorrections,
+  raceTitle,
 } from "./view.ts";
 
 const zeroCell = { cents: 0, count: 0 };
@@ -336,6 +338,7 @@ describe("transcription corrections", () => {
 
   it("correctionLine words a correction for the page", () => {
     expect(correctionLine(applied)).toEqual({
+      key: "pdf/x.pdf|T-1|Entity_ZIP4",
       field: "ZIP code",
       reading: "written as 9451, read as 94501",
       reason: applied.reason,
@@ -350,6 +353,27 @@ describe("transcription corrections", () => {
     expect(correctionLine({ ...applied, decidedAt: "2026-07-04T03:05:00Z" }).decision).toBe(
       "decided by a person on Jul 3, 2026, 8:05 PM PT",
     );
+  });
+
+  it("correctionLine says a blank field was left blank and keys the line by filing, row and field", () => {
+    const line = correctionLine({ ...applied, field: "Entity_ST", asFiled: "", correctedTo: "CA" });
+    expect(line.reading).toBe("left blank, read as CA");
+    expect(line.key).toBe("pdf/x.pdf|T-1|Entity_ST");
+  });
+
+  it("raceCorrections groups a measure race's corrections by side and skips sides without any", () => {
+    const measure: MeasureRace = {
+      kind: "measure",
+      slug: "measure-l",
+      name: "Measure L",
+      title: "t",
+      links: {},
+      sides: { yes: { committees: [] }, no: { committees: [] } },
+    };
+    const onYes = { ...applied, race: "measure-l", candidate: "yes" };
+    const groups = raceCorrections([applied, onYes], measure);
+    expect(groups.map((g) => g.name)).toEqual(["Yes on Measure L"]);
+    expect(groups[0].lines).toEqual([correctionLine(onYes)]);
   });
 
   it("correctionLine falls back to the column name for a field it has no words for", () => {
@@ -372,10 +396,16 @@ describe("off-ballot races", () => {
     expect(offBallotNote({ ...office, onBallot: true })).toBeNull();
   });
 
-  it("offBallotNote uses the race's note, else the standard sentence", () => {
-    expect(offBallotNote({ ...office, onBallot: false, note: "Custom." })).toBe("Custom.");
+  it("offBallotNote is the one standard sentence", () => {
     expect(offBallotNote({ ...office, onBallot: false })).toBe(
       "Ran unopposed, so this seat is not on the ballot.",
+    );
+  });
+
+  it("raceTitle pairs an on-ballot race with the election date and an off-ballot one with neither date nor vote", () => {
+    expect(raceTitle({ ...office, name: "Mayor" }, "2026-11-03")).toBe("Mayor · November 3, 2026");
+    expect(raceTitle({ ...office, name: "School Board, two-year term", onBallot: false }, "2026-11-03")).toBe(
+      "School Board, two-year term · not on the ballot",
     );
   });
 

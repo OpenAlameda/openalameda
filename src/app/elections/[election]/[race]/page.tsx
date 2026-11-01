@@ -5,7 +5,14 @@ import { CandidateMoney } from "@/components/elections/CandidateMoney";
 import { SourceLine } from "@/components/elections/SourceLine";
 import { ELECTIONS, getElection, getFinance, getRace, getRaces, summaryKey } from "@/elections/registry";
 import type { MoneySummary, Race } from "@/elections/types";
-import { displayName, formatDate, formatUsd, offBallotNote } from "@/elections/view";
+import {
+  displayName,
+  formatDate,
+  formatUsd,
+  offBallotNote,
+  raceCorrections,
+  raceTitle,
+} from "@/elections/view";
 import { pageMetadata } from "@/lib/metadata";
 
 type Props = { params: Promise<{ election: string; race: string }> };
@@ -45,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .map((e) => e.name)
     .join(", ");
   return pageMetadata({
-    title: `${race.name} · ${formatDate(election.electionDay)}`,
+    title: raceTitle(race, election.electionDay),
     description: `${names} — raised and spent, itemized${through ? `, through ${formatDate(through)}` : ""}.`,
     path: `/elections/${election.slug}/${race.slug}`,
   });
@@ -57,6 +64,7 @@ export default async function RacePage({ params }: Props) {
   const race = getRace(electionSlug, raceSlug);
   if (!election || !race) notFound();
   const finance = getFinance(election.slug);
+  const measureReadings = race.kind === "measure" ? raceCorrections(finance?.corrections, race) : [];
   const summaryOf = (key: string) => finance?.summaries[summaryKey(race.slug, key)];
 
   const items = entries(race).map((e) => ({ ...e, summary: summaryOf(e.key) }));
@@ -136,6 +144,29 @@ export default async function RacePage({ params }: Props) {
           ))}
         </div>
       </section>
+
+      {measureReadings.length > 0 && (
+        <section aria-labelledby="readings" className="space-y-3">
+          <h2 id="readings" className="text-2xl font-semibold">
+            How we read the filings
+          </h2>
+          <p className="text-sm">
+            Where a paper filing was unclear, we recorded how we read it. Every reading is listed here.
+          </p>
+          {measureReadings.map((g) => (
+            <div key={g.key}>
+              <h3 className="font-semibold">{g.name}</h3>
+              <ul className="space-y-2 text-sm">
+                {g.lines.map((c) => (
+                  <li key={c.key}>
+                    <span className="font-semibold">{c.field}:</span> {c.reading}. {c.reason} — {c.decision}.
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      )}
 
       {finance && (
         <SourceLine

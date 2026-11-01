@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getElection, getFinance, getRace, summaryKey } from "@/elections/registry";
-import { displayName, formatDate } from "@/elections/view";
+import { displayName, raceTitle } from "@/elections/view";
 import { CARD_SIZE, withFallback } from "@/og/card";
 import { raceCard } from "@/og/election-cards";
 
@@ -21,6 +21,6 @@ export default async function Image({ params }: { params: Promise<{ election: st
     raisedCents: finance?.summaries[summaryKey(race.slug, key)]?.raisedCents ?? 0,
   }));
   if (race.kind === "office") bars.sort((a, b) => b.raisedCents - a.raisedCents);
-  const title = `${race.name} · ${formatDate(election.electionDay)}`;
+  const title = raceTitle(race, election.electionDay);
   return withFallback(() => raceCard({ name: race.name, bars, dataThrough: finance?.dataThrough }), title);
 }

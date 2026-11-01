@@ -27,8 +27,6 @@ export type OfficeRace = {
   seats: number;
   /** False for a seat that is not on the ballot (an unopposed race); absent means on the ballot. */
   onBallot?: boolean;
-  /** Shown beside an off-ballot race; `offBallotNote` falls back to a standard sentence. */
-  note?: string;
   links: Links;
   candidates: Candidate[];
 };
@@ -115,6 +113,7 @@ export type Correction = {
   decidedAt: string;
 };
 /** A correction as finance.json carries it: the log entry plus the race and candidate it touched. */
+/** `candidate` is the candidate's slug, or "yes" / "no" for a measure side; null when no race committee owns the filing. */
 export type AppliedCorrection = Correction & { race: string | null; candidate: string | null };
 export type FinanceFile = {
   election: string;

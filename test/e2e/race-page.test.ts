@@ -86,8 +86,15 @@ test("the two-year-term seat renders its note and raised figure, and no election
   const raised = getFinance(SLUG)!.summaries["school-board-two-year-term/ryan-lalonde"].raisedCents;
   expect(html).toContain("School Board, two-year term");
   expect(html).toContain(NOTE);
-  expect(html).toContain(formatUsd(raised));
+  const raisedFigure = new RegExp(
+    `>${formatUsd(raised).replace("$", "\\$")}</div><div class="text-sm">raised<`,
+  );
+  expect(html).toMatch(raisedFigure);
   expect(html).not.toContain("Election day:");
+  const head = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "";
+  expect(head).toContain("School Board, two-year term · not on the ballot");
+  expect(head).not.toMatch(/2026|November/);
+  expect(html).toMatch(/<meta property="og:title" content="[^"]*not on the ballot/);
 });
 
 test("the school-board race no longer lists the unopposed candidate; the election page notes the seat", async () => {

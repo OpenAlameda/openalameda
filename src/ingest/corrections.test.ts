@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import type { Correction } from "../elections/types.ts";
-import { applyCorrections, parseCorrections, type FilingRecords } from "./corrections.ts";
+import { applyCorrections, CORRECTABLE_FIELDS, parseCorrections, type FilingRecords } from "./corrections.ts";
 import { toCalRows } from "./raw.ts";
 
 const FILING = "pdf/testperson-460-10222026.pdf";
@@ -21,7 +21,7 @@ const files = (): FilingRecords[] => [
     path: FILING,
     records: [
       { Tran_ID: "T-1", "Entity_Nam L": "Testperson", Entity_ZIP4: "9451", Amount: "2000" },
-      { Tran_ID: "T-2", "Entity_Nam L": "Otherperson", Entity_ZIP4: "94501", Amount: "50" },
+      { Tran_ID: "T-2", "Entity_Nam L": "Otherperson", Entity_ZIP4: "9451", Amount: "50" },
     ],
   },
   { path: "other.xls", records: [{ Tran_ID: "T-1", Entity_ZIP4: "9451" }] },
@@ -32,7 +32,7 @@ describe("applyCorrections", () => {
     const log: string[] = [];
     const out = applyCorrections(files(), [CORRECTION], log);
     expect(out[0].records[0].Entity_ZIP4).toBe("94501");
-    expect(out[0].records[1].Entity_ZIP4).toBe("94501");
+    expect(out[0].records[1].Entity_ZIP4).toBe("9451");
     expect(out[1].records[0].Entity_ZIP4).toBe("9451");
     expect(log).toEqual([`correction applied: ${FILING} T-1 Entity_ZIP4 "9451" -> "94501"`]);
     expect(log.join("\n")).not.toMatch(/Testperson|Otherperson/);
@@ -53,6 +53,16 @@ describe("applyCorrections", () => {
     expect(applyCorrections(input, [c], [])[0].records[0].Entity_ZIP4).toBe("94501");
   });
 
+  test("fills in a blank field, and only while the field is still exactly blank", () => {
+    const blank: Correction = { ...CORRECTION, field: "Entity_ST", asFiled: "", correctedTo: "CA" };
+    const input = [{ path: FILING, records: [{ Tran_ID: "T-1", Entity_ST: "" }] }];
+    expect(applyCorrections(input, [blank], [])[0].records[0].Entity_ST).toBe("CA");
+    for (const now of ["CA", " "]) {
+      const moved = [{ path: FILING, records: [{ Tran_ID: "T-1", Entity_ST: now }] }];
+      expect(() => applyCorrections(moved, [blank], [])).toThrow(/stale correction/);
+    }
+  });
+
   test.each([
     ["the filing is not found", { filing: "pdf/missing.pdf" }, /no such filing/],
     ["the tranId is not in the filing", { tranId: "T-9" }, /no row with that Tran_ID/],
@@ -66,6 +76,20 @@ describe("applyCorrections", () => {
 describe("parseCorrections", () => {
   test("a missing file means no corrections", () => {
     expect(parseCorrections(undefined)).toEqual([]);
+  });
+
+  test("accepts every allowlisted field and a blank asFiled", () => {
+    for (const field of CORRECTABLE_FIELDS) {
+      expect(parseCorrections({ corrections: [{ ...CORRECTION, field }] })).toHaveLength(1);
+    }
+    const blank = { ...CORRECTION, field: "Entity_ST", asFiled: "", correctedTo: "CA" };
+    expect(parseCorrections({ corrections: [blank] })).toEqual([blank]);
+  });
+
+  test("names the allowlist when it rejects a field", () => {
+    expect(() => parseCorrections({ corrections: [{ ...CORRECTION, field: "Entity_Adr1" }] })).toThrow(
+      /cannot be corrected here; allowed: Entity_ZIP4/,
+    );
   });
 
   test("reads well-formed entries", () => {
@@ -89,6 +113,9 @@ describe("parseCorrections", () => {
     ],
     ["an impossible timestamp", { corrections: [{ ...CORRECTION, decidedAt: "2026-13-45T13:15:55Z" }] }],
     ["a contributor-identifying field", { corrections: [{ ...CORRECTION, field: "Entity_Nam L" }] }],
+    ["a street address", { corrections: [{ ...CORRECTION, field: "Entity_Adr1" }] }],
+    ["an intermediary's name", { corrections: [{ ...CORRECTION, field: "Intr_Nam L" }] }],
+    ["an impossible calendar date", { corrections: [{ ...CORRECTION, decidedAt: "2026-02-30T13:15:55Z" }] }],
   ])("rejects %s", (_name, json) => {
     expect(() => parseCorrections(json)).toThrow(/corrections\.json/);
   });

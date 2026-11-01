@@ -201,9 +201,16 @@ export function displayName(race: Race, key: string): string {
 
 const OFF_BALLOT_NOTE = "Ran unopposed, so this seat is not on the ballot.";
 
-/** The note for a race that is not on the ballot; null for one that is (and for any measure). */
+/** The note for a race that is not on the ballot; null for one that is (and for any measure). The sentence lives only here. */
 export function offBallotNote(race: Race): string | null {
-  return race.kind === "office" && race.onBallot === false ? (race.note ?? OFF_BALLOT_NOTE) : null;
+  return race.kind === "office" && race.onBallot === false ? OFF_BALLOT_NOTE : null;
+}
+
+/** A race page's title: the race and election date, or "not on the ballot" for a seat that is off it. */
+export function raceTitle(race: Race, electionDay: string): string {
+  return offBallotNote(race)
+    ? `${race.name} · not on the ballot`
+    : `${race.name} · ${formatDate(electionDay)}`;
 }
 
 /** The election-wide description: it names the date, not a vote, since some races are off the ballot. */
@@ -222,7 +229,7 @@ const FIELD_WORDS: Record<string, string> = {
   Description: "description",
 };
 
-/** "2026-11-01T13:15:55Z" -> "Nov 1, 2026, 6:15 AM PT": Pacific time, so the text never depends on the server. */
+/** "2026-11-01T13:15:55Z" -> "Nov 1, 2026, 5:15 AM PT": Pacific time, so the text never depends on the server. */
 function formatPacific(iso: string): string {
   const text = new Date(iso).toLocaleString("en-US", {
     timeZone: "America/Los_Angeles",
@@ -238,14 +245,16 @@ function formatPacific(iso: string): string {
 
 /** One correction in words for the candidate page. These are the only places that wording lives. */
 export function correctionLine(c: AppliedCorrection): {
+  key: string;
   field: string;
   reading: string;
   reason: string;
   decision: string;
 } {
   return {
+    key: `${c.filing}|${c.tranId}|${c.field}`,
     field: FIELD_WORDS[c.field] ?? c.field,
-    reading: `written as ${c.asFiled}, read as ${c.correctedTo}`,
+    reading: `${c.asFiled === "" ? "left blank" : `written as ${c.asFiled}`}, read as ${c.correctedTo}`,
     reason: c.reason,
     decision: `decided by ${c.decidedBy === "agent" ? "an AI agent" : "a person"} on ${formatPacific(c.decidedAt)}`,
   };
@@ -258,4 +267,19 @@ export function correctionsFor(
   candidate: string,
 ): AppliedCorrection[] {
   return (corrections ?? []).filter((c) => c.race === race && c.candidate === candidate);
+}
+
+/** A race's corrections by candidate or measure side, for the race page; entries with none are left out. */
+export function raceCorrections(
+  corrections: AppliedCorrection[] | undefined,
+  race: Race,
+): { key: string; name: string; lines: ReturnType<typeof correctionLine>[] }[] {
+  const keys = race.kind === "office" ? race.candidates.map((c) => c.slug) : ["yes", "no"];
+  return keys
+    .map((key) => ({
+      key,
+      name: displayName(race, key),
+      lines: correctionsFor(corrections, race.slug, key).map(correctionLine),
+    }))
+    .filter((e) => e.lines.length > 0);
 }
