@@ -75,6 +75,8 @@ Each election has a races file, `data/elections/<slug>/races.json`, also hand-ke
 
 Known for 2026-11-03 (verify against the County's candidate list before shipping; the County list wins): Mayor — Tracy Jensen, Malia Vella, Tony Daysog. City Council — Marcie Johnson, Thushan Amarasiriwardena, Tyler Savage, Amos White, Maria Bondonno, Donald Scott Means, Steve Slauson. School Board — Carrie Hahnel, Joyce Boyd, Ryan LaLonde, Gary Lym. Measure L (Safer Alameda GO bond) — yes: "Safer Alameda-Yes on Bond Measure L 2026"; no: "Alameda Climate Change Belivers Opposing Measure L 2026" (sic). Measure M (amend and repeal outdated City Charter provisions) and Measure N (City property sales and leases charter amendment) have no committees on either side and no outside spending in the filings (checked 10/31); their cards read "No campaign finance filings on record with the City for either side." (Claude's call.)
 
+Note (2026-11-01): the City's final roster (8/12/2026) lists six council candidates, and Donald Scott Means is not among them; he is removed from `races.json`, and his committee's 460-T is logged as not used for this election.
+
 Ballotpedia measure pages:
 
 - L: https://ballotpedia.org/Alameda,_California,_Measure_L,_Emergency_Preparedness_and_Infrastructure_Bond_Measure_(November_2026)
