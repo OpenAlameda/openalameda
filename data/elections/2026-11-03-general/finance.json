@@ -276,7 +276,7 @@
       },
       "unknownLocalityCents": 0,
       "outside": {
-        "supportCents": 1961436,
+        "supportCents": 2885634,
         "opposeCents": 0
       },
       "reportedDiffs": []
@@ -708,7 +708,7 @@
       },
       "unknownLocalityCents": 0,
       "outside": {
-        "supportCents": 97604,
+        "supportCents": 1021800,
         "opposeCents": 0
       },
       "reportedDiffs": []
@@ -847,7 +847,7 @@
       },
       "unknownLocalityCents": 0,
       "outside": {
-        "supportCents": 97604,
+        "supportCents": 2017507,
         "opposeCents": 0
       },
       "reportedDiffs": []
@@ -2962,17 +2962,17 @@
         {
           "target": "city-council/thushan-amarasiriwardena",
           "side": "support",
-          "cents": 97604
+          "cents": 1021800
         },
         {
           "target": "city-council/tyler-savage",
           "side": "support",
-          "cents": 97604
+          "cents": 2017507
         },
         {
           "target": "mayor/malia-vella",
           "side": "support",
-          "cents": 1961436
+          "cents": 2885634
         },
         {
           "target": "measure-l/yes",
@@ -2997,182 +2997,11 @@
     {
       "filerKey": "890076",
       "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "EDT235",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 46000,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "EDT236",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 46000,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "EDT237",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 46000,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "EDT238",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 30666,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "EDT239",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 30667,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "EDT240",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 30667,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT113",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 316667,
-      "description": "Digital Ads"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT114",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 316666,
-      "description": "Digital Ads"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT115",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 316667,
-      "description": "Digital Ads"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
       "tranId": "PDT116",
       "formType": "F496",
       "date": "2026-10-26",
       "cents": 950000,
       "description": "Digital Ads"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT119",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 79217,
-      "description": "Door hangers"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT120",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 79217,
-      "description": "Door hangers"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT121",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 79216,
-      "description": "Door hangers"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT122",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 25658,
-      "description": "Voter Data"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT123",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 25658,
-      "description": "Voter Data"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT124",
-      "formType": "F496",
-      "date": "2026-10-26",
-      "cents": 25659,
-      "description": "Voter Data"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT127",
-      "formType": "F496",
-      "date": "2026-10-27",
-      "cents": 425988,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT128",
-      "formType": "F496",
-      "date": "2026-10-27",
-      "cents": 425988,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT129",
-      "formType": "F496",
-      "date": "2026-10-27",
-      "cents": 425989,
-      "description": "Mailer"
-    },
-    {
-      "filerKey": "890076",
-      "filer": "Alameda Firefighters Association Political Action Committee IAFF Local 689",
-      "tranId": "PDT130",
-      "formType": "F496",
-      "date": "2026-10-28",
-      "cents": 995707,
-      "description": "Mailer"
     }
   ],
   "filings": [
