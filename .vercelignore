@@ -1,0 +1,6 @@
+# Never upload downloaded filings, even from a local `vercel deploy`: they carry donors' personal details, and the site publishes only derived figures.
+data/raw/
+
+# Agent working files.
+.superpowers/
+tmp/

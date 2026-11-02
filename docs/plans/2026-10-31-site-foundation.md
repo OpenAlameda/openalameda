@@ -59,8 +59,7 @@
 These steps are outward-facing. The user approved them in the spec.
 
 - [ ] Ask the user to run `! vercel login`, so the login doesn't block Task 5.
-- [ ] Create the GitHub repo and push the spec and plan:
-  `gh repo create OpenAlameda/openalameda --public --source /Users/jim/work/openalameda --remote origin --push`
+- [ ] Create the GitHub repo and push the spec and plan: `gh repo create OpenAlameda/openalameda --public --source . --remote origin --push`
 - [ ] Create a worktree for branch `site-foundation`, cut from `origin/main`. Tasks 1–4 commit there.
 
 ---
@@ -248,6 +247,10 @@ These steps are outward-facing. The user approved them in the spec.
 - Create: `src/app/opengraph-image.tsx`, `src/app/elections/opengraph-image.tsx`, `src/app/meetings/opengraph-image.tsx`, `src/app/about/opengraph-image.tsx`
 - Modify: `src/check/check-site.ts` (`checkImages` defaults to `true`)
 - Test: `src/og/card.test.ts`, `src/check/check-site.test.ts`
+
+> **Note (2026-10-31):** `pngSize` lives in `src/lib/png-size.ts`, not the card module, so the `check-site` CLI
+> can import it under plain Node type stripping. Card titles over 28 characters render at a smaller size,
+> clamped to two lines.
 
 **Interfaces:**
 - Consumes: `PAGES` (Task 2) and `checkSite` (Task 3).
